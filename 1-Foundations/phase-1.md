@@ -66,9 +66,6 @@ from module_name import function_name
   - Searching: Linear Search, Binary Search  
   - Sorting: Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort  
 
-- **Complexity Analysis**:  
-  - Big O notation: `O(1)`, `O(n)`, `O(log n)`, `O(n^2)`
-
 ---
 
 ## 5. Dynamic Programming (DP) 🧩
