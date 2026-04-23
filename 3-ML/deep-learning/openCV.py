@@ -1,7 +1,7 @@
 import cv2
 
 # LOAD
-img = cv2.imread("image.jpg")
+img = cv2.imread("test.jpg")
 
 print("Shape:", img.shape)
 
