@@ -3,7 +3,6 @@ import os
 
 USER_FILE = "users.json"
 
-print("test hello world")
 def load_users():
     if not os.path.exists(USER_FILE):
         return {}
