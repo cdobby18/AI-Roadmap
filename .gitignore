@@ -1,0 +1,46 @@
+# =====================
+# VS Code Settings
+# =====================
+.vscode/settings.json
+.vscode/*.code-workspace
+.vscode/launch.json
+.vscode/tasks.json
+
+# =====================
+# SQLTools / Database Sessions
+# =====================
+*.session.sql
+
+# =====================
+# Environment Files
+# =====================
+.env
+.env.local
+.env.*.local
+
+# =====================
+# Python (if using Python)
+# =====================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg
+*.egg-info/
+dist/
+build/
+*.manifest
+*.spec
+
+# =====================
+# OS / System Files
+# =====================
+.DS_Store
+Thumbs.db
+
+# =====================
+# Logs
+# =====================
+*.log
