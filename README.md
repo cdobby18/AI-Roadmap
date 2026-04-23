@@ -15,7 +15,6 @@ The goal is to build real-world skills in **Python, Data Analysis, Machine Learn
 - Build machine learning models
 - Understand NLP and text-based AI systems
 - Develop AI backend systems using Flask/FastAPI
-- Build end-to-end AI applications
 - Learn production-level AI engineering workflows
 
 ---
