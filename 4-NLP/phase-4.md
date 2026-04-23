@@ -76,8 +76,7 @@ It covers text preprocessing, classical NLP, deep learning models, transformers,
 - Modern architecture that powers models like BERT and GPT.
 - **Key Concepts**:
   - Self-attention mechanism
-  - Multi-head attention
-  - Encoder-decoder structure
+  - Multi-head attentione
 - **Why it matters**:
   - Handles long-range dependencies better than RNNs
   - Foundation of modern LLMs
