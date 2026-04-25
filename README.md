@@ -2,97 +2,103 @@
 
 This repository documents my structured journey toward becoming a **Production-Ready AI Engineer**.
 
-It contains lessons, practice tasks, and projects from foundational programming to advanced AI systems.
-
-The goal is to build real-world skills in **Python, Data Analysis, Machine Learning, NLP, and AI System Design**.
+It combines self-study, hands-on projects, and structured coursework (including **Harvard CS50**) to build strong foundations in **Python, Data Science, Machine Learning, NLP, and AI Systems**.
 
 ---
 
 # 🎯 Objectives
 
-- Master Python for AI engineering
-- Learn data analysis and SQL fundamentals
-- Build machine learning models
-- Understand NLP and text-based AI systems
-- Develop AI backend systems using Flask/FastAPI
-- Learn production-level AI engineering workflows
+- Master Python for AI engineering and backend systems
+- Learn data analysis, SQL, and data pipelines
+- Build and deploy machine learning models
+- Understand NLP and modern AI/LLM systems
+- Develop backend AI services using Flask and FastAPI
+- Apply AI concepts from foundational computer science (CS50)
+
+---
+
+# 🧠 Learning Sources & Curriculum
+
+## 📘 Core AI Engineering Roadmap
+- Python for AI Engineering
+- Data Analysis & Machine Learning
+- NLP and LLM systems
+- AI System Design & Deployment
+
+## 🎓 Harvard CS50 (AI-Integrated Foundation)
+
+CS50 is used as a supporting foundation to strengthen core computer science and engineering skills that directly apply to AI development.
+
+It reinforces key areas in this roadmap such as:
+
+- Python programming fundamentals
+- Problem-solving and algorithmic thinking
+- Web development concepts (Flask and backend logic)
+- Core AI and machine learning principles
+- Basic understanding of data structures and system design
 
 ---
 
 # 🧠 Phases Overview
 
 ## Phase 1: Python Foundations
-- Python syntax and data types
+- Python syntax, data types, control flow
 - Functions and OOP
-- File handling
-- Web scraping basics
+- File handling and modules
 - API requests (JSON handling)
-- Modular programming
 
 ## Phase 2: Data Analysis
-- NumPy for numerical computing
-- Pandas for data manipulation
+- NumPy, Pandas
 - Data cleaning and preprocessing
 - Exploratory Data Analysis (EDA)
-- SQL basics
-- Data visualization (Matplotlib / Seaborn)
+- SQL fundamentals
+- Data visualization
 
 ## Phase 3: Machine Learning
-- Supervised learning (Regression, Classification)
-- Unsupervised learning (Clustering)
+- Supervised & unsupervised learning
 - Feature engineering
 - Model evaluation
 - ML pipelines
-- Model saving and deployment
+- Intro ML concepts reinforced by CS50 AI ideas
 
 ## Phase 4: NLP (Natural Language Processing)
-- Text preprocessing
-- Tokenization
-- Word embeddings
+- Text preprocessing & embeddings
 - Sentiment analysis
 - Text classification
 - RNN / LSTM basics
-- Intro to transformers
+- Transformers introduction
+- CS50 AI NLP foundations
 
 ## Phase 5: AI Engineering (Backend Systems)
-- Flask / FastAPI APIs
-- REST API design
-- ML model deployment
-- JSON request/response handling
+- Flask / FastAPI (CS50 Web foundations applied)
+- REST API design for AI models
+- Model deployment pipelines
 - Logging & error handling
-- CORS setup
-- Production-ready backend structure
+- Production backend architecture
 
 ## Phase 6: Advanced AI Systems (LLM + RAG)
 - LLM integration (OpenAI APIs)
 - Prompt engineering
-- Embeddings
-- Vector databases (FAISS basics)
-- Retrieval-Augmented Generation (RAG)
-- AI agents (tool calling)
-- Chatbot memory systems
+- Embeddings & vector search
+- RAG systems
+- AI agents and tool use
 
-## Phase 7: Capstone Projects (Full Stack AI)
-- React frontend integration
-- Python backend integration
-- ML + NLP system integration
-- RAG chatbot system
-- Database logging systems
-- Authentication systems
-- Deployment (Docker / Cloud basics)
-- Full-stack AI SaaS application
+## Phase 7: Capstone Projects
+- Full-stack AI applications
+- React + Python backend integration
+- RAG chatbot systems
+- Authentication & database systems
+- Deployment (Docker / cloud)
 
 ---
 
-# 🚀 Progress
-
-This repository will be updated as I progress through each phase.
+# 🚀 Progress Tracking
 
 Each phase includes:
-- Lessons
-- Practice tasks
-- Mini projects
-- Full Stack Projects
+- Structured lessons
+- Practice exercises
+- Mini-projects
+- Full-stack AI systems
 
 ---
 
