@@ -52,4 +52,5 @@ pirates = [
 ]
 
 for pirate in pirates:
-    print(pirate["name"], pirate["crew"], sep=", ")
+    print(pirate["name"], pirate["crew"])
+
