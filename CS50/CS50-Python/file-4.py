@@ -24,14 +24,12 @@ for card in cards:
 
 
 # API REQUESTS
-# Require search term
 if len(sys.argv) != 2:
     sys.exit("Missing search term")
 
-# Encode query safely
 term = urllib.parse.quote(sys.argv[1])
 
-# Request Apple iTunes API
+# itunes api
 response = requests.get(
     f"https://itunes.apple.com/search?entity=song&limit=10&term={term}"
 )
@@ -40,10 +38,9 @@ data = response.json()
 
 # filter symbols 
 def is_clean(title):
-    # Allow letters, numbers, spaces, and basic punctuation only
     return re.match(r"^[A-Za-z0-9\s\-\(\)\&\.\']+$", title)
 
-# Print filtered results
+# filter result
 for result in data["results"]:
     title = result["trackName"]
     artist = result["artistName"]
