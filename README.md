@@ -1,119 +1,142 @@
 # 🤖 AI Engineering Roadmap Training
 
 <p align="center">
-  <img src="image1.JPG" width="500"/><br>
-  <img src="image2.JPG" width="500"/><br>
-  <em>AI Roadmap Overview</em>
+  <img src="image1.JPG" width="600"/><br><br>
+  <img src="image2.JPG" width="600"/><br>
+  <em>AI Engineering Roadmap Overview</em>
 </p>
+
+---
+
+## 📌 About This Repository
 
 This repository documents my structured journey toward becoming a **Production-Ready AI Engineer**.
 
-It combines self-study, hands-on projects, and structured coursework (including **Harvard CS50**) to build strong foundations in **Python, Data Science, Machine Learning, NLP, and AI Systems**.
+It combines:
+
+- 📚 Self-study
+- 🛠️ Hands-on projects
+- 🎓 Structured coursework (Harvard CS50)
+
+The goal is to build strong, real-world foundations in:
+
+> **Python • Data Science • Machine Learning • NLP • AI Systems**
 
 ---
 
-# 🎯 Objectives
+## 🎯 Objectives
 
-- Master Python for AI engineering and backend systems
+- Build strong Python foundations for AI & backend systems
 - Learn data analysis, SQL, and data pipelines
-- Build and deploy machine learning models
+- Develop and deploy machine learning models
 - Understand NLP and modern AI/LLM systems
-- Develop backend AI services using Flask and FastAPI
-- Apply AI concepts from foundational computer science (CS50)
+- Design backend AI services using Flask & FastAPI
+- Apply core computer science concepts to AI systems
 
 ---
 
-# 🧠 Learning Sources & Curriculum
+## 🧭 Learning Roadmap
 
-## 📘 Core AI Engineering Roadmap
+### 📘 Core AI Engineering Path
 
 - Python for AI Engineering
 - Data Analysis & Machine Learning
-- NLP and LLM systems
+- NLP & LLM Systems
 - AI System Design & Deployment
 
-## 🎓 Harvard CS50 (AI-Integrated Foundation)
+### 🎓 CS50 Integration (Foundation Layer)
 
-CS50 is used as a supporting foundation to strengthen core computer science and engineering skills that directly apply to AI development.
+Harvard CS50 strengthens core engineering skills that directly support AI development:
 
-It reinforces key areas in this roadmap such as:
-
+- Problem-solving & algorithmic thinking
 - Python programming fundamentals
-- Problem-solving and algorithmic thinking
-- Web development concepts (Flask and backend logic)
-- Core AI and machine learning principles
-- Basic understanding of data structures and system design
+- Web development (Flask, backend logic)
+- Core AI & machine learning principles
+- Data structures & system design basics
 
 ---
 
-# 🧠 Phases Overview
+## 🧠 Phases Breakdown
 
-## Phase 1: Python Foundations
+### 🟢 Phase 1: Python Foundations
 
-- Python syntax, data types, control flow
-- Functions and OOP
-- File handling and modules
-- API requests (JSON handling)
+- Syntax, data types, control flow
+- Functions & OOP
+- File handling & modules
+- API requests (basic understanding)
 
-## Phase 2: Data Analysis
+---
 
-- NumPy, Pandas
-- Data cleaning and preprocessing
+### 🔵 Phase 2: Data Analysis
+
+- NumPy & Pandas
+- Data cleaning & preprocessing
 - Exploratory Data Analysis (EDA)
 - SQL fundamentals
 - Data visualization
 
-## Phase 3: Machine Learning
+---
+
+### 🟡 Phase 3: Machine Learning
 
 - Supervised & unsupervised learning
 - Feature engineering
 - Model evaluation
 - ML pipelines
-- Intro ML concepts reinforced by CS50 AI ideas
+- CS50 AI concept integration
 
-## Phase 4: NLP (Natural Language Processing)
+---
+
+### 🟣 Phase 4: NLP (Natural Language Processing)
 
 - Text preprocessing & embeddings
 - Sentiment analysis
 - Text classification
 - RNN / LSTM basics
 - Transformers introduction
-- CS50 AI NLP foundations
 
-## Phase 5: AI Engineering (Backend Systems)
+---
 
-- Flask / FastAPI (CS50 Web foundations applied)
-- REST API design for AI models
-- Model deployment pipelines
+### 🔴 Phase 5: AI Engineering (Backend Systems)
+
+- Flask / FastAPI (production APIs)
+- REST API design for ML models
+- API testing using Postman
+- Handling requests, responses, and JSON data
+- Model deployment workflows
 - Logging & error handling
-- Production backend architecture
+- Scalable backend architecture
 
-## Phase 6: Advanced AI Systems (LLM + RAG)
+---
+
+### ⚫ Phase 6: Advanced AI Systems (LLM + RAG)
 
 - LLM integration (OpenAI APIs)
 - Prompt engineering
-- Embeddings & vector search
-- RAG systems
-- AI agents and tool use
+- Embeddings & vector databases
+- Retrieval-Augmented Generation (RAG)
+- AI agents & tool usage
 
-## Phase 7: Capstone Projects
+---
+
+### 🟤 Phase 7: Capstone Projects
 
 - Full-stack AI applications
 - React + Python backend integration
 - RAG chatbot systems
 - Authentication & database systems
-- Deployment (Docker / cloud)
+- Deployment (Docker / Cloud)
 
 ---
 
-# 🚀 Progress Tracking
+## 📊 Progress Tracking
 
 Each phase includes:
 
-- Structured lessons
-- Practice exercises
-- Mini-projects
-- Full-stack AI systems
+- ✅ Structured lessons
+- 🧪 Practice exercises
+- 🔧 Mini-projects
+- 🚀 Production-level AI systems
 
 ---
 
