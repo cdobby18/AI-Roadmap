@@ -1,6 +1,10 @@
 # 🤖 AI Engineering Roadmap Training
 
-![My Image](img1.JPG)
+<p align="center">
+  <img src="image1.JPG" width="500"/><br>
+  <img src="image2.JPG" width="500"/><br>
+  <em>AI Roadmap Overview</em>
+</p>
 
 This repository documents my structured journey toward becoming a **Production-Ready AI Engineer**.
 
