@@ -36,3 +36,27 @@ elif score >= 70:
     print("Grade: C")
 else:
     print("Grade: D")    
+
+# =========================================
+# NOTES / SUMMARY (FILE 1: INTRODUCTION)
+# =========================================
+#
+# 1. User Input & Strings
+#    - Using input() to collect data from users
+#    - Cleaning and formatting strings using strip(), title(), capitalize()
+#
+# 2. Data Types & Type Casting
+#    - Converting input values into integers using int()
+#
+# 3. Basic Operations
+#    - Performing arithmetic operations (addition)
+#
+# 4. Functions
+#    - Creating reusable functions (main, is_even)
+#    - Using return values for logic
+#
+# 5. Conditionals
+#    - Using if-elif-else for decision making
+#    - Applying logical comparisons (grading system, even/odd check)
+#
+# =========================================

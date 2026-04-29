@@ -46,6 +46,38 @@ try:
         print(file.read())
 
 except FileNotFoundError:
-    print("❌ That file does not exist.")
+    print("That file does not exist.")
 except PermissionError:
-    print("❌ You don't have permission to read this file.")
+    print("You don't have permission to read this file.")
+
+
+# =========================================
+# NOTES / SUMMARY (LESSON 3: EXCEPTIONS & FILE HANDLING)
+# =========================================
+#
+# 1. Exceptions (try-except)
+#    - Used to prevent program crashes from runtime errors
+#    - try block contains risky code
+#    - except handles specific errors (e.g., ValueError)
+#
+# 2. Input Validation with Exceptions
+#    - Repeatedly ask for input until valid (loop + try/except)
+#    - Ensures program stability and user-friendly behavior
+#
+# 3. Multiple Exceptions
+#    - Handling different error types separately
+#    - Example: ValueError (invalid input), ZeroDivisionError (division by zero)
+#
+# 4. finally Block
+#    - Code that always executes, regardless of errors
+#    - Commonly used for cleanup operations
+#
+# 5. File Handling
+#    - Reading files using open() and with statement
+#    - "with" ensures automatic file closing (best practice)
+#
+# 6. File-related Exceptions
+#    - FileNotFoundError → file does not exist
+#    - PermissionError → no access rights
+#
+# =========================================

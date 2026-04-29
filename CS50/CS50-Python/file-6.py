@@ -1,4 +1,4 @@
-#FILE I/O
+# FILE I/O
 import csv
 
 """
@@ -50,3 +50,39 @@ for name in sorted(names, key=lambda x: x["name"]):
     
 
 
+# =========================================
+# NOTES / SUMMARY (LESSON 6: FILE I/O & CSV HANDLING)
+# =========================================
+#
+# 1. File Modes
+#    - "r" (read), "w" (write), "a" (append), "+" (read/write)
+#    - Used to control how files are accessed and modified
+#
+# 2. File Handling with "with"
+#    - Automatically opens and closes files safely
+#    - Prevents memory leaks and file corruption
+#
+# 3. Reading Text Files
+#    - read(), readlines(), and looping through file lines
+#    - strip() used to clean newline characters
+#
+# 4. CSV File Processing (Manual)
+#    - Splitting lines using .split(",")
+#    - Converting raw data into structured dictionaries
+#
+# 5. Data Structures
+#    - Storing records as a list of dictionaries
+#    - Each dictionary represents one row of data
+#
+# 6. Sorting Data
+#    - Using sorted() with a custom key function
+#    - Organizing output based on specific fields (e.g., name)
+#
+# 7. CSV Module
+#    - Using csv.reader() for cleaner and safer CSV parsing
+#    - Alternative to manual string splitting
+#
+# 8. Lambda Functions
+#    - Inline functions for quick operations (e.g., sorting keys)
+#
+# =========================================
