@@ -1,0 +1,5 @@
+luffy,zoro
+sanji,jinbei
+nami,robin
+chopper,usopp 
+franky,brook 
