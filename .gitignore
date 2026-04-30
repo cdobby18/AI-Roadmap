@@ -1,10 +1,8 @@
 # =====================
 # VS Code Settings
 # =====================
-.vscode/settings.json
+.vscode/
 .vscode/*.code-workspace
-.vscode/launch.json
-.vscode/tasks.json
 
 # =====================
 # SQLTools / Database Sessions
@@ -19,7 +17,7 @@
 .env.*.local
 
 # =====================
-# Python (if using Python)
+# Python
 # =====================
 __pycache__/
 *.py[cod]
@@ -33,6 +31,17 @@ dist/
 build/
 *.manifest
 *.spec
+
+# =====================
+# Project Files (optional)
+# =====================
+resources.py
+
+# =====================
+# Generated Outputs
+# =====================
+outputs/
+*.pdf
 
 # =====================
 # OS / System Files
