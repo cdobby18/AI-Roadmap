@@ -120,8 +120,4 @@ if __name__ == "__main__":
 # 8. Object Creation Flow
 #    - User inputs data → validation → Pirate object created → printed
 #
-# Overall:
-# This lesson introduces Object-Oriented Programming (OOP),
-# focusing on creating structured, reusable, and safe data models
-# using classes, methods, and encapsulation.
 # =========================================
