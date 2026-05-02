@@ -1,4 +1,5 @@
-# 🤖 AI Engineering Roadmap Training
+# 🤖 AI Engineering Roadmap
+### Carl Joshua M. Coloma — Computer Science, Software Engineering Track
 
 <p align="center">
   <img src="image1.JPG" width="600"/><br><br>
@@ -8,180 +9,214 @@
 
 ---
 
-## 📌 About This Repository
+> *"The fastest way to learn is to build something you actually care about."*
 
-This repository documents my structured journey toward becoming a **Junior AI Engineer**.
+This repository documents my structured, project-driven journey toward becoming a **Junior AI Engineer** — from Python foundations all the way to deploying production RAG systems and AI agents.
 
-It combines:
-
-- 📚 Self-study
-- 🛠️ Hands-on projects
-- 🎓 Structured coursework (Harvard CS50P)
-
-The goal is to build strong, real-world foundations in:
-
-> **Python • Machine Learning • NLP • Transformers • LLMs • RAG • AI Agents**
+**Not a collection of tutorials. A record of things actually built.**
 
 ---
 
-## 🎯 Objectives
-
-- Build strong Python foundations for AI & backend systems
-- Develop and deploy machine learning models
-- Understand NLP and how Transformers work architecturally
-- Work with modern LLM systems and prompt engineering
-- Build RAG pipelines and AI agents using LangChain
-- Design and serve AI backends using **FastAPI**
-
-> **Note:** Based on mentor guidance — Flask, standalone Data Analysis, and DSA have been removed from this roadmap. Data analysis skills (NumPy, Pandas) will be picked up naturally during Machine Learning. FastAPI replaces Flask as the backend framework for AI services.
-
----
-
-## 🧭 Learning Roadmap
-
-### 📘 Core AI Engineering Path
+## 🧭 The Path
 
 ```
-Python Foundations
-      ↓
-FastAPI Basics
-      ↓
-Machine Learning (scikit-learn + PyTorch + Hugging Face)
-      ↓
+Python Foundations + SQL
+        ↓
+FastAPI + Auth + Security
+        ↓
+Machine Learning + Experiment Tracking (W&B)
+        ↓
 NLP Fundamentals
-      ↓
-Transformers (how they actually work)
-      ↓
-LLMs + Prompt Engineering
-      ↓
-RAG + LangChain + Agents
-      ↓
-Deploy + Portfolio
+        ↓
+Transformers — How They Actually Work
+        ↓
+LLMs + Prompt Engineering + Observability
+        ↓
+RAG + LangChain + LangGraph + Agents
+        ↓
+Deploy + CI/CD + Portfolio
 ```
 
-### 🎓 CS50P Integration (Foundation Layer)
-
-Harvard CS50P strengthens core Python skills that directly support AI development:
-
-- Python programming fundamentals
-- OOP and functions
-- File handling and APIs
-- Problem-solving and debugging mindset
+**9 phases · ~37 weeks · Almost entirely free resources · Every phase ships a project**
 
 ---
 
-## 🧠 Phases Breakdown
+## 🚀 Projects
 
-### 🟢 Phase 1: Python Foundations
-**Status: 🔄 In Progress (CS50P)**
+| Project | Phase | Stack | Status |
+|---------|-------|-------|--------|
+| TextCleaner | Phase 1 | Python, OOP, File I/O | ⏳ Upcoming |
+| FastAPI Text Processing API | Phase 2 | FastAPI, JWT, Pydantic, slowapi | ⏳ Upcoming |
+| PH News Sentiment Classifier | Phase 3 | PyTorch, scikit-learn, W&B, Gradio | ⏳ Upcoming |
+| Fine-tuned BERT on Local Dataset | Phase 4 | HuggingFace Trainer, W&B | ⏳ Upcoming |
+| Transformer Explainer (Blog/README) | Phase 5 | Writing, Architecture Diagrams | ⏳ Upcoming |
+| FastAPI Chatbot with Observability | Phase 6 | FastAPI, Anthropic API, LangSmith | ⏳ Upcoming |
+| RAG Chatbot over PH Documents | Phase 7 | LangChain, LangGraph, ChromaDB, FastAPI, RAGAS | ⏳ Upcoming |
+| Capstone — Live RAG App + CI/CD | Phase 8 | Docker, GitHub Actions, Render | ⏳ Upcoming |
 
-- Syntax, data types, control flow
-- Functions & OOP (classes, inheritance, magic methods)
-- File handling & modules
-- Exceptions & error handling
-- Basic API requests
+> As each project is completed, this table will be updated with live demo links and GitHub links.
 
 ---
 
-### 🟦 Phase 2: FastAPI Basics
+## 📊 Progress
+
+| Phase | Topic | Status |
+|-------|-------|--------|
+| 1 | Python Foundations + SQL | 🔄 In Progress |
+| 2 | FastAPI + Security Basics | ⏳ Upcoming |
+| 3 | Machine Learning + W&B Tracking | ⏳ Upcoming |
+| 4 | NLP Fundamentals | ⏳ Upcoming |
+| 5 | Transformers — Architecture | ⏳ Upcoming |
+| 6 | LLMs + Prompt Engineering + Observability | ⏳ Upcoming |
+| 7 | RAG + LangChain + LangGraph + Agents | ⏳ Upcoming |
+| 8 | Deploy + CI/CD + Portfolio | ⏳ Upcoming |
+| 9 | System Design for AI *(optional)* | ⏳ Upcoming |
+
+---
+
+## 🧠 Phase Breakdown
+
+### 🟢 Phase 1 — Python Foundations + SQL
+**Status: 🔄 In Progress**
+
+- OOP: classes, `__init__`, `self`, inheritance, magic methods
+- Exceptions: `try/except/finally` — handle errors, not just print them
+- File I/O: read/write text, CSV, JSON
+- API requests: `requests` library, handle responses
+- Modules and packages: `__init__.py`, importing your own code
+- SQL basics: `SELECT`, `WHERE`, `JOIN`, `GROUP BY` using SQLite *(3-day module)*
+
+**Milestone project:** `TextCleaner` — OOP + string processing + file I/O
+
+---
+
+### 🟦 Phase 2 — FastAPI + Security Basics
 **Status: ⏳ Upcoming**
 
-- Why FastAPI over Flask for AI systems
-- Routes, request/response models
-- Pydantic for data validation
-- Async endpoints
-- Serving ML model predictions via API
-- API testing basics
+- Why FastAPI: async support, automatic docs, Pydantic validation
+- GET and POST endpoints returning JSON
+- Pydantic models for request validation — critical for AI APIs
+- Async endpoints: `async/await` and why it matters
+- Path params, query params, request bodies
+- **JWT authentication** — protect endpoints with `python-jose` + `passlib`
+- **Rate limiting** — `slowapi`, 10 requests/minute per user
+- Environment variables: `Pydantic Settings` + `.env` files
+
+**Milestone project:** FastAPI text processing API with JWT auth + rate limiting
 
 ---
 
-### 🟡 Phase 3: Machine Learning
+### 🟡 Phase 3 — Machine Learning + Experiment Tracking
 **Status: ⏳ Upcoming**
 
-> NumPy and Pandas are learned here in context, not as a separate phase
+> NumPy and Pandas are learned here in context — not as a separate phase
 
-- Supervised & unsupervised learning
-- Scikit-learn: pipelines, metrics, cross-validation
-- PyTorch: tensors, autograd, training loop
-- Hugging Face: pipelines, pretrained models
-- Model evaluation & feature engineering
+- scikit-learn: train/test split, cross-validation, pipelines, metrics
+- PyTorch: tensors, autograd, training loop — forward pass, loss, backward, optimizer
+- `nn.Module` — build and understand every line of a neural network
+- HuggingFace `pipeline()` for inference in 5 lines
+- Evaluate properly: confusion matrix, never evaluate on training data
+- **W&B experiment tracking** — log accuracy, loss, hyperparameters from day 1
+- Gradio: wrap model in a demo UI, publish to HuggingFace Spaces
+
+**Milestone project:** Philippine news sentiment classifier with W&B tracking + Gradio demo
 
 ---
 
-### 🟣 Phase 4: NLP Fundamentals
+### 🟣 Phase 4 — NLP Fundamentals
 **Status: ⏳ Upcoming**
 
-- Tokenization & text preprocessing
-- Word embeddings (Word2Vec, TF-IDF)
-- Sentiment analysis & text classification
-- Named entity recognition (NER)
-- Fine-tuning with Hugging Face Trainer
+- Tokenization: LLMs read tokens, not words — inspect tokenizer output
+- Word embeddings: Word2Vec — a word as a list of numbers encoding meaning
+- TF-IDF: implement from scratch, understand when to use vs embeddings
+- NLP tasks: sentiment analysis, NER, summarization via HuggingFace
+- Fine-tuning: HuggingFace `Trainer` on a custom dataset
+- Encoder (BERT) vs decoder (GPT) — conceptual understanding before Phase 5
+
+**Milestone project:** Fine-tune BERT on a local Filipino/Philippine dataset
 
 ---
 
-### 🔵 Phase 5: Transformers (How They Work)
+### 🔵 Phase 5 — Transformers: How They Actually Work
 **Status: ⏳ Upcoming**
 
-> Dedicated phase based on mentor recommendation — before jumping into LLMs, understand the architecture
+> Dedicated phase added based on mentor recommendation — before LLMs, understand the architecture
 
-- Attention mechanism — what it is and why it matters
-- Encoder vs decoder architectures (BERT vs GPT)
-- Multi-head attention
-- Positional encoding
-- Reading and understanding the original "Attention Is All You Need" paper
-- Karpathy's "Let's build GPT" walkthrough
+- Attention mechanism: every token attends to every other token simultaneously
+- Self-attention: queries, keys, values — what they are and why the math works
+- Multi-head attention: running attention in parallel
+- Positional encoding: how transformers encode order without recurrence
+- Encoder-only (BERT) vs decoder-only (GPT)
+- Read *Attention Is All You Need* — abstract + architecture section minimum
+
+**Milestone project:** Write a detailed README/blog post explaining transformers in your own words, with a diagram you drew yourself
 
 ---
 
-### 🔴 Phase 6: LLMs + Prompt Engineering
+### 🔴 Phase 6 — LLMs + Prompt Engineering + Observability
 **Status: ⏳ Upcoming**
 
-- How LLMs work: tokens, context window, temperature
-- Prompt engineering: zero-shot, few-shot, chain-of-thought
-- System prompts and role prompting
-- Anthropic / OpenAI API usage
-- Streaming responses
-- Function/tool calling and structured output (JSON mode)
+- Tokens, context window, temperature — know these cold
+- Zero-shot, few-shot, chain-of-thought prompting — implement and compare all three
+- System prompts: shape model behavior across all turns
+- Function/tool calling: the LLM decides when to call your Python function
+- Structured outputs: force valid JSON using native API support
+- **LangSmith / Langfuse** — trace every LLM call: latency, token usage, errors
+- **Prompt injection** — understand the attack, implement input sanitization
+- Ollama: run models locally (llama3, mistral) — reduce API costs while learning
+- Serve chatbot as a proper async FastAPI endpoint with JWT auth
+
+**Milestone project:** FastAPI chatbot with memory, streaming, observability, and structured output
 
 ---
 
-### ⚫ Phase 7: RAG + LangChain + Agents
+### ⚫ Phase 7 — RAG + LangChain + LangGraph + Agents
 **Status: ⏳ Upcoming**
 
 > Most employable AI engineering skill right now
 
-- Vector databases: ChromaDB, FAISS
-- Embeddings and semantic search
-- RAG pipeline: ingest → chunk → embed → retrieve → generate
-- LangChain: chains, memory, tools
-- AI agents and the ReAct pattern
-- Orchestrating agents with Python + FastAPI
+- Vector DBs: set up ChromaDB locally, embed sentences, query nearest neighbor
+- Chunking: ~500 token chunks with overlap before embedding
+- RAG step by step: ingest → chunk → embed → store → retrieve → generate
+- LangChain chains: loaders, splitters, embeddings, retriever, LLM
+- Conversational RAG: add memory for conversation history
+- **LangGraph agents**: stateful agents with nodes, edges, conditional routing
+- **Model Context Protocol (MCP)**: connect agents to external tools
+- **LangSmith tracing**: trace full RAG pipeline, see exactly where retrieval fails
+- **Redis cache**: cache embeddings to reduce API calls and latency
+- **RAGAS evaluation**: measure faithfulness, answer relevancy, context precision
+
+**Milestone project:** RAG chatbot over Philippine documents — LangChain + LangGraph + FastAPI + JWT + LangSmith + RAGAS eval report
 
 ---
 
-### 🟤 Phase 8: Deploy + Portfolio
+### 🟤 Phase 8 — Deploy + CI/CD + Portfolio
 **Status: ⏳ Upcoming**
 
-- Docker basics — containerize your FastAPI app
-- Deploy to Render or Railway (free tier)
-- GitHub portfolio: 3 pinned projects with real READMEs and demo links
-- Hugging Face Spaces — publish live AI demos
-- Kaggle — at least one public competition submission
+- Docker: write a Dockerfile for FastAPI — understand every line
+- Deploy to Render.com or Railway.app — free tier
+- **GitHub Actions**: run tests on push, deploy on merge to main
+- Environment variables: `.env` files, never hardcode API keys
+- 3 pinned GitHub projects with real READMEs + demo links
+- HuggingFace Spaces: publish live AI demos
+- Kaggle: at least one public competition submission
+
+**Milestone project:** Capstone — live RAG chatbot with CI/CD pipeline + HuggingFace Space demo
 
 ---
 
-## 📊 Progress Tracking
+### 🔘 Phase 9 — System Design for AI *(Optional)*
+**Status: ⏳ Upcoming**
 
-| Phase | Topic | Status |
-|-------|-------|--------|
-| 1 | Python Foundations | 🔄 In Progress |
-| 2 | FastAPI Basics | ⏳ Upcoming |
-| 3 | Machine Learning | ⏳ Upcoming |
-| 4 | NLP Fundamentals | ⏳ Upcoming |
-| 5 | Transformers (Architecture) | ⏳ Upcoming |
-| 6 | LLMs + Prompt Engineering | ⏳ Upcoming |
-| 7 | RAG + LangChain + Agents | ⏳ Upcoming |
-| 8 | Deploy + Portfolio | ⏳ Upcoming |
+> Not required for first junior role. Separates junior from mid-level candidates.
+
+- Async task queues: Celery + Redis — offload slow LLM calls to background workers
+- Horizontal scaling: multiple FastAPI instances behind a load balancer
+- Caching strategies: what to cache, for how long, when to invalidate
+- Redis-based rate limiting at scale
+- Database design for AI apps: conversation history, embeddings, eval results
+
+**Milestone project:** Architecture diagram — RAG chatbot handling 1,000 concurrent users
 
 ---
 
@@ -191,31 +226,28 @@ Harvard CS50P strengthens core Python skills that directly support AI developmen
 |----------|-------|
 | Language | Python |
 | Backend / API | FastAPI |
+| Auth & Security | JWT, python-jose, passlib, slowapi |
 | ML Framework | scikit-learn, PyTorch |
-| NLP / LLMs | Hugging Face Transformers, LangChain |
+| NLP / LLMs | HuggingFace Transformers, LangChain, LangGraph |
+| Experiment Tracking | Weights & Biases (W&B) |
+| Observability | LangSmith, Langfuse |
 | Vector DB | ChromaDB, FAISS |
-| LLM APIs | Anthropic (Claude), OpenAI |
-| Deployment | Docker, Render, Railway |
-| Portfolio | GitHub, Hugging Face Spaces |
-
----
-
-## 📝 Mentor Notes
-
-Key adjustments made to this roadmap based on mentor feedback:
-
-- ✅ **Data Analysis removed as standalone phase** — NumPy/Pandas learned in context during ML
-- ✅ **Flask replaced with FastAPI** — industry standard for AI backend services and agent orchestration
-- ✅ **DSA removed** — not required for AI engineering track
-- ✅ **Transformers added as dedicated phase** — between NLP and LLMs, as recommended
-- ✅ **Focus: Python + FastAPI** — core skill pair for orchestrating AI agents
+| Caching | Redis |
+| LLM APIs | Anthropic (Claude), OpenAI, Ollama (local) |
+| Evaluation | RAGAS |
+| Deployment | Docker, Render, Railway, GitHub Actions |
+| Portfolio | GitHub, HuggingFace Spaces, Kaggle |
 
 ---
 
 ## 👨‍💻 Author
 
 **Carl Joshua M. Coloma**
-Computer Science – Software Engineering
+Computer Science — Software Engineering
 AI Engineering Track
 
-> *"The fastest way to learn is to build something you actually care about."*
+[![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=flat&logo=github)](https://github.com/cdobby18)
+
+---
+
+*Last updated: May 2026*
