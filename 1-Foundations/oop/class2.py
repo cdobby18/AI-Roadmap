@@ -1,5 +1,4 @@
 # Class Variables
-
 class Employee:
 
     numOfEmps = 0
@@ -18,7 +17,6 @@ class Employee:
 
     def apply_raise(self, percent):
         self.pay = int(self.pay * (1 + percent))
-
 
 emp_1 = Employee('Luffy', 'Dragon', 300000)
 emp_2 = Employee('Roronoa', 'Zoro', 100000)
