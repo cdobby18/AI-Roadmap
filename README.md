@@ -7,7 +7,7 @@ This repository documents my structured, project-driven journey toward becoming 
 
 ---
 
-## 🧭 The Path
+## The Path
 
 ```
 Python Foundations + SQL
@@ -45,10 +45,10 @@ Deploy + CI/CD + Portfolio
 
 ---
 
-## 🧠 Phase Breakdown
+## PHASE BREAKDOWN:
 
-### 🟢 Phase 1 — Python Foundations + SQL
-**Status: 🔄 In Progress**
+### Phase 1 — Python Foundations + SQL
+**Status: In Progress**
 
 - OOP: classes, `__init__`, `self`, inheritance, magic methods
 - Exceptions: `try/except/finally` — handle errors, not just print them
@@ -59,8 +59,8 @@ Deploy + CI/CD + Portfolio
 
 ---
 
-### 🟦 Phase 2 — FastAPI + Security Basics
-**Status: ⏳ Upcoming**
+### Phase 2 — FastAPI + Security Basics
+**Status: Upcoming**
 
 - Why FastAPI: async support, automatic docs, Pydantic validation
 - GET and POST endpoints returning JSON
@@ -73,8 +73,8 @@ Deploy + CI/CD + Portfolio
 
 ---
 
-### 🟡 Phase 3 — Machine Learning + Experiment Tracking
-**Status: ⏳ Upcoming**
+### Phase 3 — Machine Learning + Experiment Tracking
+**Status: Upcoming**
 
 > NumPy and Pandas are learned here in context — not as a separate phase
 
@@ -88,8 +88,8 @@ Deploy + CI/CD + Portfolio
 
 ---
 
-### 🟣 Phase 4 — NLP Fundamentals
-**Status: ⏳ Upcoming**
+### Phase 4 — NLP Fundamentals
+**Status: Upcoming**
 
 - Tokenization: LLMs read tokens, not words — inspect tokenizer output
 - Word embeddings: Word2Vec — a word as a list of numbers encoding meaning
@@ -100,8 +100,8 @@ Deploy + CI/CD + Portfolio
 
 ---
 
-### 🔵 Phase 5 — Transformers: How They Actually Work
-**Status: ⏳ Upcoming**
+### Phase 5 — Transformers: How They Actually Work
+**Status: Upcoming**
 
 > Dedicated phase added based on mentor recommendation — before LLMs, understand the architecture
 
@@ -114,8 +114,8 @@ Deploy + CI/CD + Portfolio
 
 ---
 
-### 🔴 Phase 6 — LLMs + Prompt Engineering + Observability
-**Status: ⏳ Upcoming**
+### Phase 6 — LLMs + Prompt Engineering + Observability
+**Status: Upcoming**
 
 - Tokens, context window, temperature — know these cold
 - Zero-shot, few-shot, chain-of-thought prompting — implement and compare all three
@@ -129,8 +129,8 @@ Deploy + CI/CD + Portfolio
 
 ---
 
-### ⚫ Phase 7 — RAG + LangChain + LangGraph + Agents
-**Status: ⏳ Upcoming**
+### Phase 7 — RAG + LangChain + LangGraph + Agents
+**Status: Upcoming**
 
 > Most employable AI engineering skill right now
 
@@ -147,8 +147,8 @@ Deploy + CI/CD + Portfolio
 
 ---
 
-### 🟤 Phase 8 — Deploy + CI/CD + Portfolio
-**Status: ⏳ Upcoming**
+### Phase 8 — Deploy + CI/CD + Portfolio
+**Status: Upcoming**
 
 - Docker: write a Dockerfile for FastAPI — understand every line
 - Deploy to Render.com or Railway.app — free tier
@@ -160,8 +160,8 @@ Deploy + CI/CD + Portfolio
 
 ---
 
-### 🔘 Phase 9 — System Design for AI *(Optional)*
-**Status: ⏳ Upcoming**
+### Phase 9 — System Design for AI *(Optional)*
+**Status: Upcoming**
 
 > Not required for first junior role. Separates junior from mid-level candidates.
 
@@ -173,7 +173,7 @@ Deploy + CI/CD + Portfolio
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 | Category | Tools |
 |----------|-------|
