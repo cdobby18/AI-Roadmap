@@ -35,12 +35,6 @@ This project simulates a **text transformation system** where each method acts a
 ## 🗺️ Example Output
 🏴‍☠️ DevilFruit Processor — Grand Line Edition
 ---------------------------------------------
-
-Scanned scroll: poneglyph.txt (847 chars)
-Power Acquired: DevilFruit(words=142, chars=847)
-
-Transformation complete ⚡
-
 ========================================
         PIRATE DATA SUMMARY
 ========================================
