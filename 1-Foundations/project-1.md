@@ -33,37 +33,34 @@ This project simulates a **text transformation system** where each method acts a
 ---
 
 ## 🗺️ Example Output
-🏴‍☠️ DevilFruit Processor — Grand Line Edition
----------------------------------------------
+
+🏴‍☠️ **DevilFruit Processor — Grand Line Edition**
+
+---
+
+```text
 ========================================
         PIRATE DATA SUMMARY
 ========================================
-  Crew Size (Words)   : 98
-  Log Length (Chars)  : 612
-  Unique Pirates      : 76
-  Avg Word Bounty     : 6.24
-  Top 5 Bounties      :
-    'learning' — 4x
-    'text' — 3x
-    'language' — 3x
-    'data' — 2x
-    'ai' — 2x
+
+Crew Size (Words)   : 98
+Log Length (Chars)  : 612
+Unique Pirates      : 76
+Avg Word Bounty     : 6.24
+
+Top 5 Bounties:
+  • learning  — 4x
+  • text      — 3x
+  • language  — 3x
+  • data      — 2x
+  • ai        — 2x
+
 ========================================
 
 Log Pose Result: English (confidence: 99%)
 
 Treasure saved to 'treasure.txt' 🏴‍☠️
-
----
-
-## 🏝️ Project Structure
-devilfruit_processor/
-├── fruit.py # DevilFruit class
-├── grandline.py # entry point
-├── poneglyph.txt # raw text input
-├── .env # API keys (optional)
-├── .gitignore
-└── README.md
+```
 
 ---
 
