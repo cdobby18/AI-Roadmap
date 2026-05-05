@@ -1,56 +1,54 @@
-# TextCleaner
+# 🏴‍☠️ DevilFruit Text Processor
 
-A Python text preprocessing tool built using OOP principles.
-Cleans raw text for NLP pipelines and AI applications.
-
----
-
-## What it does
-
-- Converts text to lowercase
-- Removes punctuation, numbers, and extra spaces
-- Removes common stopwords (the, is, a, and...)
-- Tokenizes text into individual words
-- Returns summary statistics (word count, unique words, top 5 words)
-- Detects the language of the text using a free public API
+A Python text preprocessing tool built using OOP principles, inspired by the world of One Piece.  
+Transforms raw, chaotic text into clean, structured data—just like gaining power from a Devil Fruit.
 
 ---
 
-## How to run it
+## ⚓ Concept
 
-```bash
-# 1. Clone the repo
-git clone https://github.com/yourusername/textcleaner.git
-cd textcleaner
+In the Grand Line:
 
-# 2. Install dependencies
-pip install requests python-dotenv
+- Raw text = Weak Pirate  
+- Cleaned text = Yonko-Level Data  
+- Processing steps = Devil Fruit Abilities  
 
-# 3. Add your text to input.txt
-
-# 4. Run the program
-python main.py
-```
+This project simulates a **text transformation system** where each method acts as a unique power.
 
 ---
 
-## Example output
+## 🧭 What it does
 
-```
-TextCleaner — NLP Text Preprocessor
-------------------------------------
-Read 847 characters from input.txt
-Created: TextCleaner(words=142, chars=847)
-Cleaning complete.
+- Converts text to lowercase *(Gomu Gomu no Normalize)*
+- Removes punctuation, numbers, and extra spaces *(Blade Cleanse)*
+- Removes common stopwords *(Haki Filter)*
+- Tokenizes text into individual words *(Crew Split)*
+- Returns summary statistics:
+  - Word count
+  - Unique words
+  - Average word length
+  - Top 5 most frequent words
+- Detects the language of the text using a free public API *(Log Pose)*
+
+---
+
+## 🗺️ Example Output
+🏴‍☠️ DevilFruit Processor — Grand Line Edition
+---------------------------------------------
+
+Scanned scroll: poneglyph.txt (847 chars)
+Power Acquired: DevilFruit(words=142, chars=847)
+
+Transformation complete ⚡
 
 ========================================
-         TEXT SUMMARY
+        PIRATE DATA SUMMARY
 ========================================
-  Word count    : 98
-  Char count    : 612
-  Unique words  : 76
-  Avg word len  : 6.24 chars
-  Top 5 words   :
+  Crew Size (Words)   : 98
+  Log Length (Chars)  : 612
+  Unique Pirates      : 76
+  Avg Word Bounty     : 6.24
+  Top 5 Bounties      :
     'learning' — 4x
     'text' — 3x
     'language' — 3x
@@ -58,58 +56,55 @@ Cleaning complete.
     'ai' — 2x
 ========================================
 
-Detecting language: English (confidence: 99%)
+Log Pose Result: English (confidence: 99%)
 
-Cleaned text saved to 'output.txt'
-```
+Treasure saved to 'treasure.txt' 🏴‍☠️
 
 ---
 
-## Project structure
-
-```
-textcleaner/
-├── cleaner.py     # TextCleaner class
-├── main.py        # entry point
-├── input.txt      # raw text input
-├── .env           # API keys (not committed)
+## 🏝️ Project Structure
+devilfruit_processor/
+├── fruit.py # DevilFruit class
+├── grandline.py # entry point
+├── poneglyph.txt # raw text input
+├── .env # API keys (optional)
 ├── .gitignore
 └── README.md
-```
 
 ---
 
-## Methods
+## ⚔️ Methods (Devil Fruit Abilities)
 
 | Method | Returns | Description |
-|--------|---------|-------------|
-| `.lowercase()` | self | Convert to lowercase |
-| `.remove_punctuation()` | self | Strip punctuation |
-| `.remove_extra_spaces()` | self | Collapse whitespace |
-| `.remove_numbers()` | self | Strip digits |
+|--------|--------|-------------|
+| `.lowercase()` | self | Convert text to lowercase |
+| `.remove_punctuation()` | self | Remove punctuation |
+| `.remove_extra_spaces()` | self | Clean whitespace |
+| `.remove_numbers()` | self | Remove digits |
 | `.remove_stopwords()` | self | Remove common words |
 | `.tokenize()` | list | Split into words |
 | `.word_count()` | int | Total word count |
 | `.most_common(n)` | list | Top n frequent words |
 | `.get_summary()` | dict | Full text statistics |
-| `.detect_language()` | str | Language via API |
-| `.clean_all()` | self | Run all steps at once |
+| `.detect_language()` | tuple | Language + confidence |
+| `.clean_all()` | self | Run all steps |
 | `.reset()` | self | Restore original text |
 
 ---
 
-## What I learned
+## 🧠 What I Learned
 
-- Object-oriented programming: classes, `__init__`, `__repr__`, `__len__`, magic methods
+- Object-Oriented Programming (OOP):
+  - Classes, `__init__`, `__repr__`, `__len__`
 - Method chaining by returning `self`
 - File I/O with proper error handling
-- Making HTTP API calls with the `requests` library
-- Handling API errors gracefully (timeout, connection error, HTTP errors)
+- Making HTTP API calls using `requests`
+- Handling API errors (timeouts, connection issues, HTTP errors)
 
 ---
 
-## Author
+## 👑 Author
 
-**Carl Joshua M. Coloma**
-Computer Science — Software Engineering
+**Carl Joshua M. Coloma**  
+Computer Science — Software Engineering  
 AI Engineering Track | Phase 1 Project
