@@ -20,8 +20,7 @@
 
 | Resource | What You Get | Format | Cost |
 |----------|-------------|--------|------|
-| FastAPI official docs — Tutorial | Best tutorial available. Written by the creator. Work through it fully. | Docs | Free |
-| TechWorld with Nana — FastAPI (YouTube) | Practical beginner course covering all basics with real examples. | Video | Free |
+| FastAPI Dev Sheets — Documentation | FastAPI reference covering routes, request validation, etc. | Docs | Free |
 | ArjanCodes — FastAPI tutorial (YouTube) | Clean, senior-level FastAPI patterns. Watch after the basics. | Video | Free |
 | Real Python — FastAPI intro | Short article on the why behind FastAPI vs Flask. | Article | Free |
 | Pydantic docs (docs.pydantic.dev) | Reference for data validation — essential for AI APIs. | Docs | Free |

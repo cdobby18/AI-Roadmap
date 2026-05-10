@@ -37,6 +37,7 @@ build/
 # =====================
 outputs/
 *.pdf
+data/
 
 # =====================
 # OS / System Files
