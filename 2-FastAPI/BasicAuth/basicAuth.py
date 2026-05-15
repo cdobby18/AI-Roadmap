@@ -1,69 +1,146 @@
 ﻿import secrets
-from typing import Annotated
+from typing import Annotated, Optional
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 app = FastAPI()
+
+# -----------------------------
+# BASIC AUTH CONFIG
+# -----------------------------
 security = HTTPBasic()
 
-# Simple in-memory user store for learning purposes.
+# In-memory "database" (for learning only)
 users_db = {
-    "stanleyjobson": "swordfish",
-    "alice": "wonderland",
-    "bob": "builder",
+    "stanleyjobson": {"password": "swordfish", "role": "admin"},
+    "alice": {"password": "wonderland", "role": "user"},
+    "bob": {"password": "builder", "role": "user"},
 }
 
 
-def verify_password(plain_password: str, stored_password: str) -> bool:
+# -----------------------------
+# AUTH UTILITIES
+# -----------------------------
+def verify_password(plain: str, stored: str) -> bool:
+    """
+    Secure string comparison to prevent timing attacks.
+    """
     return secrets.compare_digest(
-        plain_password.encode("utf8"), stored_password.encode("utf8")
+        plain.encode("utf-8"),
+        stored.encode("utf-8")
     )
 
 
-def get_current_username(
-    credentials: Annotated[HTTPBasicCredentials, Depends(security)]
-):
-    username = credentials.username
-    password = credentials.password
+def authenticate_user(credentials: HTTPBasicCredentials) -> str:
+    """
+    Core authentication logic:
+    1. Check if user exists
+    2. Validate password
+    3. Return username if valid
+    """
 
-    if username not in users_db or not verify_password(password, users_db[username]):
+    user = users_db.get(credentials.username)
+
+    # Step 1: user exists?
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": 'Basic realm="Secure Area"'},
+            detail="Invalid username or password",
+            headers={"WWW-Authenticate": "Basic"},
         )
-    return username
+
+    # Step 2: password correct?
+    if not verify_password(credentials.password, user["password"]):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid username or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+
+    return credentials.username
 
 
-@app.get("/users/me")
-def read_current_user(username: Annotated[str, Depends(get_current_username)]):
-    return {"username": username}
+# -----------------------------
+# DEPENDENCY (REUSABLE AUTH LAYER)
+# -----------------------------
+def get_current_user(
+    credentials: Annotated[HTTPBasicCredentials, Depends(security)]
+):
+    """
+    FastAPI dependency:
+    Automatically extracts Basic Auth credentials
+    and validates them.
+    """
+    return authenticate_user(credentials)
+
+
+# -----------------------------
+# ROUTES (PROTECTED + PUBLIC)
+# -----------------------------
+
+@app.get("/")
+def home():
+    """
+    Public endpoint (no auth required)
+    """
+    return {"message": "Basic Auth demo API is running"}
+
+
+@app.get("/me")
+def get_me(username: Annotated[str, Depends(get_current_user)]):
+    """
+    Protected route:
+    Returns current authenticated user
+    """
+    return {
+        "username": username,
+        "message": "You are authenticated via Basic Auth"
+    }
 
 
 @app.get("/secure-data")
-def read_secure_data(username: Annotated[str, Depends(get_current_username)]):
+def secure_data(username: Annotated[str, Depends(get_current_user)]):
+    """
+    Example protected resource
+    """
+    role = users_db[username]["role"]
+
     return {
-        "message": f"Hello {username}, this is a protected endpoint.",
-        "notes": "Use Basic Auth with correct username and password.",
+        "data": f"Secret data for {username}",
+        "role": role,
+        "access": "granted"
     }
 
 
-@app.get("/login")
-def login(username: Annotated[str, Depends(get_current_username)]):
+@app.get("/admin-only")
+def admin_route(username: Annotated[str, Depends(get_current_user)]):
+    """
+    Simple role-based check (still Basic Auth system)
+    """
+    if users_db[username]["role"] != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required"
+        )
+
     return {
-        "message": f"Login successful for {username}.",
-        "help": "Then call /users/me or /secure-data with the same credentials.",
+        "message": f"Welcome admin {username}",
+        "system": "Full access granted"
     }
 
 
-@app.get("/raw-credentials")
-def read_raw_credentials(
+@app.get("/debug-credentials")
+def debug_credentials(
     credentials: Annotated[HTTPBasicCredentials, Depends(security)]
 ):
+    """
+    Educational endpoint:
+    Shows what FastAPI receives from Basic Auth
+    """
     return {
         "username": credentials.username,
-        "password": "hidden",
-        "auth_type": "basic",
-        "info": "This endpoint shows how FastAPI passes credentials. Do not expose raw passwords in production.",
+        "password": "hidden for security",
+        "type": "HTTP Basic Auth",
+        "note": "Never expose raw passwords in production"
     }
