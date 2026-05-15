@@ -1,0 +1,165 @@
+# ============================================================
+# SQL MODULE NOTES - AI ENGINEERING
+# ============================================================
+
+# ------------------------------------------------------------
+# DATABASE CREATION
+# ------------------------------------------------------------
+# A database stores structured data
+
+# CREATE DATABASE issues_db;
+# USE issues_db;
+
+# CREATE TABLE issues (
+#     id INT PRIMARY KEY AUTO_INCREMENT,
+#     title VARCHAR(100),
+#     description TEXT,
+#     priority VARCHAR(20),
+#     status VARCHAR(20),
+#     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+# );
+
+# Key Idea:
+# - Database = container
+# - Table = structured data storage
+# - Rows = records
+# - Columns = fields
+
+# ------------------------------------------------------------
+# CRUD OPERATIONS
+# ------------------------------------------------------------
+
+# CREATE (Insert)
+# INSERT INTO issues (title, description, priority, status)
+# VALUES ('Bug Fix', 'Fix login error', 'high', 'open');
+
+# READ
+# SELECT * FROM issues;
+
+# UPDATE
+# UPDATE issues SET status = 'closed' WHERE id = 1;
+
+# DELETE
+# DELETE FROM issues WHERE id = 1;
+
+# Key Idea:
+# CRUD = foundation of all backend systems
+
+# ------------------------------------------------------------
+# FILTERING & SORTING
+# ------------------------------------------------------------
+
+# SELECT * FROM issues WHERE status = 'open';
+
+# SELECT * FROM issues
+# WHERE priority = 'high' AND status = 'open';
+
+# SELECT * FROM issues ORDER BY created_at DESC;
+
+# SELECT * FROM issues
+# WHERE status = 'open'
+# ORDER BY priority DESC;
+
+# ------------------------------------------------------------
+# AGGREGATIONS
+# ------------------------------------------------------------
+
+# COUNT
+# SELECT COUNT(*) FROM issues;
+
+# AVG
+# SELECT AVG(priority_score) FROM issues;
+
+# MAX / MIN
+# SELECT MAX(id) FROM issues;
+# SELECT MIN(id) FROM issues;
+
+# GROUP BY
+# SELECT status, COUNT(*)
+# FROM issues
+# GROUP BY status;
+
+# HAVING
+# SELECT status, COUNT(*)
+# FROM issues
+# GROUP BY status
+# HAVING COUNT(*) > 1;
+
+# Key Idea:
+# Aggregations are used for analytics and summaries
+
+# ------------------------------------------------------------
+# JOINS
+# ------------------------------------------------------------
+
+# INNER JOIN
+# SELECT users.name, issues.title
+# FROM users
+# INNER JOIN issues ON users.id = issues.user_id;
+
+# LEFT JOIN
+# SELECT users.name, issues.title
+# FROM users
+# LEFT JOIN issues ON users.id = issues.user_id;
+
+# RIGHT JOIN
+# SELECT users.name, issues.title
+# FROM users
+# RIGHT JOIN issues ON users.id = issues.user_id;
+
+# Key Idea:
+# Joins combine multiple tables
+
+# ------------------------------------------------------------
+# INDEXING
+# ------------------------------------------------------------
+
+# CREATE INDEX idx_status ON issues(status);
+
+# CREATE INDEX idx_status_priority ON issues(status, priority);
+
+# Key Idea:
+# Indexing improves query performance for large datasets
+
+# ------------------------------------------------------------
+# PYTHON + SQL INTEGRATION
+# ------------------------------------------------------------
+
+# import mysql.connector
+
+# conn = mysql.connector.connect(
+#     host="localhost",
+#     user="root",
+#     password="password",
+#     database="issues_db"
+# )
+
+# cursor = conn.cursor()
+
+# cursor.execute("SELECT * FROM issues")
+# rows = cursor.fetchall()
+
+# INSERT
+# sql = "INSERT INTO issues (title, description, priority, status) VALUES (%s, %s, %s, %s)"
+# values = ("Bug Fix", "Fix API error", "high", "open")
+# cursor.execute(sql, values)
+# conn.commit()
+
+# UPDATE
+# cursor.execute("UPDATE issues SET status='closed' WHERE id=1")
+# conn.commit()
+
+# cursor.close()
+# conn.close()
+
+# ------------------------------------------------------------
+# SUMMARY
+# ------------------------------------------------------------
+
+# SQL = data layer
+# Python + SQL = backend + AI systems
+# Joins + Aggregations = data intelligence
+# Indexing = performance optimization
+# CRUD = backend foundation
+
+# ============================================================

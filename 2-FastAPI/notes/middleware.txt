@@ -1,0 +1,94 @@
+# ============================================================
+# FASTAPI MIDDLEWARE LESSON
+# ============================================================
+#
+# This file demonstrates how middleware works in FastAPI.
+#
+# Middleware allows developers to run logic:
+# - before a request is processed
+# - after a response is generated
+#
+# Common middleware use cases:
+# - performance monitoring
+# - logging
+# - authentication
+# - request tracking
+# - security checks
+#
+# ------------------------------------------------------------
+# MODULES AND FUNCTIONS USED
+# ------------------------------------------------------------
+#
+# 1. time.perf_counter()
+#    - High-precision performance timer.
+#    - Measures execution duration accurately.
+#
+# 2. Request
+#    - Represents incoming HTTP requests.
+#    - Provides access to request data.
+#
+# 3. call_next()
+#    - Passes request to the next middleware
+#      or route handler.
+#
+# ------------------------------------------------------------
+# CORE FUNCTION EXPLAINED
+# ------------------------------------------------------------
+#
+# timing_middleware(request, call_next)
+#
+# This middleware:
+#
+# 1. Starts a timer before request execution
+# 2. Processes the request
+# 3. Calculates total processing time
+# 4. Adds custom timing header to response
+#
+# ------------------------------------------------------------
+# REQUEST FLOW
+# ------------------------------------------------------------
+#
+# Incoming Request
+#       ↓
+# Middleware Starts Timer
+#       ↓
+# Route Executes
+#       ↓
+# Response Generated
+#       ↓
+# Middleware Calculates Duration
+#       ↓
+# Response Sent Back
+#
+# ------------------------------------------------------------
+# CUSTOM RESPONSE HEADER
+# ------------------------------------------------------------
+#
+# Header Added:
+# X-Process-Time
+#
+# Example:
+# X-Process-Time: 0.0042s
+#
+# Useful for:
+# - API performance monitoring
+# - debugging slow endpoints
+# - backend optimization
+#
+# ------------------------------------------------------------
+# WHY MIDDLEWARE IS IMPORTANT
+# ------------------------------------------------------------
+#
+# Benefits:
+# - Centralized request processing
+# - Cleaner backend architecture
+# - Reusable request logic
+# - Better monitoring and debugging
+#
+# Middleware is heavily used in:
+# - AI APIs
+# - Enterprise backends
+# - Production web systems
+# - Microservices
+#
+# ============================================================

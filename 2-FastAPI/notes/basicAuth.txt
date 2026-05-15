@@ -1,0 +1,110 @@
+# ============================================================
+# BASIC AUTHENTICATION LESSON - FASTAPI
+# ============================================================
+#
+# This FastAPI application demonstrates how HTTP Basic
+# Authentication works using FastAPI security dependencies.
+#
+# ------------------------------------------------------------
+# MODULES AND FUNCTIONS USED
+# ------------------------------------------------------------
+#
+# 1. FastAPI()
+#    - Creates the FastAPI application instance.
+#    - Acts as the main API server object.
+#
+# 2. HTTPBasic()
+#    - Enables HTTP Basic Authentication.
+#    - Automatically reads username and password
+#      from the Authorization header.
+#
+# 3. Depends()
+#    - FastAPI dependency injection system.
+#    - Reuses authentication logic across endpoints.
+#
+# 4. HTTPBasicCredentials
+#    - Stores the username and password sent by the user.
+#
+# 5. HTTPException()
+#    - Raises custom API errors.
+#    - Used here for unauthorized login attempts.
+#
+# 6. status.HTTP_401_UNAUTHORIZED
+#    - Standard HTTP status code for failed authentication.
+#
+# 7. secrets.compare_digest()
+#    - Securely compares passwords.
+#    - Helps reduce timing attacks.
+#
+# ------------------------------------------------------------
+# CORE FUNCTIONS EXPLAINED
+# ------------------------------------------------------------
+#
+# verify_password()
+# - Compares the entered password with the stored password.
+# - Uses secure comparison instead of normal ==.
+#
+# get_current_username()
+# - Main authentication function.
+# - Checks:
+#     1. If username exists
+#     2. If password is correct
+# - Raises 401 error if authentication fails.
+# - Returns authenticated username if successful.
+#
+# read_current_user()
+# - Protected route example.
+# - Returns the current logged-in user.
+#
+# read_secure_data()
+# - Example of a secured API endpoint.
+# - Only accessible with valid credentials.
+#
+# login()
+# - Simulates a successful login response.
+#
+# read_raw_credentials()
+# - Demonstrates how FastAPI receives credentials.
+# - Educational purpose only.
+#
+# ------------------------------------------------------------
+# AUTHENTICATION FLOW
+# ------------------------------------------------------------
+#
+# Client Request
+#       ↓
+# HTTP Basic Auth Header
+#       ↓
+# HTTPBasic() extracts credentials
+#       ↓
+# get_current_username() validates user
+#       ↓
+# Access granted or denied
+#
+# ------------------------------------------------------------
+# IMPORTANT SECURITY NOTES
+# ------------------------------------------------------------
+#
+# - Basic Auth encodes credentials using Base64 only.
+# - Always use HTTPS in production.
+# - Never store plain-text passwords in real systems.
+# - Use hashed passwords with bcrypt/passlib.
+# - Use databases instead of in-memory dictionaries.
+#
+# ------------------------------------------------------------
+# SAMPLE LOGIN
+# ------------------------------------------------------------
+#
+# Username: stanleyjobson
+# Password: swordfish
+#
+# ------------------------------------------------------------
+# ENDPOINTS
+# ------------------------------------------------------------
+#
+# /login
+# /users/me
+# /secure-data
+# /raw-credentials
+#
+# ============================================================

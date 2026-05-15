@@ -1,0 +1,120 @@
+# ============================================================
+# PYTHON REQUESTS MODULE - AI ENGINEERING NOTES
+# ============================================================
+
+# ------------------------------------------------------------
+# GET REQUESTS
+# ------------------------------------------------------------
+# Used to retrieve data from an API
+
+# import requests
+# response = requests.get("https://api.example.com/data")
+# print(response.text)
+
+# ------------------------------------------------------------
+# QUERY PARAMETERS
+# ------------------------------------------------------------
+# Used to send filters or extra data in URL
+
+# params = {"q": "AI", "limit": 10}
+# response = requests.get("https://api.example.com/search", params=params)
+
+# Example URL becomes:
+# https://api.example.com/search?q=AI&limit=10
+
+# ------------------------------------------------------------
+# PARSING JSON
+# ------------------------------------------------------------
+# APIs usually return JSON data
+
+# data = response.json()
+# print(data["key"])
+
+# Key Idea:
+# JSON -> Python dictionary
+
+# ------------------------------------------------------------
+# STATUS CODES
+# ------------------------------------------------------------
+# Used to understand API response result
+
+# 200 -> success
+# 201 -> created
+# 400 -> bad request
+# 401 -> unauthorized
+# 403 -> forbidden
+# 404 -> not found
+# 500 -> server error
+
+# Check status:
+# if response.status_code == 200:
+#     print("Success")
+
+# ------------------------------------------------------------
+# POST REQUESTS
+# ------------------------------------------------------------
+# Used to send data to an API
+
+# payload = {"name": "CJ", "role": "AI Engineer"}
+# response = requests.post("https://api.example.com/users", json=payload)
+
+# ------------------------------------------------------------
+# ERROR HANDLING
+# ------------------------------------------------------------
+# Prevents crashes when API fails
+
+# try:
+#     response = requests.get(url, timeout=5)
+#     response.raise_for_status()
+# except requests.exceptions.Timeout:
+#     print("Request timed out")
+# except requests.exceptions.HTTPError:
+#     print("HTTP error occurred")
+# except requests.exceptions.RequestException:
+#     print("General request error")
+
+# Key Idea:
+# Always handle API failures in production systems
+
+# ------------------------------------------------------------
+# HEADERS AND AUTHENTICATION
+# ------------------------------------------------------------
+# Used for API security and metadata
+
+# headers = {
+#     "Authorization": "Bearer YOUR_API_KEY",
+#     "Content-Type": "application/json"
+# }
+
+# response = requests.get(url, headers=headers)
+
+# Key Idea:
+# Headers = identity + rules for API requests
+
+# ------------------------------------------------------------
+# ENV VARIABLES (.env)
+# ------------------------------------------------------------
+# Used to securely store API keys
+
+# from dotenv import load_dotenv
+# import os
+# load_dotenv()
+# api_key = os.getenv("API_KEY")
+
+# Key Idea:
+# Never hardcode secrets in code
+#
+# ------------------------------------------------------------
+# KEY TAKEAWAYS
+# ------------------------------------------------------------
+
+# - GET = fetch data
+# - POST = send data
+# - JSON = main API format
+# - Headers = authentication + metadata
+# - Status codes = response understanding
+# - Error handling = production stability
+# - Session = performance optimization
+# - dotenv = secure API key management
+
+# ============================================================

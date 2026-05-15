@@ -1,6 +1,6 @@
 # 🏴‍☠️ DevilFruit Text Processor
 
-A Python text preprocessing tool built using OOP principles, inspired by the world of One Piece.  
+Project in Python tackles about text preprocessing tool built using OOP principles, inspired by the world of One Piece.  
 Transforms raw, chaotic text into clean, structured data—just like gaining power from a Devil Fruit.
 
 ---
@@ -10,7 +10,7 @@ Transforms raw, chaotic text into clean, structured data—just like gaining pow
 In the Grand Line:
 
 - Raw text = Weak Pirate  
-- Cleaned text = Yonko-Level Data  
+- Cleaned text = Yonko-Level   
 - Processing steps = Devil Fruit Abilities  
 
 This project simulates a **text transformation system** where each method acts as a unique power.

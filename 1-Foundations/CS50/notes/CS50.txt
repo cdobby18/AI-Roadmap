@@ -1,0 +1,178 @@
+# ============================================================
+# CS50 PYTHON FUNDAMENTALS - AI ENGINEERING NOTES
+# ============================================================
+
+# ------------------------------------------------------------
+# VARIABLES
+# ------------------------------------------------------------
+# Variables store data values
+
+# name = "CJ"
+# age = 21
+# is_ai_engineer = True
+
+# Key Idea:
+# - Variables are containers for data
+# - Python is dynamically typed
+
+# ------------------------------------------------------------
+# CONDITIONALS
+# ------------------------------------------------------------
+# Used for decision making
+
+# if age >= 18:
+#     print("Adult")
+# elif age >= 13:
+#     print("Teenager")
+# else:
+#     print("Child")
+
+# Key Idea:
+# - Control program flow based on conditions
+
+# ------------------------------------------------------------
+# LOOPS
+# ------------------------------------------------------------
+
+# FOR LOOP
+# for i in range(5):
+#     print(i)
+
+# WHILE LOOP
+# i = 0
+# while i < 5:
+#     print(i)
+#     i += 1
+
+# Key Idea:
+# - Loops repeat actions efficiently
+
+# ------------------------------------------------------------
+# LISTS
+# ------------------------------------------------------------
+# Ordered, mutable collection
+
+# numbers = [1, 2, 3, 4, 5]
+
+# Access
+# print(numbers[0])
+
+# Modify
+# numbers.append(6)
+
+# Loop through list
+# for n in numbers:
+#     print(n)
+
+# Key Idea:
+# - Lists are flexible and commonly used
+
+# ------------------------------------------------------------
+# TUPLES
+# ------------------------------------------------------------
+# Ordered, immutable collection
+
+# point = (10, 20)
+
+# Access
+# print(point[0])
+
+# Key Idea:
+# - Tuples cannot be changed after creation
+# - Used for fixed data
+
+# ------------------------------------------------------------
+# DICTIONARIES
+# ------------------------------------------------------------
+# Key-value pairs
+
+# user = {
+#     "name": "CJ",
+#     "age": 21,
+#     "role": "AI Engineer"
+# }
+
+# Access
+# print(user["name"])
+
+# Add / Update
+# user["age"] = 22
+
+# Loop
+# for key, value in user.items():
+#     print(key, value)
+
+# Key Idea:
+# - Fast lookup using keys
+
+# ------------------------------------------------------------
+# FUNCTIONS
+# ------------------------------------------------------------
+# Reusable blocks of code
+
+# def greet(name):
+#     return f"Hello {name}"
+
+# print(greet("CJ"))
+
+# With parameters
+# def add(a, b):
+#     return a + b
+
+# Key Idea:
+# - Functions improve modularity and reuse
+
+# ------------------------------------------------------------
+# OBJECT-ORIENTED PROGRAMMING (OOP)
+# ------------------------------------------------------------
+
+# CLASS
+# class Person:
+#     def __init__(self, name, age):
+#         self.name = name
+#         self.age = age
+
+#     def introduce(self):
+#         return f"My name is {self.name}"
+
+# OBJECT
+# person1 = Person("CJ", 21)
+# print(person1.introduce())
+
+# Key Concepts:
+# - Class = blueprint
+# - Object = instance
+# - self = refers to current object
+
+# ------------------------------------------------------------
+# KEY OOP PRINCIPLES
+# ------------------------------------------------------------
+
+# Encapsulation:
+# - Bundle data + methods together
+
+# Abstraction:
+# - Hide internal complexity
+
+# Inheritance:
+# class AIEngineer(Person):
+#     def build_model(self):
+#         return "Building AI model"
+
+# Polymorphism:
+# - Same method name, different behavior
+
+# ------------------------------------------------------------
+# KEY TAKEAWAYS
+# ------------------------------------------------------------
+
+# Variables -> store data
+# Conditionals -> decision making
+# Loops -> repetition
+# Lists -> ordered data
+# Tuples -> fixed data
+# Dictionaries -> key-value mapping
+# Functions -> reusable logic
+# OOP -> real-world modeling
+
+# ============================================================

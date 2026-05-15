@@ -1,0 +1,120 @@
+# ============================================================
+# FASTAPI APPLICATION SETUP LESSON
+# ============================================================
+#
+# This file demonstrates the core structure of a modular
+# FastAPI application using:
+# - Routers
+# - Middleware
+# - CORS configuration
+#
+# The setup follows clean backend architecture practices
+# commonly used in real-world API development.
+#
+# ------------------------------------------------------------
+# MODULES AND FUNCTIONS USED
+# ------------------------------------------------------------
+#
+# 1. FastAPI()
+#    - Creates the main FastAPI application instance.
+#    - Handles API routing, middleware, and configuration.
+#
+# 2. app.middleware("http")
+#    - Registers custom middleware functions.
+#    - Middleware runs before and after each request.
+#
+# 3. CORSMiddleware
+#    - Handles Cross-Origin Resource Sharing (CORS).
+#    - Allows frontend applications to communicate
+#      with the backend API.
+#
+# 4. app.add_middleware()
+#    - Adds built-in or third-party middleware to FastAPI.
+#
+# 5. app.include_router()
+#    - Registers route modules into the main application.
+#    - Helps organize endpoints into separate files.
+#
+# ------------------------------------------------------------
+# CORE COMPONENTS EXPLAINED
+# ------------------------------------------------------------
+#
+# app = FastAPI()
+# - Initializes the API application.
+# - Acts as the central backend server object.
+#
+# timing_middleware
+# - Custom middleware function.
+# - Measures request processing time.
+# - Useful for:
+#     • performance monitoring
+#     • debugging
+#     • API optimization
+#
+# CORSMiddleware
+# - Allows frontend frameworks like:
+#     • React.js
+#     • Vue.js
+#     • Next.js
+#   to access the API.
+#
+# Current Configuration:
+# - allow_origins=["*"]
+#     Allows all frontend origins.
+#
+# - allow_methods=["*"]
+#     Allows all HTTP methods:
+#     GET, POST, PUT, DELETE, etc.
+#
+# - allow_headers=["*"]
+#     Allows all request headers.
+#
+# - allow_credentials=True
+#     Allows cookies and authentication headers.
+#
+# issues_router
+# - Imports grouped issue-related endpoints.
+# - Keeps backend architecture modular and maintainable.
+#
+# ------------------------------------------------------------
+# APPLICATION FLOW
+# ------------------------------------------------------------
+#
+# Client Request
+#       ↓
+# Middleware Executes
+#       ↓
+# Router Handles Endpoint
+#       ↓
+# Response Returned
+#       ↓
+# Middleware Finalizes Response
+#
+# ------------------------------------------------------------
+# WHY MODULAR STRUCTURE IS IMPORTANT
+# ------------------------------------------------------------
+#
+# Benefits:
+# - Cleaner code organization
+# - Easier maintenance
+# - Better scalability
+# - Reusable route modules
+# - Team-friendly development
+#
+# This architecture is commonly used in:
+# - AI APIs
+# - Production backend systems
+# - Microservices
+# - SaaS platforms
+#
+# ------------------------------------------------------------
+# SECURITY NOTE
+# ------------------------------------------------------------
+#
+# allow_origins=["*"] is acceptable for development,
+# but in production, specify trusted frontend domains only.
+#
+# Example:
+# allow_origins=["https://myfrontend.com"]
+#
+# ============================================================
