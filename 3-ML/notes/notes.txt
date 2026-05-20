@@ -1,14 +1,43 @@
-TYPES OF MACHINE LEARNING:
+MACHINE LEARNING:
 
 1. Supervised Learning:
-    - labeled datasets
-    - classification, regression
+    - learns from labeled datasets
+    Use: Spam Detection, Fraud Detection, Image Recognition
     
-    Classification:
+    a. Classification:
         - Logistic regression
         - Naive Bayes 
         - KNN 
         - Decision Tree 
         - SVM 
         - Random Forest 
-        
+
+    b. Regression:
+        - Linear regression
+        - Decision Tree 
+        - Support Vector Regression 
+        - Lasso Regression
+        - Ridge Regression 
+
+2. Unsupervised Learning:
+    - learn from unlabeled datasets, identifying patterns independently
+    Use: Recommender System, Segmentation, Clustering
+
+    a. Clustering 
+        - K Means 
+        - DBSCAN 
+        - Gaussian
+        - Agglomerative Hierarchal Clustering 
+        - Mean Shift Clustering 
+
+3. Reinforcement Learning:
+    - interacting with environment
+
+    a. Decision Making 
+        - Markov 
+        - Q, R, TD Learning 
+
+
+LESSON 1 - TYPES OF MACHINE LEARNING 
+
+1. Linear Regression - 
