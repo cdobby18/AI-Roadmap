@@ -1,4 +1,4 @@
-# Phase 3 · Machine Learning + Experiment Tracking
+# Phase 3 · Machine Learning 
 
 ---
 
