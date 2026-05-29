@@ -149,10 +149,3 @@ def list_all_users(admin_user: Annotated[str, Depends(check_admin)]):
     }
 
 
-# ================================
-# HOW TO TEST
-# ================================
-# 1. Visit http://localhost:8000/docs
-# 2. Click "Authorize" button
-# 3. Enter username: alice, password: secret123
-# 4. Try the protected endpoints

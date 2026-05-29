@@ -1,4 +1,4 @@
-# Phase 7 · RAG + LangChain + Agents
+# Phase 6 · RAG + LangChain + Agents
 
 ---
 

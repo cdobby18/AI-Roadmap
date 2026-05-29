@@ -1,13 +1,17 @@
-import tensorflow as tf
-import numpy as np
+import torch
+import torch.nn as nn
 
 vocab_size = 10
 embedding_dim = 4
 
-embedding_layer = tf.keras.layers.Embedding(vocab_size, embedding_dim)
+embedding = nn.Embedding(vocab_size, embedding_dim)
 
-input_data = np.array([[1,2,3]])
+token_ids = torch.tensor([1, 2, 3])
+vectors = embedding(token_ids)
 
-output = embedding_layer(input_data)
+print("Token IDs:", token_ids)
+print("Embedding vectors:\n", vectors)
+print("Shape:", vectors.shape)
 
-print(output)
+# Each token ID maps to a learnable vector updated during training.
+# This is the same mechanism transformers use internally.
