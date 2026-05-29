@@ -1,15 +1,23 @@
-import re
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
+from transformers import AutoTokenizer
 
-text = "NLP pipelines clean text, tokenize words, and remove noise."
+# BERT tokenizer — handles padding, truncation, and attention masks automatically
+tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
 
-clean = re.sub(r'[^a-zA-Z\s]', '', text).lower()
+text = "AI engineering requires understanding transformers and embeddings."
 
-tokens = word_tokenize(clean)
+encoded = tokenizer(
+    text,
+    padding="max_length",
+    truncation=True,
+    max_length=20,
+    return_tensors="pt",
+)
 
-stop_words = set(stopwords.words('english'))
+print("Input IDs:     ", encoded["input_ids"])
+print("Attention mask:", encoded["attention_mask"])
+print("Decoded:       ", tokenizer.decode(encoded["input_ids"][0]))
 
-processed = [w for w in tokens if w not in stop_words]
-
-print(processed)
+# Batch tokenization — how you'd process a dataset before fine-tuning
+texts = ["AI is transforming the world.", "PyTorch is the standard for LLM work."]
+batch = tokenizer(texts, padding=True, truncation=True, return_tensors="pt")
+print("\nBatch input IDs shape:", batch["input_ids"].shape)

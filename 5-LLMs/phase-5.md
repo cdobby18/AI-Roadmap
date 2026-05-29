@@ -1,4 +1,4 @@
-# Phase 6 · LLMs + Prompting + Observability
+# Phase 5 · LLMs + Prompting + Observability
 
 ---
 

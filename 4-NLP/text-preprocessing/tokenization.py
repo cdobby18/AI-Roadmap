@@ -1,10 +1,19 @@
-import nltk
-nltk.download('punkt')
+from transformers import AutoTokenizer
 
-from nltk.tokenize import word_tokenize
+tokenizer = AutoTokenizer.from_pretrained("gpt2")
 
-text = "Natural Language Processing is amazing."
+text = "Natural Language Processing is amazing!"
+tokens = tokenizer.tokenize(text)
+token_ids = tokenizer.encode(text)
 
-tokens = word_tokenize(text)
+print("Tokens:", tokens)
+print("Token IDs:", token_ids)
+print("Token count:", len(token_ids))
 
-print(tokens)
+decoded = tokenizer.decode(token_ids)
+print("Decoded:", decoded)
+
+# BPE splits rare/compound words into subwords — this is how LLMs see text
+text2 = "ChatGPT is an extraordinary superintelligence"
+tokens2 = tokenizer.tokenize(text2)
+print("\nSubword tokens:", tokens2)

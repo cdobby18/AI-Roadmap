@@ -3,20 +3,26 @@
 This phase takes you from raw data to trained models, deep learning fundamentals, and the tools used in real AI engineering workflows.
 
 **Prerequisite:** Phase 1 (Foundations) + Phase 2 (FastAPI)  
-**Next:** Phase 4 (NLP)
+**Next:** Phase 4 (NLP + Transformers)
 
 ---
 
 ## Structure
 
-| Folder | Topic | Status |
-|--------|-------|--------|
-| `1-data-analysis/` | NumPy, Pandas, EDA, SQL | |
-| `2-classical-ml/` | Supervised + Unsupervised Learning | |
-| `3-deep-learning/` | Neural Networks, CNN (TensorFlow) | |
-| `4-pytorch/` | Tensors, nn.Module, Training Loop | |
-| `5-model-evaluation/` | Metrics, Confusion Matrix | |
-| `6-ml-tools/` | Hugging Face, W&B, Gradio | |
+| Folder | Topic | Priority |
+|--------|-------|----------|
+| `1-data-analysis/` | NumPy, Pandas, EDA, SQL | Required |
+| `2-classical-ml/` | Supervised Learning (+ optional unsupervised) | Required (supervised only) |
+| `3-deep-learning/` | Neural Networks, CNN (TensorFlow) | Required |
+| `4-pytorch/` | Tensors, nn.Module, Training Loop | Required |
+| `5-model-evaluation/` | Metrics, Confusion Matrix | Required |
+| `6-ml-tools/` | Hugging Face, W&B, Gradio | Required |
+
+---
+
+## What AI Engineers Actually Need Here
+
+Sections 1, 3, 4, 5, and 6 are fully required. For classical ML (section 2), supervised learning is essential — unsupervised is background context, not a daily skill for AI engineers. Skip DBSCAN, hierarchical clustering, and dendrograms; they belong in data science, not AI engineering.
 
 ---
 
@@ -28,23 +34,19 @@ This phase takes you from raw data to trained models, deep learning fundamentals
 - [ ] EDA: 7-step process, visualizations
 - [ ] SQL + Pandas: SQLite → DataFrame pipeline
 
-### 2 · Classical ML — Supervised
+### 2 · Classical ML — Supervised (Required)
 - [ ] Linear Regression (sklearn + from scratch)
 - [ ] Train/test split + feature scaling
 - [ ] Binary Classification (Logistic Regression)
 - [ ] Decision Tree
 - [ ] Random Forest
-- [ ] SVM
 - [ ] XGBoost
 - [ ] Cross-Validation
 - [ ] Hyperparameter Tuning (GridSearchCV)
 
-### 2 · Classical ML — Unsupervised
+### 2 · Classical ML — Unsupervised (Optional — skim, don't deep-dive)
 - [ ] K-Means + Elbow Method
-- [ ] DBSCAN
-- [ ] Hierarchical Clustering + Dendrogram
 - [ ] PCA
-- [ ] Anomaly Detection (IsolationForest)
 
 ### 3 · Deep Learning
 - [ ] Feature Scaling
@@ -70,12 +72,10 @@ This phase takes you from raw data to trained models, deep learning fundamentals
 
 ## Learning Path
 
-Study the sections in order — each builds on the previous.
-
 ```
-1-data-analysis → 2-classical-ml → 3-deep-learning
-                                          ↓
-                 6-ml-tools ← 5-model-evaluation ← 4-pytorch
+1-data-analysis → 2-classical-ml (supervised) → 3-deep-learning
+                                                        ↓
+                      6-ml-tools ← 5-model-evaluation ← 4-pytorch
 ```
 
 ---

@@ -1,4 +1,4 @@
-# Phase 8 · Deploy + CI/CD + Portfolio
+# Phase 7 · Deploy + CI/CD + Portfolio
 
 ---
 
