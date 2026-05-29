@@ -1,27 +1,67 @@
-# Phase 1 · Python Foundations + SQL
+# 🚀 Phase 1: Foundations for AI Engineering
+
+This is a **comprehensive learning path** designed for aspiring AI engineers. Each module builds upon the previous one, creating a solid foundation in Python, computer science fundamentals, and essential tools for AI development.
+
+> **Goal**: Master Python, data structures, databases, and APIs before diving into ML and AI.
 
 ---
 
-## What You'll Learn
+## 📚 Learning Path Overview
 
-- **OOP** — classes, `__init__`, `self`, inheritance, magic methods. Write classes without looking things up.
-- **Exception Handling** — `try/except/finally`. Handle errors gracefully, not just `print` them.
-- **File I/O** — read and write text files, CSV, and JSON naturally.
-- **API Requests** — use the `requests` library to call an external API and handle the response.
-- **Modules & Packages** — import your own code, understand `__init__.py`.
-- **SQL Basics** — `SELECT`, `WHERE`, `JOIN`, `GROUP BY`, `ORDER BY` using SQLite — 3 days only, no more.
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  01-Python-Basics                                               │
+│  Master variables, operators, functions, file I/O, and OOP      │
+└────────────────────────┬────────────────────────────────────────┘
+                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  02-Object-Oriented-Programming                                 │
+│  Build reusable, scalable code with classes, inheritance, etc.  │
+└────────────────────────┬────────────────────────────────────────┘
+                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  03-Data-Structures-Algorithms                                  │
+│  Optimize performance: arrays, stacks, trees, sorting & search  │
+└────────────────────────┬────────────────────────────────────────┘
+                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  04-Database-SQL                                                │
+│  Store, retrieve, and manipulate data efficiently               │
+└────────────────────────┬────────────────────────────────────────┘
+                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  05-HTTP-APIs                                                   │
+│  Integrate external services and fetch real-world data          │
+└────────────────────────┬────────────────────────────────────────┘
+                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  06-Advanced-Python                                             │
+│  Asyncio & modules: concurrent programming and code organization│
+└────────────────────────┬────────────────────────────────────────┘
+                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  07-Applied-Projects                                            │
+│  Combine all concepts in real-world projects                    │
+└─────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## Resources
+## 🔗 Recommended Resources
 
-| Resource | What You Get | Format | Cost |
-|----------|-------------|--------|------|
-| CS50P — Harvard | Best Python intro course. Finish it completely. | Video + exercises | Free |
-| Corey Schafer — OOP playlist (YouTube) | 6-part series, 15–20 min each. Best OOP for beginners. | Video | Free |
-| Real Python — OOP in Python | Deep dive: classes, inheritance, dunder methods with examples. | Article | Free |
-| Real Python — Requests library | How to make API calls — the library you will always use. | Article | Free |
-| Exercism.io — Python track | Practice problems with mentor feedback. Great for OOP reps. | Interactive | Free |
-| SQLite Tutorial (sqlitetutorial.net) | Fast SQL reference. Learn the 80% you actually use in 3 days. | Website | Free |
+| Topic | Resource | Format |
+|-------|----------|--------|
+| Python Basics | CS50 Python (Harvard) | Video + Exercises |
+| OOP | Corey Schafer on YouTube | 6-part Video Series |
+| DSA | LeetCode + GeeksforGeeks | Interactive Problems |
+| SQL | SQLite Tutorial | Website Reference |
+| APIs | Real Python - Requests | Article |
+| Async | Python asyncio docs | Official Documentation |
 
 ---
+
+
+
+
+
+
