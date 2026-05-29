@@ -1,4 +1,4 @@
-# Phase 3 · Machine Learning 
+# Phase 3 · Machine Learning / Deep Learning
 
 ---
 
