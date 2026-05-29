@@ -1,22 +1,31 @@
+"""
+Issue management routes.
+Demonstrates modular routing with APIRouter.
+"""
+
 import uuid
 from fastapi import APIRouter, HTTPException, status
-from app.schemas import IssueCreate, IssueOut, IssueUpdate, IssuesStatus
-from app.storage import load_data, save_data
+from schemas import IssueCreate, IssueOut, IssueUpdate, IssuesStatus
+from storage import load_data, save_data
 
 # Router for issue-related endpoints
 router = APIRouter(prefix="/api/v1/issues", tags=["issues"])
 
-# Get all issues
+
+# ================================
+# CRUD ENDPOINTS
+# ================================
+
 @router.get("/", response_model=list[IssueOut])
 def get_issues():
     """Return all issues"""
     issues = load_data()
     return issues
 
-# Create a new issue
+
 @router.post("/", response_model=IssueOut, status_code=status.HTTP_201_CREATED)
 def create_issue(payload: IssueCreate):
-    """Create Issue"""
+    """Create a new issue"""
     issues = load_data()
 
     new_issue = {
@@ -31,10 +40,10 @@ def create_issue(payload: IssueCreate):
     save_data(issues)
     return new_issue
 
-# Get a single issue by ID
+
 @router.get("/{issue_id}", response_model=IssueOut)
 def get_issue(issue_id: str):
-    """Retrieve specific issue by id"""
+    """Retrieve a specific issue by ID"""
     issues = load_data()
 
     for issue in issues:
@@ -46,34 +55,19 @@ def get_issue(issue_id: str):
         detail="Issue Not Found"
     )
 
-# Update an existing issue
+
 @router.put("/{issue_id}", response_model=IssueOut)
 def update_issue(issue_id: str, payload: IssueUpdate):
-    """Update existing issue"""
+    """Update an existing issue"""
     issues = load_data()
 
-    for index, issue in enumerate(issues):
+    for issue in issues:
         if issue["id"] == issue_id:
-
-            # Copy existing issue
-            updated_issue = issue.copy()
-
-            # Update only provided fields
-            if payload.title is not None:
-                updated_issue["title"] = payload.title
-
-            if payload.description is not None:
-                updated_issue["description"] = payload.description
-
-            if payload.priority is not None:
-                updated_issue["priority"] = payload.priority
-
-            if payload.status is not None:
-                updated_issue["status"] = payload.status
-
-            # Replace old issue with updated one
+            update_data = payload.dict(exclude_unset=True)
+            updated_issue = {**issue, **update_data}
+            
+            index = issues.index(issue)
             issues[index] = updated_issue
-
             save_data(issues)
             return updated_issue
 
@@ -82,20 +76,17 @@ def update_issue(issue_id: str, payload: IssueUpdate):
         detail="Issue Not Found"
     )
 
-# Delete an issue by ID
-@router.delete("/{issue_id}", response_model=IssueOut)
+
+@router.delete("/{issue_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_issue(issue_id: str):
-    """Delete issue by id"""
+    """Delete an issue"""
     issues = load_data()
 
-    for index, issue in enumerate(issues):
+    for i, issue in enumerate(issues):
         if issue["id"] == issue_id:
-
-            # Remove issue from list
-            deleted_issue = issues.pop(index)
-
+            issues.pop(i)
             save_data(issues)
-            return deleted_issue
+            return
 
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
