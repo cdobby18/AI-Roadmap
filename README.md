@@ -27,30 +27,28 @@ ai-engineer/
 │     ├── scikit-learn + PyTorch
 │     └── Experiment Tracking
 │
-├── 04 · NLP Fundamentals
+├── 04 · NLP Fundamentals + Transformers 
 │     ├── Tokenization + Embeddings
 │     └── Fine-tuning
-│
-├── 05 · Transformers — How They Actually Work
 │     ├── Attention Mechanism
 │     └── BERT vs GPT
 │
-├── 06 · LLMs + Prompt Engineering + Observability
+├── 05· LLMs + Prompt Engineering + Observability
 │     ├── Prompting Techniques
 │     └── LangSmith + Langfuse
 │
-├── 07 · RAG + LangChain + LangGraph + Agents
+├── 06 · RAG + LangChain + LangGraph + Agents
 │     ├── Vector DBs + Chunking
 │     ├── LangChain + LangGraph
 │     └── RAGAS Evaluation
 │
-├── 08 · Deploy + CI/CD + Portfolio
+├── 07 · Deploy + CI/CD + Portfolio
 │     ├── Docker + GitHub Actions
 │     └── HuggingFace Spaces
 │
-└── 09 · System Design for AI *(optional)*
-      ├── Celery + Redis
-      └── Scaling + Caching
+├── 08 · Projects
+│     ├── Personal Projects per Phase
+
 ```
 
 ---
@@ -62,12 +60,11 @@ ai-engineer/
 | 1 | Python Foundations + SQL | ✅ Complete |
 | 2 | FastAPI + Security Basics | 🔄 In Progress |
 | 3 | Machine Learning + W&B Tracking | ⬜ Upcoming |
-| 4 | NLP Fundamentals | ⬜ Upcoming |
-| 5 | Transformers — Architecture | ⬜ Upcoming |
-| 6 | LLMs + Prompt Engineering + Observability | ⬜ Upcoming |
-| 7 | RAG + LangChain + LangGraph + Agents | ⬜ Upcoming |
-| 8 | Deploy + CI/CD + Portfolio | ⬜ Upcoming |
-| 9 | System Design for AI *(optional)* | ⬜ Upcoming |
+| 4 | NLP Fundamentals + Transformers | ⬜ Upcoming |
+| 5 | LLMS + Prompt Engineering + Observability | ⬜ Upcoming |
+| 6 | RAG + LangChain + LangGraph + Agents | ⬜ Upcoming |
+| 7 | Deploy + CI/CD + Portfolio | ⬜ Upcoming |
+| 8 | Projects | ⬜ Upcoming |
 
 ---
 
