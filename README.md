@@ -187,19 +187,6 @@ ai-engineer/
 
 ---
 
-### Phase 9 — System Design for AI *(Optional)*
-**Status: ⬜ Upcoming**
-
-> Not required for first junior role. Separates junior from mid-level candidates.
-
-- Async task queues: Celery + Redis — offload slow LLM calls to background workers
-- Horizontal scaling: multiple FastAPI instances behind a load balancer
-- Caching strategies: what to cache, for how long, when to invalidate
-- Redis-based rate limiting at scale
-- Database design for AI apps: conversation history, embeddings, eval results
-
----
-
 ## 👨‍💻 Author
 
 **Carl Joshua M. Coloma**
