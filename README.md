@@ -1,4 +1,4 @@
-# 🤖 AI Engineering Roadmap
+# AI Engineering Roadmap
 
 This repository documents my structured, project-driven journey toward becoming a
 **Junior AI Engineer** — from Python foundations all the way to deploying production
@@ -11,137 +11,125 @@ RAG systems and AI agents.
 ## The Path
 
 ```
-ai-engineer/
+AI-Roadmap/
 │
-├── 01 · Python Foundations + SQL
-│     ├── OOP + Exceptions
-│     ├── File I/O + APIs
-│     └── SQL + SQLite
+├── 1-Foundations/
+│     ├── 1-python-basics       # Variables, loops, functions, data structures
+│     ├── 2-oop                 # Classes, inheritance, magic methods
+│     ├── 3-dsa                 # Basic structures, sorting, algorithms
+│     ├── 4-database            # SQLite, CRUD, joins, aggregations, Python integration
+│     ├── 5-http-apis           # requests library, handling HTTP responses
+│     └── 6-advanced-python     # asyncio, modules and packages
 │
-├── 02 · FastAPI + Auth + Security
-│     ├── Routes + Pydantic
-│     ├── JWT Auth
-│     └── Rate Limiting
+├── 2-FastAPI/
+│     ├── 1-basics              # First endpoints, JSON responses
+│     ├── 2-routing-and-validation  # Pydantic models, path/query params
+│     ├── 3-advanced-routing    # Middleware, APIRouter, schemas
+│     ├── 4-authentication      # Basic auth + JWT auth
+│     └── 5-background-tasks    # Async background jobs
 │
-├── 03 · Machine Learning + W&B
-│     ├── scikit-learn + PyTorch
-│     └── Experiment Tracking
+├── 3-ML/
+│     ├── 1-data-analysis       # NumPy, Pandas, EDA
+│     ├── 2-classical-ml        # Supervised + unsupervised, scikit-learn
+│     ├── 3-deep-learning       # Neural networks, CNNs from scratch
+│     ├── 4-pytorch             # Tensors, nn.Module, training loop
+│     ├── 5-model-evaluation    # Metrics, confusion matrix, cross-validation
+│     └── 6-ml-tools            # HuggingFace pipeline, W&B, Gradio
 │
-├── 04 · NLP Fundamentals + Transformers 
-│     ├── Tokenization + Embeddings
-│     └── Fine-tuning
-│     ├── Attention Mechanism
-│     └── BERT vs GPT
+├── 4-NLP/
+│     ├── text-preprocessing    # Tokenization, text pipelines
+│     ├── text-representation   # Word2Vec, TF-IDF, word embeddings
+│     ├── nlp-applications      # Sentiment, NER, summarization, chatbot
+│     ├── pre-trained-models    # BERT classification, GPT text gen, HF Hub
+│     └── transformers          # Attention mechanism, BERT embeddings, architecture
 │
-├── 05· LLMs + Prompt Engineering + Observability
-│     ├── Prompting Techniques
-│     └── LangSmith + Langfuse
+├── 5-LLMs/                     # Prompt engineering, tool calling, observability
 │
-├── 06 · RAG + LangChain + LangGraph + Agents
-│     ├── Vector DBs + Chunking
-│     ├── LangChain + LangGraph
-│     └── RAGAS Evaluation
+├── 6-RAG/                      # Vector DBs, LangChain, LangGraph, RAGAS eval
 │
-├── 07 · Deploy + CI/CD + Portfolio
-│     ├── Docker + GitHub Actions
-│     └── HuggingFace Spaces
+├── 7-Deploy/                   # Docker, CI/CD, HuggingFace Spaces
 │
-├── 08 · Projects
-│     ├── Personal Projects per Phase
-
+└── 8-Projects/
+      ├── phase-1-devilfruit    # OOP + SQLite project (One Piece theme)
+      └── phase-2-grandline-api # FastAPI project
 ```
 
 ---
 
-## 📊 Progress
+## Progress
 
 | Phase | Topic | Status |
 |-------|-------|--------|
-| 1 | Python Foundations + SQL | ✅ Complete |
-| 2 | FastAPI + Security Basics | 🔄 In Progress |
-| 3 | Machine Learning + W&B Tracking | ⬜ Upcoming |
-| 4 | NLP Fundamentals + Transformers | ⬜ Upcoming |
-| 5 | LLMS + Prompt Engineering + Observability | ⬜ Upcoming |
+| 1 | Python Foundations + DSA + SQL | ✅ Complete |
+| 2 | FastAPI + Auth + Background Tasks | 🔄 In Progress |
+| 3 | Machine Learning + PyTorch + W&B | 🔄 In Progress |
+| 4 | NLP + Transformers + Pre-trained Models | 🔄 In Progress |
+| 5 | LLMs + Prompt Engineering + Observability | ⬜ Upcoming |
 | 6 | RAG + LangChain + LangGraph + Agents | ⬜ Upcoming |
 | 7 | Deploy + CI/CD + Portfolio | ⬜ Upcoming |
-| 8 | Projects | ⬜ Upcoming |
+| 8 | Projects | 🔄 In Progress |
 
 ---
 
 ## Phase Breakdown
 
-### Phase 1 — Python Foundations + SQL
+### Phase 1 — Python Foundations + DSA + SQL
 **Status: ✅ Complete**
 
+- Python basics: variables, operators, conditionals, loops, functions
+- Data structures: lists, tuples, sets, dictionaries
 - OOP: classes, `__init__`, `self`, inheritance, magic methods
-- Exceptions: `try/except/finally` — handle errors, not just print them
-- File I/O: read/write text, CSV, JSON
-- API requests: `requests` library, handle responses
-- Modules and packages: `__init__.py`, importing your own code
-- SQL basics: `SELECT`, `WHERE`, `JOIN`, `GROUP BY` using SQLite *(3-day module)*
+- DSA: basic data structures, sorting algorithms, algorithmic thinking
+- SQL: `SELECT`, `WHERE`, `JOIN`, `GROUP BY`, aggregations, indexing using SQLite
+- HTTP APIs: `requests` library, handling responses, real API calls
+- Advanced Python: `asyncio`, modules, packages, `__init__.py`
 
 ---
 
-### Phase 2 — FastAPI + Security Basics
+### Phase 2 — FastAPI + Auth + Background Tasks
 **Status: 🔄 In Progress**
 
-> FastAPI chosen over Flask for its async support, automatic Swagger docs,
-> and native Pydantic integration — all critical for production AI backends.
+> FastAPI chosen for its async support, automatic Swagger docs, and native Pydantic integration — critical for production AI backends.
 
-- Why FastAPI: async support, automatic docs, Pydantic validation
 - GET and POST endpoints returning JSON
-- Pydantic models for request validation — critical for AI APIs
-- Async endpoints: `async/await` and why it matters
+- Pydantic models for request/response validation
+- Async endpoints: `async/await` and why it matters for AI workloads
 - Path params, query params, request bodies
-- **JWT authentication** — protect endpoints with `python-jose` + `passlib`
-- **Rate limiting** — `slowapi`, 10 requests/minute per user
-- Environment variables: `Pydantic Settings` + `.env` files
+- Middleware and APIRouter for clean project structure
+- Basic auth and **JWT authentication** — protect endpoints with `python-jose` + `passlib`
+- Background tasks: fire-and-forget async jobs
 
 ---
 
-### Phase 3 — Machine Learning + Experiment Tracking
-**Status: ⬜ Upcoming**
+### Phase 3 — Machine Learning + PyTorch + Experiment Tracking
+**Status: 🔄 In Progress**
 
-> NumPy and Pandas are learned here in context — not as a separate phase
-
-- scikit-learn: train/test split, cross-validation, pipelines, metrics
-- PyTorch: tensors, autograd, training loop — forward pass, loss, backward, optimizer
-- `nn.Module` — build and understand every line of a neural network
+- NumPy + Pandas: vectorized operations, DataFrames, EDA
+- Classical ML: supervised (linear, tree-based) and unsupervised models with scikit-learn
+- Deep learning: build neural networks and CNNs from scratch — understand every layer
+- PyTorch: tensors, autograd, `nn.Module`, full training loop (forward, loss, backward, optimizer)
+- Model evaluation: confusion matrix, precision/recall, cross-validation — never evaluate on training data
 - HuggingFace `pipeline()` for inference in 5 lines
-- Evaluate properly: confusion matrix, never evaluate on training data
 - **W&B experiment tracking** — log accuracy, loss, hyperparameters from day 1
-- Gradio: wrap model in a demo UI, publish to HuggingFace Spaces
+- Gradio: wrap any model in a demo UI, publish to HuggingFace Spaces
 
 ---
 
-### Phase 4 — NLP Fundamentals
-**Status: ⬜ Upcoming**
+### Phase 4 — NLP + Transformers + Pre-trained Models
+**Status: 🔄 In Progress**
 
-- Tokenization: LLMs read tokens, not words — inspect tokenizer output
+- Tokenization: LLMs read tokens, not words — inspect tokenizer output directly
 - Word embeddings: Word2Vec — a word as a list of numbers encoding meaning
-- TF-IDF: implement from scratch, understand when to use vs embeddings
+- TF-IDF: implement from scratch, understand when to use vs dense embeddings
 - NLP tasks: sentiment analysis, NER, summarization via HuggingFace
-- Fine-tuning: HuggingFace `Trainer` on a custom dataset
-- Encoder (BERT) vs decoder (GPT) — conceptual understanding before Phase 5
-
----
-
-### Phase 5 — Transformers: How They Actually Work
-**Status: ⬜ Upcoming**
-
-> Dedicated phase added based on mentor recommendation — before LLMs,
-> understand the architecture
-
-- Attention mechanism: every token attends to every other token simultaneously
-- Self-attention: queries, keys, values — what they are and why the math works
-- Multi-head attention: running attention in parallel
+- Transformer architecture: attention mechanism, self-attention (Q/K/V), multi-head attention
 - Positional encoding: how transformers encode order without recurrence
-- Encoder-only (BERT) vs decoder-only (GPT)
-- Read *Attention Is All You Need* — abstract + architecture section minimum
+- BERT (encoder-only) vs GPT (decoder-only) — hands-on with both
+- Fine-tuning: HuggingFace `Trainer` on a custom dataset, push to Hub
 
 ---
 
-### Phase 6 — LLMs + Prompt Engineering + Observability
+### Phase 5 — LLMs + Prompt Engineering + Observability
 **Status: ⬜ Upcoming**
 
 - Tokens, context window, temperature — know these cold
@@ -156,16 +144,16 @@ ai-engineer/
 
 ---
 
-### Phase 7 — RAG + LangChain + LangGraph + Agents
+### Phase 6 — RAG + LangChain + LangGraph + Agents
 **Status: ⬜ Upcoming**
 
 > Most employable AI engineering skill right now
 
-- Vector DBs: set up ChromaDB locally, embed sentences, query nearest neighbor
+- Vector DBs: ChromaDB locally, embed sentences, query nearest neighbor
 - Chunking: ~500 token chunks with overlap before embedding
-- RAG step by step: ingest → chunk → embed → store → retrieve → generate
+- RAG pipeline: ingest → chunk → embed → store → retrieve → generate
 - LangChain chains: loaders, splitters, embeddings, retriever, LLM
-- Conversational RAG: add memory for conversation history
+- Conversational RAG: add memory for multi-turn history
 - **LangGraph agents**: stateful agents with nodes, edges, conditional routing
 - **Model Context Protocol (MCP)**: connect agents to external tools
 - **LangSmith tracing**: trace full RAG pipeline, see exactly where retrieval fails
@@ -174,7 +162,7 @@ ai-engineer/
 
 ---
 
-### Phase 8 — Deploy + CI/CD + Portfolio
+### Phase 7 — Deploy + CI/CD + Portfolio
 **Status: ⬜ Upcoming**
 
 - Docker: write a Dockerfile for FastAPI — understand every line
@@ -187,7 +175,17 @@ ai-engineer/
 
 ---
 
-## 👨‍💻 Author
+### Phase 8 — Projects
+**Status: 🔄 In Progress**
+
+| Project | Phase | Description |
+|---------|-------|-------------|
+| [Devil Fruit Database](8-Projects/phase-1-devilfruit/) | 1 | OOP + SQLite CLI — One Piece themed |
+| [Grand Line API](8-Projects/phase-2-grandline-api/) | 2 | FastAPI REST API project |
+
+---
+
+## Author
 
 **Carl Joshua M. Coloma**
 Computer Science — Software Engineering
@@ -197,4 +195,4 @@ AI Engineering Track
 
 ---
 
-*Last updated: May - 2026*
+*Last updated: June 2026*
