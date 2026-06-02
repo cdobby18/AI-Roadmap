@@ -66,7 +66,7 @@ class DevilFruit:
     def detect_language(self):
         try:
             return detect(self.text), 100
-        except:
+        except Exception:
             return "unknown", 0
 
     def __repr__(self):
