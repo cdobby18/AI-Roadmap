@@ -1,0 +1,30 @@
+# ─── Core Framework ───────────────────────────────────────────────────────────
+# FastAPI is the web framework; uvicorn is the ASGI server that runs it
+fastapi
+uvicorn[standard]
+
+# ─── Data Validation ──────────────────────────────────────────────────────────
+# Pydantic is already bundled with FastAPI, but pydantic-settings lets you
+# load config from a .env file using a Settings class (see app/config.py)
+pydantic-settings
+
+# ─── Database ─────────────────────────────────────────────────────────────────
+# SQLAlchemy is the ORM; no extra driver needed for SQLite (it's built into Python)
+sqlalchemy
+
+# ─── Authentication ───────────────────────────────────────────────────────────
+# python-jose handles JWT token creation and decoding
+# passlib[bcrypt] hashes passwords — never store plain-text passwords
+python-jose[cryptography]
+passlib[bcrypt]
+
+# ─── Environment Variables ────────────────────────────────────────────────────
+# Loads variables from a .env file into os.environ at startup
+python-dotenv
+
+# ─── Development / Testing ────────────────────────────────────────────────────
+# httpx is an async HTTP client used by pytest to test FastAPI endpoints
+# pytest-asyncio enables async test functions
+pytest
+pytest-asyncio
+httpx
