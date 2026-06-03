@@ -1,20 +1,27 @@
 # ─── app/config.py ────────────────────────────────────────────────────────────
-# Loads environment variables from the .env file into a typed Settings object.
-# Using pydantic-settings means every variable is validated at startup —
-# the app will refuse to run if a required variable is missing.
+# Holds all app-wide configuration constants.
+# No .env file needed — values are hardcoded here for this practice project.
+# In a real app you would load these from environment variables or a secrets manager.
 #
-# TODO: Import BaseSettings from pydantic_settings and Field from pydantic
+# Why a dedicated config file instead of scattering constants everywhere?
+#   - One place to change a value and have it apply across all files
+#   - Makes it obvious what the "knobs" of your app are
+#   - Easy to swap to environment-based config later without touching route files
 #
-# TODO: Create a Settings class that extends BaseSettings with these fields:
-#       - database_url: str
-#       - secret_key: str
-#       - algorithm: str
-#       - access_token_expire_minutes: int
-#       - marine_username: str
-#       - marine_password: str
+# TODO: Define these constants directly (no class needed, just plain variables):
 #
-#       Hint: inside the class, add a model_config = SettingsConfigDict(env_file=".env")
-#             this tells pydantic-settings where to read values from
+#       SECRET_KEY   : str   — any long random string used to sign JWT tokens
+#                              e.g. "grand-line-secret-change-in-production"
 #
-# TODO: Create a single settings instance at the bottom of this file
-#       so every other module can import it: from app.config import settings
+#       ALGORITHM    : str   — the JWT signing algorithm, use "HS256"
+#
+#       ACCESS_TOKEN_EXPIRE_MINUTES : int — how long a token is valid, e.g. 30
+#
+#       MARINE_USERNAME : str — the hardcoded login username, e.g. "sengoku"
+#
+#       MARINE_PASSWORD : str — the hardcoded login password, e.g. "marineford"
+#
+# Note: In a real app NEVER hardcode credentials — use os.getenv() or a secrets vault.
+#       For this practice project it is fine.
+#
+# Usage: from app.config import SECRET_KEY, ALGORITHM, ...

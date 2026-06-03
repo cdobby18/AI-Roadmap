@@ -1,37 +1,42 @@
 # ─── app/models.py ────────────────────────────────────────────────────────────
-# SQLAlchemy ORM models — these map directly to database tables.
-# Think of each class as a table and each Column as a column in that table.
+# TypedDict definitions — these describe the shape of your in-memory data.
+# No SQLAlchemy or database involved. This file is purely for type hints so your
+# editor can autocomplete dict keys and catch typos.
 #
-# Important distinction:
-#   ORM models (here)    → describe the DATABASE shape (SQLAlchemy)
-#   Pydantic schemas     → describe the API request/response shape (FastAPI)
-#   They look similar but serve different purposes — don't merge them.
+# What is a TypedDict?
+#   A regular Python dict can hold anything — TypedDict lets you declare the
+#   expected keys and their types. It's like a schema for a plain dict.
+#   At runtime it is still just a dict; the types are only for static checking.
 #
-# TODO: Import Column, Integer, String, Float, Boolean, ForeignKey from sqlalchemy
-#       Import relationship from sqlalchemy.orm
-#       Import Base from app.database
+# Why keep this file at all without a database?
+#   - It documents exactly what a "pirate" or "crew" dict looks like
+#   - Your editor will warn you if you try to access a key that doesn't exist
+#   - It's a stepping stone to understanding ORM models later
 #
-# ─── Crew Model ───────────────────────────────────────────────────────────────
-# TODO: Create a Crew class that inherits from Base
-#       __tablename__ = "crews"
-#       Columns:
-#         - id          : Integer, primary key, auto-increment
-#         - name        : String, unique, not nullable  (e.g. "Straw Hat Pirates")
-#         - ship        : String, nullable              (e.g. "Thousand Sunny")
-#         - sea_region  : String, nullable              (e.g. "New World")
-#         - is_active   : Boolean, default True
-#       Relationship:
-#         - pirates     : one-to-many back-ref to Pirate (one crew has many pirates)
+# How this compares to the old SQLAlchemy version:
+#   Old: class Pirate(Base) with Column() fields → maps to a DB table
+#   New: class Pirate(TypedDict) with typed keys  → just a type hint for a dict
 #
-# ─── Pirate Model ─────────────────────────────────────────────────────────────
-# TODO: Create a Pirate class that inherits from Base
-#       __tablename__ = "pirates"
-#       Columns:
-#         - id          : Integer, primary key, auto-increment
-#         - name        : String, unique, not nullable  (e.g. "Monkey D. Luffy")
-#         - bounty      : Float, default 0.0            (in Belly)
-#         - devil_fruit : String, nullable              (e.g. "Gomu Gomu no Mi")
-#         - role        : String, nullable              (e.g. "Captain", "Swordsman")
-#         - crew_id     : Integer, ForeignKey → crews.id, nullable
-#       Relationship:
-#         - crew        : many-to-one back-ref to Crew
+# TODO: Import TypedDict from typing
+#       Import Optional from typing
+#
+# ─── Crew TypedDict ───────────────────────────────────────────────────────────
+# TODO: Create a Crew TypedDict with these keys:
+#         - id         : int
+#         - name       : str
+#         - ship       : Optional[str]
+#         - sea_region : Optional[str]
+#         - is_active  : bool
+#
+# ─── Pirate TypedDict ─────────────────────────────────────────────────────────
+# TODO: Create a Pirate TypedDict with these keys:
+#         - id          : int
+#         - name        : str
+#         - bounty      : float
+#         - devil_fruit : Optional[str]
+#         - role        : Optional[str]
+#         - crew_id     : Optional[int]
+#
+# Usage: from app.models import Pirate, Crew
+#        These are used as type hints in route files:
+#          pirate: Pirate = {...}  ← your editor now knows what keys are valid
