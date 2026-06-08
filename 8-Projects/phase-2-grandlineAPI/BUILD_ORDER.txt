@@ -1,0 +1,131 @@
+================================================================================
+   GRAND LINE API — BUILD ORDER / FOCUS ROADMAP
+================================================================================
+
+  Rule: Build from the bottom up. main.py is LAST, not first.
+  After each step: run the server and confirm it starts without errors.
+
+    uvicorn main:app --reload
+
+
+================================================================================
+  PHASE 1 — FOUNDATION
+================================================================================
+
+  [ ] STEP 1  →  app/config.py
+        Write 5 plain constants:
+          SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES,
+          MARINE_USERNAME, MARINE_PASSWORD
+        No imports needed. Fastest step.
+
+  [ ] STEP 2  →  app/store.py
+        Write crews_db list (3 crews)
+        Write pirates_db list (5 pirates)
+        Write next_crew_id and next_pirate_id counters
+        Optional: get_pirate_by_id() and get_crew_by_id() helpers
+
+  [ ] STEP 3  →  app/models.py
+        Write Crew TypedDict
+        Write Pirate TypedDict
+
+
+================================================================================
+  PHASE 2 — SCHEMAS
+================================================================================
+
+  [ ] STEP 4  →  app/schemas/crew.py
+        Write CrewCreate   (name, ship, sea_region)
+        Write CrewUpdate   (all Optional)
+        Write CrewResponse (adds id, is_active)
+
+  [ ] STEP 5  →  app/schemas/pirate.py
+        Write PirateCreate   (name, bounty, devil_fruit, role, crew_id)
+        Write PirateUpdate   (all Optional)
+        Write PirateResponse (adds id)
+
+
+================================================================================
+  PHASE 3 — AUTH
+================================================================================
+
+  [ ] STEP 6  →  app/auth/jwt_handler.py
+        Write create_access_token(data: dict) -> str
+        Write decode_access_token(token: str) -> dict | None
+
+  [ ] STEP 7  →  app/auth/jwt_bearer.py
+        Create oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+        Write get_current_marine() dependency function
+
+
+================================================================================
+  PHASE 4 — MIDDLEWARE + ROUTES
+================================================================================
+
+  [ ] STEP 8  →  app/middleware/logger.py
+        Write log_requests(request, call_next) async function
+        Log: [METHOD] /path → status_code  (took Xms)
+
+  [ ] STEP 9  →  app/routes/auth.py
+        Write POST /login endpoint
+        *** TEST HERE: run server, hit /docs, get a token, confirm it works ***
+        Do not move to routes until auth is confirmed working.
+
+  [ ] STEP 10 →  app/routes/crews.py
+        GET    /crews           → list all
+        GET    /crews/{id}      → get one (404 if missing)
+        POST   /crews           → create, protected, status 201
+        PUT    /crews/{id}      → partial update (exclude_unset=True), protected
+        DELETE /crews/{id}      → remove, return 204, protected
+        BONUS: GET /crews/{id}/pirates → all pirates in that crew
+
+  [ ] STEP 11 →  app/routes/pirates.py
+        GET    /pirates         → list all
+        GET    /pirates/{id}    → get one (404 if missing)
+        POST   /pirates         → create + background task, protected, status 201
+        PUT    /pirates/{id}    → partial update, protected
+        DELETE /pirates/{id}    → remove, return 204, protected
+        Background task: recalculate_bounty() — multiplies bounty by 1.1
+
+
+================================================================================
+  PHASE 5 — WIRE EVERYTHING TOGETHER
+================================================================================
+
+  [ ] STEP 12 →  main.py  (only 2 TODOs left here)
+        Register logger middleware
+        Include auth router   → prefix="/auth",    tags=["Auth"]
+        Include pirates router→ prefix="/pirates", tags=["Pirates"]
+        Include crews router  → prefix="/crews",   tags=["Crews"]
+
+
+================================================================================
+  FINAL TEST SEQUENCE (use Swagger UI at http://localhost:8000/docs)
+================================================================================
+
+  a. POST /auth/login         → get your token
+  b. GET  /crews              → should return pre-loaded crews
+  c. POST /crews              → create a crew (need token)
+  d. GET  /crews              → confirm new crew is there
+  e. POST /pirates            → create a pirate with crew_id (need token)
+  f. GET  /pirates            → confirm pirate is there
+  g. PUT  /pirates/{id}       → update bounty (need token)
+  h. DELETE /pirates/{id}     → delete a pirate (need token)
+  i. GET  /pirates/{id}       → should return 404 now
+
+  Check your terminal after each request — middleware should log every one.
+
+
+================================================================================
+  COMMON MISTAKES TO AVOID
+================================================================================
+
+  - Forgetting exclude_unset=True on PUT routes → partial updates wipe fields
+  - Not returning Response(status_code=204) on DELETE → wrong status code
+  - Missing global next_pirate_id / next_crew_id in POST routes → NameError
+  - Skipping the 404 check before update/delete → silent bugs
+
+
+================================================================================
+  AUTHOR: Carl Joshua M. Coloma
+  AI Engineering Track | Phase 2 Project | Grand Line API
+================================================================================
