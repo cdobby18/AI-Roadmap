@@ -92,3 +92,12 @@ Sections 1, 3, 4, 5, and 6 are fully required. For classical ML (section 2), sup
 | Weights & Biases quickstart | Set up W&B in 5 minutes | Docs | Free |
 | Gradio docs (gradio.app) | Quickstart only | Docs | Free |
 | Hugging Face — Pipeline tutorial | Pre-trained models in one call | Docs | Free |
+
+---
+
+## Capstone Project
+
+**[BountyHunter](../8-Projects/phase-3-bountyhunter/)** — Predict a pirate's bounty with a PyTorch model.
+
+Applies every section of Phase 3 end-to-end:
+`data.py` (NumPy/Pandas) → `baseline.py` (sklearn) → `model.py` + `train.py` (PyTorch) → `evaluate.py` (metrics) → `app.py` (Gradio)
