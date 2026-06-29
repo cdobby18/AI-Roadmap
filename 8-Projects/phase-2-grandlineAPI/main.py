@@ -1,31 +1,30 @@
-# ─── main.py ──────────────────────────────────────────────────────────────────
-# Entry point for the Grand Line API.
-# This is where you wire everything together — routers, middleware, and the
-# root endpoint.
-#
-# No database setup needed here — store.py holds the data in memory and
-# is ready as soon as Python imports it.
-#
-# TODO: Import FastAPI and create the app instance
-#       Give it a title and description (these show up in /docs)
-#       e.g. title="Grand Line API", description="Track pirates across the Grand Line"
-#
-# TODO: Register the custom logger middleware
-#       app.middleware("http")(log_requests)
-#       OR
-#       app.add_middleware(BaseHTTPMiddleware, dispatch=log_requests)
-#       Hint: import log_requests from app.middleware.logger
-#             import BaseHTTPMiddleware from starlette.middleware.base (if using that form)
-#
-# TODO: Include routers from app/routes/
-#       - auth router    → prefix="/auth",    tags=["Auth"]
-#       - pirates router → prefix="/pirates", tags=["Pirates"]
-#       - crews router   → prefix="/crews",   tags=["Crews"]
-#       Hint: app.include_router(router, prefix=..., tags=...)
-#
-# TODO: Add a root GET "/" endpoint that returns a welcome message
-#       e.g. {"message": "Welcome to the Grand Line API ☠️"}
-#       This is useful as a health check — you can hit "/" to confirm the server is up
-#
-# Run with: uvicorn main:app --reload
-# Docs at:  http://localhost:8000/docs
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+
+from app.middleware.logger import log_requests
+from app.middleware.rate_limiter import limiter
+from app.routes import auth, crews, pirates
+
+app = FastAPI(
+    title="Grand Line API",
+    description="Track pirates, crews, and bounties across the Grand Line.",
+    version="1.0.0",
+)
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
+app.add_middleware(BaseHTTPMiddleware, dispatch=log_requests)
+
+app.include_router(auth.router, prefix="/auth", tags=["Auth"])
+app.include_router(pirates.router, prefix="/pirates", tags=["Pirates"])
+app.include_router(crews.router, prefix="/crews", tags=["Crews"])
+
+
+@app.get("/", tags=["Health"])
+async def root():
+    return {"message": "Welcome to the Grand Line API"}
