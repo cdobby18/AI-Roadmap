@@ -41,6 +41,15 @@ outputs/
 data/
 
 # =====================
+# ML Artifacts
+# =====================
+*.pt
+*.pth
+*.csv
+wandb/
+.gradio/
+
+# =====================
 # OS / System Files
 # =====================
 .DS_Store
