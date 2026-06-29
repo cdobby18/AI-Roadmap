@@ -1,22 +1,8 @@
-# ─── Core Framework ───────────────────────────────────────────────────────────
-# FastAPI is the web framework; uvicorn is the ASGI server that runs it
 fastapi
 uvicorn[standard]
-
-# ─── Authentication ───────────────────────────────────────────────────────────
-# python-jose handles JWT token creation and decoding
-# passlib[bcrypt] hashes passwords — never store plain-text passwords
 python-jose[cryptography]
 passlib[bcrypt]
-
-# ─── Development / Testing ────────────────────────────────────────────────────
-# httpx is an async HTTP client used by pytest to test FastAPI endpoints
-# pytest-asyncio enables async test functions
+slowapi>=0.1.9
 pytest
 pytest-asyncio
 httpx
-
-# ─── Removed from original ────────────────────────────────────────────────────
-# sqlalchemy      → no database, we use in-memory dummy data in store.py
-# pydantic-settings → no .env file needed, config.py uses plain constants
-# python-dotenv   → no .env file needed
