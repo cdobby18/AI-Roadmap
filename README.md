@@ -49,6 +49,8 @@ AI-Roadmap/
 │
 ├── 7-Deploy/                   # Docker, CI/CD, HuggingFace Spaces
 │
+├── 9-Notes/                    # Phase summary notes and quick reference
+│
 └── 8-Projects/
       ├── phase-1-devilfruit    # OOP + SQLite project (One Piece theme)
       └── phase-2-grandline-api # FastAPI project
