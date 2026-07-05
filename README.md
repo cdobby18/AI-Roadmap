@@ -182,8 +182,12 @@ AI-Roadmap/
 
 | Project | Phase | Description |
 |---------|-------|-------------|
-| [Devil Fruit Database](8-Projects/phase-1-devilfruit/) | 1 | OOP + SQLite CLI — One Piece themed |
-| [Grand Line API](8-Projects/phase-2-grandline-api/) | 2 | FastAPI REST API project |
+| [Devil Fruit Database](8-Projects/phase-1-devilfruit/) | 1 | OOP + MySQL CLI — One Piece themed |
+| [Grand Line API](8-Projects/phase-2-grandlineAPI/) | 2 | FastAPI REST API project |
+| [BountyHunter](8-Projects/phase-3-bountyhunter/) | 3 | ML pipeline — sklearn + PyTorch + W&B |
+| [Vivre Card](8-Projects/phase-4-vivre-card/) | 4 | BERT semantic character search |
+
+Each project folder contains `CONTEXT.md` (what it is, how to run it) and `LESSONS.md` (skills learned and how it connects to the rest of the roadmap).
 
 ---
 
