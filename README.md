@@ -49,11 +49,13 @@ AI-Roadmap/
 │
 ├── 7-Deploy/                   # Docker, CI/CD, HuggingFace Spaces
 │
-├── 9-Notes/                    # Phase summary notes and quick reference
+├── Notes/                      # Phase summary notes and quick reference
 │
-└── 8-Projects/
+└── Projects/
       ├── phase-1-devilfruit    # OOP + SQLite project (One Piece theme)
-      └── phase-2-grandline-api # FastAPI project
+      ├── phase-2-grandlineAPI  # FastAPI REST API project
+      ├── phase-3-bountyhunter  # ML pipeline — sklearn + PyTorch + W&B
+      └── phase-4-vivre-card    # BERT semantic character search
 ```
 
 ---
@@ -63,8 +65,8 @@ AI-Roadmap/
 | Phase | Topic | Status |
 |-------|-------|--------|
 | 1 | Python Foundations + DSA + SQL | ✅ Complete |
-| 2 | FastAPI + Auth + Background Tasks | 🔄 In Progress |
-| 3 | Machine Learning + PyTorch + W&B | 🔄 In Progress |
+| 2 | FastAPI + Auth + Background Tasks | ✅ Complete |
+| 3 | Machine Learning + PyTorch + W&B | ✅ Complete |
 | 4 | NLP + Transformers + Pre-trained Models | 🔄 In Progress |
 | 5 | LLMs + Prompt Engineering + Observability | ⬜ Upcoming |
 | 6 | RAG + LangChain + LangGraph + Agents | ⬜ Upcoming |
@@ -89,7 +91,7 @@ AI-Roadmap/
 ---
 
 ### Phase 2 — FastAPI + Auth + Background Tasks
-**Status: 🔄 In Progress**
+**Status: ✅ Complete**
 
 > FastAPI chosen for its async support, automatic Swagger docs, and native Pydantic integration — critical for production AI backends.
 
@@ -104,7 +106,7 @@ AI-Roadmap/
 ---
 
 ### Phase 3 — Machine Learning + PyTorch + Experiment Tracking
-**Status: 🔄 In Progress**
+**Status: ✅ Complete**
 
 - NumPy + Pandas: vectorized operations, DataFrames, EDA
 - Classical ML: supervised (linear, tree-based) and unsupervised models with scikit-learn
@@ -182,10 +184,10 @@ AI-Roadmap/
 
 | Project | Phase | Description |
 |---------|-------|-------------|
-| [Devil Fruit Database](8-Projects/phase-1-devilfruit/) | 1 | OOP + MySQL CLI — One Piece themed |
-| [Grand Line API](8-Projects/phase-2-grandlineAPI/) | 2 | FastAPI REST API project |
-| [BountyHunter](8-Projects/phase-3-bountyhunter/) | 3 | ML pipeline — sklearn + PyTorch + W&B |
-| [Vivre Card](8-Projects/phase-4-vivre-card/) | 4 | BERT semantic character search |
+| [Devil Fruit Database](Projects/phase-1-devilfruit/) | 1 | OOP + MySQL CLI — One Piece themed |
+| [Grand Line API](Projects/phase-2-grandlineAPI/) | 2 | FastAPI REST API project |
+| [BountyHunter](Projects/phase-3-bountyhunter/) | 3 | ML pipeline — sklearn + PyTorch + W&B |
+| [Vivre Card](Projects/phase-4-vivre-card/) | 4 | BERT semantic character search |
 
 Each project folder contains `CONTEXT.md` (what it is, how to run it) and `LESSONS.md` (skills learned and how it connects to the rest of the roadmap).
 
@@ -201,4 +203,4 @@ AI Engineering Track
 
 ---
 
-*Last updated: June 2026*
+*Last updated: July 2026*
