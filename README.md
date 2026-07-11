@@ -193,6 +193,20 @@ Each project folder contains `CONTEXT.md` (what it is, how to run it) and `LESSO
 
 ---
 
+## Notes
+
+Interview-oriented summary notes, one per completed phase, plus cross-cutting references:
+
+- [Phase 1 — Python, DSA, SQL](Notes/phase-1.md)
+- [Phase 2 — FastAPI](Notes/phase-2.md)
+- [Phase 3 — Machine Learning](Notes/phase-3.md)
+- [Phase 4 — NLP](Notes/phase-4.md)
+- [System Design — Core Patterns](Notes/system-design-patterns.md)
+
+Each follows the same structure: goal, key terms, when to use, interview review, common pitfalls.
+
+---
+
 ## Author
 
 **Carl Joshua M. Coloma**
