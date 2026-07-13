@@ -1,6 +1,5 @@
 # Shared dependencies across roadmap phases.
 # Individual projects under Projects/ carry their own requirements.txt
-# with the exact set they need.
 
 # --- Phase 2: FastAPI ---
 fastapi==0.136.1
