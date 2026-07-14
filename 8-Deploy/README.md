@@ -1,4 +1,4 @@
-# Phase 7 — Deploy + CI/CD + Portfolio
+# Phase 8 — Deploy + CI/CD + Portfolio
 
 **Status: ⬜ Upcoming**
 
@@ -16,4 +16,4 @@ Shipping — turning roadmap projects into deployed, demonstrable systems.
 
 ## Builds on
 
-- Everything — this phase deploys the projects built in Phases 1–6
+- Everything — this phase deploys the projects built in Phases 1–7

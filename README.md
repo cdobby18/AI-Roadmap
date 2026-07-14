@@ -45,9 +45,11 @@ AI-Roadmap/
 │
 ├── 5-LLMs/                     # Prompt engineering, tool calling, observability
 │
-├── 6-RAG/                      # Vector DBs, LangChain, LangGraph, RAGAS eval
+├── 6-RAG/                      # Embeddings, vector DBs, retrieval, basic RAG
 │
-├── 7-Deploy/                   # Docker, CI/CD, HuggingFace Spaces
+├── 7-Advanced-Frameworks/      # LangChain, LangGraph, LangSmith, MCP, Guardrails
+│
+├── 8-Deploy/                   # Docker, CI/CD, HuggingFace Spaces
 │
 ├── Notes/                      # Phase summary notes and quick reference
 │
@@ -68,10 +70,10 @@ AI-Roadmap/
 | 2 | FastAPI + Auth + Background Tasks | ✅ Complete |
 | 3 | Machine Learning + PyTorch + W&B | ✅ Complete |
 | 4 | NLP + Transformers + Pre-trained Models | 🔄 In Progress |
-| 5 | LLMs + Prompt Engineering + Observability | ⬜ Upcoming |
-| 6 | RAG + LangChain + LangGraph + Agents | ⬜ Upcoming |
-| 7 | Deploy + CI/CD + Portfolio | ⬜ Upcoming |
-| 8 | Projects | 🔄 In Progress |
+| 5 | LLMs + Prompt Engineering + Observability | 🔄 In Progress |
+| 6 | RAG (Retrieval-Augmented Generation) | ⬜ Upcoming |
+| 7 | Advanced Frameworks (LangChain, LangGraph, LangSmith) | ⬜ Upcoming |
+| 8 | Deploy + CI/CD + Portfolio | ⬜ Upcoming |
 
 ---
 
@@ -201,7 +203,7 @@ Interview-oriented summary notes, one per completed phase, plus cross-cutting re
 - [Phase 2 — FastAPI](Notes/phase-2.md)
 - [Phase 3 — Machine Learning](Notes/phase-3.md)
 - [Phase 4 — NLP](Notes/phase-4.md)
-- [System Design — Core Patterns](Notes/system-design-patterns.md)
+- [Phase 5 — LLMs](Notes/phase-5.md)
 
 Each follows the same structure: goal, key terms, when to use, interview review, common pitfalls.
 

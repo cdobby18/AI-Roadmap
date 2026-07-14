@@ -73,3 +73,11 @@
 - Vector databases
 - Document retrieval
 - Building Q&A systems
+
+Then Phase 7 (Advanced Frameworks)
+- LangChain & LangGraph
+- LangSmith & observability
+- Guardrails & validation
+- MCP protocol
+
+Then Phase 8 (Deploy)

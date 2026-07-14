@@ -108,4 +108,11 @@ Ready to build with external data?
 - Building Q&A systems over your data
 - RAG + LangChain integration
 
+**Phase 7 (after RAG):**
+- LangChain: chains, agents, memory
+- LangGraph: multi-step workflows
+- LangSmith: observability & evaluation
+- Advanced guardrails & validation
+- MCP protocol integration
+
 See: [6-RAG/README.md](../6-RAG/README.md)
