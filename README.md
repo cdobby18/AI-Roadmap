@@ -45,7 +45,11 @@ AI-Roadmap/
 │
 ├── 5-LLMs/                     # Prompt engineering, tool calling, observability
 │
-├── 6-RAG/                      # Embeddings, vector DBs, retrieval, basic RAG
+├── 6-RAG/                      # Chunking, embeddings, retrieval, prompts, RAG pipelines
+│     ├── 01-foundations        # Embeddings, chunking fundamentals
+│     ├── 02-retrieval          # Semantic search, vector DBs
+│     ├── 03-pipelines          # Basic RAG flow, prompt design
+│     └── 04-evaluation         # Retrieval + answer quality basics
 │
 ├── 7-Advanced-Frameworks/      # LangChain, LangGraph, LangSmith, MCP, Guardrails
 │
