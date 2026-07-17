@@ -61,7 +61,8 @@ AI-Roadmap/
       ├── phase-1-devilfruit    # OOP + SQLite project (One Piece theme)
       ├── phase-2-grandlineAPI  # FastAPI REST API project
       ├── phase-3-bountyhunter  # ML pipeline — sklearn + PyTorch + W&B
-      └── phase-4-vivre-card    # BERT semantic character search
+      ├── phase-4-vivre-card    # BERT semantic character search
+      └── phase-5-den-den-mushi # LLM communications hub
 ```
 
 ---
@@ -73,9 +74,9 @@ AI-Roadmap/
 | 1 | Python Foundations + DSA + SQL | ✅ Complete |
 | 2 | FastAPI + Auth + Background Tasks | ✅ Complete |
 | 3 | Machine Learning + PyTorch + W&B | ✅ Complete |
-| 4 | NLP + Transformers + Pre-trained Models | 🔄 In Progress |
-| 5 | LLMs + Prompt Engineering + Observability | 🔄 In Progress |
-| 6 | RAG (Retrieval-Augmented Generation) | ⬜ Upcoming |
+| 4 | NLP + Transformers + Pre-trained Models | ✅ Complete |
+| 5 | LLMs + Prompt Engineering + Observability | ✅ Complete |
+| 6 | RAG (Retrieval-Augmented Generation) | 🟡 In Progress |
 | 7 | Advanced Frameworks (LangChain, LangGraph, LangSmith) | ⬜ Upcoming |
 | 8 | Deploy + CI/CD + Portfolio | ⬜ Upcoming |
 
@@ -126,7 +127,7 @@ AI-Roadmap/
 ---
 
 ### Phase 4 — NLP + Transformers + Pre-trained Models
-**Status: 🔄 In Progress**
+**Status: ✅ Complete**
 
 - Tokenization: LLMs read tokens, not words — inspect tokenizer output directly
 - Word embeddings: Word2Vec — a word as a list of numbers encoding meaning
