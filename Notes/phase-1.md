@@ -1,278 +1,91 @@
 # Phase 1 — Foundations
 
-## Goal
-Build the Python, data structures, and systems foundation every AI engineer is expected to have before touching ML code. Interviewers use this phase to filter candidates who can only call libraries from those who actually understand what's underneath.
+## Core Python
 
-## What I need to know
-- Variables, data types, operators
-- Control flow: `if`, `for`, `while`
-- Functions and reusable code
-- Collections: `list`, `tuple`, `set`, `dict`
-- Classes, objects, inheritance
-- Core data structures: linked list, stack, queue, binary search tree, heap
-- Sorting algorithms and their complexity
-- Algorithm patterns: recursion, dynamic programming, greedy, graph traversal
-- Big-O time and space complexity
-- SQLite CRUD, joins, aggregations, and indexing
-- Calling APIs with `requests`
-- Modules, packages, and `asyncio`
-- Decorators, generators, and context managers
+**Variables & types:** Python is dynamically typed. Mutable types (list, dict, set) change in place; immutable (int, str, tuple) create new objects on every operation. Consequence for AI: string concatenation with `+` in a loop is O(n²) — use `''.join()`.
 
-## Key terms
+**Collections:**
+- `list` — ordered, O(n) lookup. Use when order matters or you need index access.
+- `dict` — O(1) lookup by key. Use for JSON-like data, configs, feature maps.
+- `set` — O(1) membership test. Use for dedup, "have I seen this before."
+- `tuple` — immutable, hashable. Use for fixed records, dict keys.
 
-### Python core
-- `variable`: named storage for a value. It's how you keep track of data in memory.
-- `function`: named block that takes input and returns output. Avoids repeating code and makes logic testable.
-- `list`: ordered, changeable collection. Use it when order matters or you need to append/pop.
-- `tuple`: ordered, immutable collection. Use it for fixed records like coordinates or model config values.
-- `set`: unordered collection of unique values. Use it for membership tests, deduplication, or unique feature values — O(1) lookup vs O(n) for a list.
-- `dict`: key/value mapping. Use it for fast lookup by name, like model settings or JSON-like data — O(1) average lookup.
-- `immutable`: a value that can't change after creation (e.g. `tuple`, `str`). Safer when multiple parts of a program read the same value.
-- `mutable`: data that can change after creation (e.g. `list`, `dict`). Use it when you need to update state, like accumulating examples.
-- `class`: blueprint for objects. Bundles data and behavior together so complex systems stay organized.
-- `object`: an instance of a class — the concrete thing holding values and methods.
-- `decorator`: a function that wraps another function to add behavior without changing its code (e.g. logging, timing, caching). Common in FastAPI (`@app.get`) and testing (`@pytest.fixture`).
-- `generator`: a function using `yield` that produces values lazily, one at a time, instead of building a full list in memory. Use it for large datasets or streaming data.
-- `context manager`: an object supporting `with`, guaranteeing setup/teardown (like closing a file or DB connection) even if an exception happens.
+**Why set/dict are O(1):** hash table. Tradeoff: ~3x more memory than a list. Always use set over list for `in` checks in interviews.
 
-### Data structures
-- `array / list`: contiguous, indexable storage. O(1) index access, O(n) insert/delete in the middle.
-- `linked list`: nodes connected by pointers. O(1) insert/delete at the head, O(n) to search — no random access.
-- `stack`: LIFO (last in, first out). Use it for undo history, expression parsing, or DFS.
-- `queue`: FIFO (first in, first out). Use it for task scheduling, BFS, or message buffering.
-- `binary search tree (BST)`: nodes where left < parent < right. Search/insert/delete average O(log n), worst case O(n) if unbalanced.
-- `heap`: a tree-based structure keeping the min (or max) accessible in O(1), with O(log n) insert/remove. Used for priority queues, scheduling, and algorithms like Dijkstra's.
+**Functions:** `*args` captures positional extras, `**kwargs` captures keyword extras (used everywhere in ML — model constructors, Trainer, plot params). `lambda` is for simple sort keys / DataFrame apply — never for complex logic.
 
-### Algorithms
-- `Big-O notation`: describes how runtime or memory grows as input size grows. Interviewers expect you to state the Big-O of your solution and explain why.
-- `recursion`: a function calling itself on a smaller subproblem, with a base case to stop. Foundation for tree/graph problems and divide-and-conquer.
-- `dynamic programming (DP)`: solving a problem by breaking it into overlapping subproblems and caching results (memoization) instead of recomputing (e.g. Fibonacci, coin change, knapsack).
-- `greedy algorithm`: makes the locally optimal choice at each step, hoping it leads to a globally optimal solution (e.g. Kruskal's, Prim's for minimum spanning tree). Doesn't always give the optimal answer — know when it does.
-- `BFS / DFS`: breadth-first search explores level by level (shortest path in unweighted graphs); depth-first search explores as deep as possible before backtracking (good for cycle detection, connectivity).
-- `Dijkstra's algorithm`: finds the shortest path from one node to all others in a weighted graph with non-negative edges, using a min-heap.
-- `sorting complexity`: bubble/selection sort are O(n²) and mainly for teaching; merge sort is O(n log n) and stable; quicksort is O(n log n) average but O(n²) worst case and usually faster in practice due to lower constant factors.
+**Comprehensions** ([x for x in y]) are faster than manual for+append because the append runs in C, not Python bytecode.
 
-### Databases
-- `CRUD`: Create, Read, Update, Delete — the basic operations any database-backed app performs.
-- `join`: combines rows from two tables based on a related column. `INNER JOIN` returns only matches; `LEFT JOIN` keeps all rows from the left table even without a match.
-- `aggregation`: functions like `COUNT`, `SUM`, `AVG` combined with `GROUP BY` to summarize rows into groups.
-- `index`: a data structure (usually a B-tree) that speeds up lookups on a column at the cost of extra storage and slower writes. Add one on columns you filter or join on frequently.
-- `HTTP GET`: request data from a server without changing anything.
-- `HTTP POST`: send data to a server to create or update a resource.
-- `async/await`: syntax for asynchronous code. Lets your program do other work while waiting for I/O like network calls or disk access.
+**Generators** (yield): Lazy evaluation — one item at a time, O(1) memory vs O(n) for a list. Use for large files, streaming LLM tokens, infinite sequences. Generator expressions `(x for x in y)` use less memory than list comprehensions.
 
-## When to use
-- Use Python basics for data prep, feature engineering, and script automation.
-- Use `set`/`dict` instead of `list` when you need repeated membership checks — this is a very common "how would you optimize this" interview follow-up.
-- Use a stack for backtracking/undo problems, a queue for order-preserving processing, a heap when you repeatedly need the min/max.
-- Use recursion + memoization (DP) when a brute-force solution recomputes the same subproblem many times.
-- Use SQLite/SQL for small project storage, and add indexes once queries start filtering on a column often.
-- Use `requests` to fetch external data or call APIs.
-- Use generators when processing data too large to fit in memory (e.g. reading a huge file or streaming tokens).
-- Use decorators for cross-cutting concerns (timing, logging, auth checks) instead of repeating code in every function.
+**Context managers** (with): Guarantee cleanup (close file, disable gradients, release lock) even on exception. `torch.no_grad()` is a context manager.
 
-## Interview review
-- Explain why you choose one collection over another: `list` for ordered data, `dict`/`set` for O(1) lookup, `tuple` for fixed, hashable records.
-- Be ready to state the time/space complexity of anything you write, and explain the tradeoff (e.g. "hash map trades memory for O(1) lookup").
-- Common whiteboard-style prompts to be ready for: reverse a linked list, detect a cycle, implement a stack with O(1) min, BFS/DFS a graph, binary search, merge two sorted lists, find the kth largest element (heap).
-- If asked "how would you speed this up," the expected answer is almost always: better data structure, indexing, or caching — not "add more hardware."
-- For SQL, describe the difference between `INNER JOIN` and `LEFT JOIN`, and when you'd add an index (frequent `WHERE`/`JOIN` columns) versus when you wouldn't (small tables, write-heavy tables).
-- If asked about `async`, say it's useful when the code waits on I/O rather than CPU-bound work; for CPU-bound work you'd reach for multiprocessing instead.
-- If asked about generators vs lists, say generators trade upfront computation and memory for lazy, one-at-a-time evaluation.
+**Async/await:** Cooperative multitasking for I/O-bound work. `async def` returns a coroutine — it runs only when awaited. Not useful for CPU/GPU-bound model inference. Use multiprocessing for CPU work, threading for blocking I/O with libraries that don't support async.
 
-## Common pitfalls
-- Using mutable default arguments like `def f(x, log=[])` — the same list is reused across calls, causing shared-state bugs. Use `None` and initialize inside the function.
-- Forgetting to close database/file connections; prefer `with sqlite3.connect(...) as conn:` (a context manager).
-- Assuming `requests.get()` always succeeds; check `status_code` / use `resp.raise_for_status()`.
-- Using a `list` for frequent `in` checks instead of a `set` — this is O(n) per check instead of O(1).
-- Writing recursion without a base case, or without memoization when subproblems repeat (leads to exponential blowup, e.g. naive Fibonacci).
-- Adding an index to every column "just in case" — indexes speed up reads but slow down writes and cost storage.
+**Decorators:** Functions that wrap functions. Used for cross-cutting concerns: logging, timing, caching, auth. `@app.get("/route")` in FastAPI is a decorator that registers the handler.
 
-## How to use
+**`if __name__ == "__main__":`** — code runs only on direct execution, not import. Use for CLI entry points and demos.
 
-### Simple function
-```python
-def add(a, b):
-    return a + b
+## DSA
 
-print(add(4, 5))
-```
+**Big-O:** Describes how runtime scales with input size, ignoring constants.
+- O(1): dict lookup, array index
+- O(log n): binary search, heap push/pop
+- O(n): iterating a list
+- O(n log n): efficient sorting
+- O(n²): nested loops, naive attention
+- O(2ⁿ): brute-force subset problems
 
-### Common collections
-```python
-nums = [1, 2, 3]
-config = {"lr": 0.001, "batch_size": 32}
-flags = {True, False}
-pair = (10, 20)
-```
+**Attention is O(n²) in sequence length — the fundamental transformer bottleneck.** FAISS retrieval is O(log n) with IVF indexes.
 
-### Class pattern
-```python
-class Dataset:
-    def __init__(self, rows):
-        self.rows = rows
+**Data structures:**
+- Stack (LIFO) — Python list is already a stack: append/pop. Use for DFS, undo, expression parsing.
+- Queue (FIFO) — `collections.deque` with append/popleft. Use for BFS, task scheduling.
+- Heap — `heapq` module. O(1) min, O(log n) push/pop. Use for priority queues, top-k, Dijkstra.
+- Hash table — foundation of dict/set. Python uses random seed per process to prevent hash-flooding DoS.
 
-    def count(self):
-        return len(self.rows)
-```
+**Sorting:** Python uses Timsort (hybrid merge+insertion), O(n log n) worst, O(n) on nearly-sorted data. Never implement your own.
 
-### Stack and queue
-```python
-stack = []
-stack.append(1)     # push
-stack.append(2)
-stack.pop()          # pop -> 2 (LIFO)
+**Algorithm patterns:**
+- Two pointers — O(n) on sorted arrays.
+- Sliding window — O(n) for contiguous subarray problems.
+- Recursion — always needs a base case. Without memoization, exponential blowup (naive Fibonacci).
+- DP — recursion + memoization (`@lru_cache`). Use when problem has optimal substructure + overlapping subproblems.
+- BFS (queue) — shortest path in unweighted graphs, level-order traversal.
+- DFS (stack/recursion) — cycle detection, topological sort, connectivity.
+- Binary search — O(log n) on sorted data.
 
-from collections import deque
-queue = deque()
-queue.append(1)      # enqueue
-queue.append(2)
-queue.popleft()       # dequeue -> 1 (FIFO)
-```
+## SQL
 
-### Binary search tree insert
-```python
-class Node:
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
+**CRUD + parameterized queries:** Always use `?` placeholders. Never f-strings — SQL injection.
 
-def insert(root, value):
-    if root is None:
-        return Node(value)
-    if value < root.value:
-        root.left = insert(root.left, value)
-    else:
-        root.right = insert(root.right, value)
-    return root
-```
+**JOINs:** INNER JOIN returns only matches; LEFT JOIN keeps all left-side rows (NULLs for missing right-side). Used everywhere in data analysis and ML feature engineering.
 
-### Heap as a priority queue
-```python
-import heapq
+**WHERE vs HAVING:** WHERE filters rows before grouping; HAVING filters groups after.
 
-heap = []
-heapq.heappush(heap, 5)
-heapq.heappush(heap, 1)
-heapq.heappush(heap, 3)
-print(heapq.heappop(heap))  # 1 (smallest first)
-```
+**Indexing:** Speeds up reads on WHERE/JOIN/ORDER BY columns. Tradeoff: slower writes, more disk. Index high-cardinality columns in read-heavy tables. Skip on write-heavy logs or low-cardinality columns.
 
-### Recursion with memoization (DP)
-```python
-from functools import lru_cache
+**ACID:** Atomicity, Consistency, Isolation, Durability. Transactions ensure all-or-nothing execution.
 
-@lru_cache(maxsize=None)
-def fib(n):
-    if n <= 1:
-        return n
-    return fib(n - 1) + fib(n - 2)
-```
+**SQL vs NoSQL:** SQL for relational data, complex joins, transactions. NoSQL for flexible schema, high write throughput, horizontal scale. PostgreSQL with pgvector also handles vector search.
 
-### Sorting (merge sort)
-```python
-def merge_sort(arr):
-    if len(arr) <= 1:
-        return arr
-    mid = len(arr) // 2
-    left, right = merge_sort(arr[:mid]), merge_sort(arr[mid:])
-    result = []
-    i = j = 0
-    while i < len(left) and j < len(right):
-        if left[i] <= right[j]:
-            result.append(left[i]); i += 1
-        else:
-            result.append(right[j]); j += 1
-    return result + left[i:] + right[j:]
-```
+## HTTP APIs
 
-### Graph BFS
-```python
-from collections import deque
+**Key status codes:** 200 (OK), 201 (Created), 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (validation error), 429 (rate limited), 500 (server error), 503 (unavailable).
 
-def bfs(graph, start):
-    visited = {start}
-    queue = deque([start])
-    order = []
-    while queue:
-        node = queue.popleft()
-        order.append(node)
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append(neighbor)
-    return order
-```
+**Auth headers:** `Authorization: Bearer <token>` for JWT. `Content-Type: application/json` for JSON APIs.
 
-### SQLite pattern
-```python
-import sqlite3
-with sqlite3.connect("data.db") as conn:
-    cur = conn.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)")
-    cur.execute("INSERT INTO users (name) VALUES (?)", ("Alice",))
-    conn.commit()
-    rows = cur.execute("SELECT * FROM users").fetchall()
-```
+## Common Pitfalls
+- Mutable default args (`def f(x, l=[])`) — same list reused across calls. Use `None` + init inside.
+- `== None` vs `is None` — use `is` for singletons.
+- Modifying a list while iterating it — iterate over a copy.
+- Not closing files/DB connections — use context managers.
+- Bare `except:` — catch specific exceptions.
+- Forgetting `resp.raise_for_status()` — silent failures.
 
-### Join, aggregation, and index
-```sql
-SELECT u.name, COUNT(o.id) AS order_count
-FROM users u
-LEFT JOIN orders o ON o.user_id = u.id
-GROUP BY u.name;
-
-CREATE INDEX idx_orders_user_id ON orders(user_id);
-```
-
-### Requests pattern
-```python
-import requests
-resp = requests.get("https://api.example.com/data")
-resp.raise_for_status()
-data = resp.json()
-```
-
-### Async pattern
-```python
-import asyncio
-
-async def wait_and_print():
-    await asyncio.sleep(1)
-    print("done")
-
-asyncio.run(wait_and_print())
-```
-
-### Decorator
-```python
-import time
-from functools import wraps
-
-def timed(fn):
-    @wraps(fn)
-    def wrapper(*args, **kwargs):
-        start = time.perf_counter()
-        result = fn(*args, **kwargs)
-        print(f"{fn.__name__} took {time.perf_counter() - start:.4f}s")
-        return result
-    return wrapper
-
-@timed
-def slow_add(a, b):
-    return a + b
-```
-
-### Generator
-```python
-def batch(iterable, size):
-    chunk = []
-    for item in iterable:
-        chunk.append(item)
-        if len(chunk) == size:
-            yield chunk
-            chunk = []
-    if chunk:
-        yield chunk
-```
+## Interview Must-Knows
+- Why set/dict have O(1) lookup (hash table, tradeoff: memory).
+- Difference between INNER and LEFT JOIN.
+- When to add an index.
+- How async works vs threading vs multiprocessing.
+- Common coding: reverse linked list, detect cycle, BFS/DFS, binary search, two-sum (hash map), valid parentheses (stack), max subarray (Kadane's, O(n)).

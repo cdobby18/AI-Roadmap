@@ -1,118 +1,67 @@
 # Phase 4 — NLP + Transformers
 
-## What this phase covers
-- Text preprocessing and tokenization
-- Word representation: TF-IDF, word2vec, and contextual embeddings
-- NLP applications like sentiment analysis, NER, summarization, simple chatbots
-- Pre-trained transformers: BERT, GPT, Hugging Face models
-- Transformer architecture concepts: attention, multi-head attention, positional encoding, encoder/decoder
-- Fine-tuning and sharing models on the Hugging Face Hub
+## The Progression of Text Representations
 
-## Key terms and meaning
-- `tokenization`: splitting text into tokens the model can process. Turns raw text into pieces the model understands, often subwords instead of whole words.
-- `BPE`: byte-pair encoding. A subword tokenization strategy that balances vocabulary size and rare/unseen word handling.
-- `TF-IDF`: term frequency–inverse document frequency. A classic way to turn text into numbers by scoring words that are common in one document but rare across the corpus. Sparse, fast, no notion of meaning.
-- `word2vec`: learns dense word vectors by predicting a word from its context (CBOW) or context from a word (skip-gram). Captures some semantic relationships (e.g. `king - man + woman ≈ queen`) but produces one fixed vector per word regardless of context.
-- `embedding`: dense vector representation of text or words. Similar meaning maps to similar vectors — the foundation for search, clustering, and RAG retrieval.
-- `contextual embedding`: unlike word2vec, models like BERT produce a different vector for the same word depending on its surrounding sentence (e.g. "bank" of a river vs a "bank" account).
-- `self-attention`: a mechanism letting each token look at every other token in the sequence and weigh how relevant they are. How transformers decide which words matter for each prediction.
-- `multi-head attention`: running several attention mechanisms ("heads") in parallel, each learning to focus on different relationships (e.g. syntax vs coreference), then combining the results.
-- `Query, Key, Value (Q, K, V)`: the three vectors attention computes from each token. A token's Query is compared against every other token's Key to get attention weights, which are used to combine the Values.
-- `positional encoding`: since attention has no built-in sense of word order, a signal (often sinusoidal) is added to embeddings to tell the model each token's position in the sequence.
-- `encoder`: a transformer block that reads all tokens bidirectionally. Use encoder models like BERT for understanding/classification tasks.
-- `decoder`: a transformer block that predicts next tokens autoregressively (each token only sees previous ones). Use decoder models like GPT for generation.
-- `fine-tuning`: adapting a pre-trained model to a specific task by continuing training on task-specific data — the most practical way to get good results without training from scratch.
-- `context window`: the number of tokens the model can consider at once. Long documents need chunking (relevant for RAG) because they exceed this window.
-- `push to hub`: uploading a trained/fine-tuned model and tokenizer to the Hugging Face Hub so it can be versioned, shared, and loaded by name elsewhere.
+**TF-IDF (Term Frequency — Inverse Document Frequency):** Sparse vector where each dimension is a word, weighted by how often it appears in a document vs across the corpus. No notion of meaning — "rubber man" and "stretchy pirate" have zero similarity. Fast, interpretable, good baseline for text classification on small data. O(vocab_size) memory.
 
-## When to use
-- Use these notes when you need to understand how language is represented inside models.
-- Use TF-IDF for a fast, interpretable baseline on small text classification tasks with no GPU.
-- Use word2vec-style embeddings when you need lightweight, static word vectors and don't need context sensitivity.
-- Use contextual embeddings / transformers when meaning depends on context, or for semantic search and RAG retrieval.
-- Use NLP apps when you need extraction, classification, or summarization of text.
-- Use encoder-only models (BERT) for classification/understanding; use decoder-only models (GPT) for generation and chat.
-- Use fine-tuning when a pre-trained model is close but not accurate enough on your specific domain/labels.
+**Word2Vec (word embeddings):** Dense vectors (typically 50-300 dimensions) learned by predicting a word from its context (CBOW) or context from a word (skip-gram). Captures some semantic relationships: `king - man + woman ≈ queen`. But one fixed vector per word — "bank" (river) and "bank" (money) share the same embedding.
 
-## Interview review
-- Describe tokenization as a preprocessing step that directly affects the number of tokens and cost for LLMs — more tokens means higher latency and API cost.
-- If asked about TF-IDF vs word2vec vs transformer embeddings, give the progression: TF-IDF is sparse counting with no meaning; word2vec gives dense static vectors with some semantics; transformer embeddings are contextual, changing per sentence.
-- When asked about transformers, explain the basic flow: token embedding + positional encoding → multi-head self-attention → feed-forward → repeat across layers.
-- Be ready to explain attention conceptually without heavy math: each token asks "which other tokens matter to me right now" (Query vs Key) and pulls information from them weighted by relevance (Value).
-- Explain why multi-head attention is used instead of one large attention: different heads can specialize in different relationships (e.g. one head tracks subject-verb agreement, another tracks pronoun references).
-- Mention that encoder-only models are best for understanding/classification, decoder-only for generation, and encoder-decoder (like T5) for sequence-to-sequence tasks like translation/summarization.
-- If asked why transformers need positional encoding but RNNs don't, explain that RNNs process tokens sequentially (order is implicit), while attention looks at all tokens at once (order must be added explicitly).
-- If asked about fine-tuning vs prompting a large LLM, mention that fine-tuning is worth it for narrow, high-volume tasks with labeled data; prompting/few-shot is faster to iterate and better when data is scarce.
+**Contextual embeddings (BERT, transformers):** The same word gets different vectors depending on surrounding context. "Bank" in "river bank" vs "money bank" produce different embeddings. This is what powers modern NLP and RAG. ~768 dimensions for BERT-base, ~384 for MiniLM.
 
-## What to use
-- `transformers` library for tokenization and pre-trained models.
-- `sklearn.feature_extraction.text.TfidfVectorizer` for TF-IDF baselines.
-- `gensim` or `sentence-transformers`/`transformers` for word2vec-style and contextual embeddings.
-- `pipeline()` for quick inference on sentiment, NER, summarization.
-- Hugging Face Hub (`push_to_hub`) for sharing and versioning fine-tuned models.
+**Why this order matters:** Each step fixes a limitation of the previous one. TF-IDF has no semantics → Word2Vec adds semantics but no context → BERT adds context. Interviewers ask about this progression.
 
-## How to use
+## Transformer Architecture
 
-### Tokenization
-```python
-from transformers import AutoTokenizer
-tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-text = "AI engineering is fun."
-ids = tokenizer(text, return_tensors="pt")
-print(ids)
-```
+**The core insight:** Attention lets every token look at every other token directly, avoiding the sequential bottleneck of RNNs. This is both the power (long-range dependencies) and the weakness (O(n²) compute in sequence length).
 
-### TF-IDF example
-```python
-from sklearn.feature_extraction.text import TfidfVectorizer
-texts = ["hello world", "hello AI"]
-vectorizer = TfidfVectorizer()
-X = vectorizer.fit_transform(texts)
-print(X.toarray())
-```
+**Components:**
+- **Token embeddings** + **positional encoding** — since attention has no inherent sense of order, positional signals (sinusoidal or learned) are added to tell the model where each token is.
+- **Self-attention (Q, K, V):** Each token produces a Query, Key, and Value vector. Query vs Key dot products determine attention weights (which tokens matter to each other). Values are combined weighted by those attention scores.
+- **Multi-head attention:** Multiple attention mechanisms in parallel, each learning to focus on different relationships (syntax, coreference, semantics). Results are concatenated and projected back.
+- **Feed-forward network:** A simple MLP applied per token. Adds non-linear transformation capacity.
+- **Layer normalization + residual connections:** Stabilize training and allow gradients to flow through many layers.
 
-### word2vec example
-```python
-from gensim.models import Word2Vec
+**Encoder vs Decoder:**
+- **Encoder-only (BERT):** Bidirectional attention — each token sees all other tokens. Best for understanding tasks: classification, NER, embedding extraction.
+- **Decoder-only (GPT):** Causal (masked) attention — each token only sees itself and previous tokens. Best for generation: text completion, chat, code generation.
+- **Encoder-decoder (T5):** Encoder processes input, decoder generates output with cross-attention to encoder. Best for sequence-to-sequence: translation, summarization.
 
-sentences = [["hello", "world"], ["hello", "ai", "engineer"]]
-model = Word2Vec(sentences, vector_size=50, window=2, min_count=1, sg=1)  # sg=1 -> skip-gram
-print(model.wv["hello"])
-print(model.wv.most_similar("hello"))
-```
+## Tokenization
 
-### Contextual embeddings example
-```python
-from transformers import AutoTokenizer, AutoModel
-import torch
+**BPE (Byte-Pair Encoding):** Starts with individual characters, iteratively merges the most frequent pairs. Handles rare/unknown words by breaking them into subword units. GPT uses BPE.
 
-tokenizer = AutoTokenizer.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")
-model = AutoModel.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")
-inputs = tokenizer("hello world", return_tensors="pt")
-outputs = model(**inputs)
-embedding = outputs.last_hidden_state.mean(dim=1)
-```
+**WordPiece:** Similar to BPE but merges based on likelihood rather than frequency. BERT uses WordPiece.
 
-### Scaled dot-product attention (from scratch)
-```python
-import torch
-import torch.nn.functional as F
+**SentencePiece:** Works on raw text without spaces — useful for languages without clear word boundaries. Used by Llama, T5.
 
-def attention(Q, K, V):
-    scores = Q @ K.transpose(-2, -1) / (Q.size(-1) ** 0.5)
-    weights = F.softmax(scores, dim=-1)
-    return weights @ V
-```
+**Why tokenization matters:** The same text can be tokenized very differently by different tokenizers, affecting both cost (API pricing is per token) and model understanding.
 
-### Hugging Face pipeline
-```python
-from transformers import pipeline
-summarizer = pipeline("summarization")
-print(summarizer("This is a long sentence.", max_length=30))
-```
+## Fine-Tuning
 
-### Push a fine-tuned model to the Hub
-```python
-model.push_to_hub("your-username/your-model-name")
-tokenizer.push_to_hub("your-username/your-model-name")
-```
+- **Full fine-tuning:** Update all parameters on task data. Best quality, most expensive. Requires a GPU for anything beyond tiny models.
+- **LoRA (Low-Rank Adaptation):** Train small rank-decomposition matrices injected into attention layers. Only ~0.1-1% of parameters are trained. The base model stays frozen. This is the standard approach for fine-tuning LLMs on consumer hardware.
+- **QLoRA:** LoRA + 4-bit quantization of the base model. Fine-tune a 7B model on 24GB GPU. The practical standard for open-source LLM fine-tuning.
+
+**When to fine-tune vs prompt:**
+- Fine-tune: high-volume narrow task with labeled data, need reliability, can afford the upfront cost.
+- Prompt/few-shot: exploratory, data-scarce, frequent task changes, can't afford fine-tuning infra.
+
+## Evaluation Metrics for NLP
+
+- **Perplexity:** How "surprised" the model is by the text — lower is better for generation. Not directly comparable across tokenizers.
+- **BLEU:** N-gram overlap between generated and reference text. Used for translation. Correlates poorly with human judgment for creative tasks.
+- **ROUGE:** Recall-oriented overlap (how many reference n-grams appear in the output). Used for summarization.
+- **BERTScore:** Embedding-based similarity between generated and reference text. Better correlation with human judgment.
+
+## Interview Must-Knows
+
+- TF-IDF → Word2Vec → BERT progression: what each adds, limitations of each.
+- Self-attention in one sentence: each token computes relevance weights to every other token and pulls information accordingly.
+- Why multi-head attention: different heads specialize in different relationships.
+- Why positional encoding: attention has no sequential order, so position must be injected explicitly.
+- Encoder vs decoder vs encoder-decoder: which architecture for which task.
+- BPE vs WordPiece vs SentencePiece: how they differ and why it matters.
+- Why transformers are O(n²): every token attends to every other token.
+- LoRA vs full fine-tuning: tradeoff between quality and cost.
+- When to fine-tune vs prompt.
+- Attention is all you need — know the paper title and the basic architecture diagram.

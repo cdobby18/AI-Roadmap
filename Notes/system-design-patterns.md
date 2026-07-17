@@ -1,186 +1,192 @@
 # System Design — Core Patterns
 
-## Goal
-Build the systems vocabulary needed to design, scale, and defend a backend architecture in an interview — before layering AI-specific concerns (prompt engineering, LLM workflows) on top. This is reference material for building visual/slide notes, not a substitute for watching the actual courses.
+> The vocabulary to design, defend, and scale a backend architecture. Not a substitute for practicing whiteboard design, but the reference for the patterns interviewers expect you to know.
 
-## What I need to know
-- Scaling: vertical vs horizontal, stateless vs stateful services
-- Load balancing: algorithms, layer 4 vs layer 7
-- Caching: placement, strategies, eviction policies
-- CDNs: static content delivery, edge caching
-- Databases: replication, sharding/partitioning, indexing, SQL vs NoSQL
-- CAP theorem and consistency models (strong vs eventual)
-- Message queues and async/event-driven processing
-- Microservices vs monolith, API Gateway
-- Proxy vs reverse proxy
-- Rate limiting / throttling
-- Consistent hashing
-- Fault tolerance: circuit breakers, retries, timeouts, health checks, failover
-- Distributed coordination basics: leader election, heartbeats, quorum
-- Observability: logging, metrics, monitoring
-- Back-of-envelope capacity estimation
+---
 
-## Key terms
-- `vertical scaling`: making one machine bigger (more CPU/RAM). Simple, but has a ceiling and a single point of failure.
-- `horizontal scaling`: adding more machines and distributing load across them. Needs statelessness and a load balancer, but scales further.
-- `stateless service`: any request can be handled by any server instance because no session/user data is kept in server memory. Required for horizontal scaling to work cleanly.
-- `load balancer (LB)`: distributes incoming requests across multiple servers. Layer 4 (routes by IP/TCP, fast, no content awareness) vs Layer 7 (routes by HTTP content — path, headers, cookies — more flexible, slightly slower).
-- `round robin / least connections / consistent hashing`: common LB algorithms — round robin cycles evenly, least connections sends to the least busy server, consistent hashing sends the same client/key to the same server (useful for cache locality).
-- `reverse proxy`: sits in front of servers, forwards client requests to the right backend (e.g. Nginx). Hides backend topology, can do TLS termination, caching, load balancing.
-- `forward proxy`: sits in front of clients, forwards their requests outward (e.g. corporate proxy hiding internal clients from the internet). Opposite direction from reverse proxy.
-- `cache`: a fast, small, temporary data store in front of a slower source (DB, API) to reduce latency and load. Lives at multiple layers: client, CDN, app-server, DB.
-- `cache-aside (lazy loading)`: app checks cache first; on a miss, reads from DB and writes the result into cache. Most common pattern — cache only holds what's actually been requested.
-- `write-through`: app writes to cache and DB at the same time. Cache always fresh, but every write pays the cache-write cost.
-- `write-back (write-behind)`: app writes to cache only; cache asynchronously flushes to DB later. Fast writes, but risk of data loss if cache fails before flush.
-- `TTL (time to live)`: how long a cached value is considered valid before it's treated as stale and re-fetched.
-- `eviction policy`: rule for removing entries when the cache is full — `LRU` (least recently used) and `LFU` (least frequently used) are the common ones.
-- `CDN (content delivery network)`: a geographically distributed set of edge servers caching static content (images, video, JS/CSS) close to the user, cutting latency and origin server load.
-- `replication`: copying a database across multiple nodes. `master-slave (primary-replica)`: writes go to the primary, reads can be spread across replicas — improves read scaling and durability, adds replication lag.
-- `sharding (horizontal partitioning)`: splitting a single dataset across multiple databases/nodes by a key (e.g. user_id range or hash), so each shard holds a subset of rows. Scales write throughput and storage, but makes cross-shard queries/joins hard.
-- `partitioning`: splitting data into smaller pieces generally — sharding is one form (across nodes); partitioning can also mean splitting within one DB (e.g. by date range) for query performance.
-- `indexing`: a data structure (usually a B-tree) that lets the DB find rows without scanning the whole table. Speeds up reads, costs extra storage and slower writes (index must update too).
-- `CAP theorem`: in a distributed system, under a network partition (P) you must choose between Consistency (C, every read gets the latest write) and Availability (A, every request gets a response). You cannot have all three when a partition happens.
-- `strong consistency`: every read reflects the most recent write immediately. Simpler to reason about, costs latency/availability.
-- `eventual consistency`: reads may return stale data briefly, but all replicas converge eventually. Higher availability/throughput, harder to reason about (used in most NoSQL, DNS, etc.).
-- `SQL vs NoSQL`: SQL (Postgres/MySQL) — structured schema, ACID transactions, joins, good for relational integrity. NoSQL (MongoDB, Cassandra, DynamoDB) — flexible schema, built for horizontal scale and high write throughput, weaker consistency guarantees by default.
-- `message queue`: a buffer (e.g. RabbitMQ, SQS, Kafka) that decouples producers from consumers — producer pushes a message, consumer processes it independently and asynchronously. Smooths traffic spikes and lets services fail/retry independently.
-- `pub/sub (publish-subscribe)`: producers publish events to a topic; any number of subscribers can consume them independently. Used for fan-out (one event, many downstream reactions).
-- `API gateway`: a single entry point in front of multiple backend services — handles routing, auth, rate limiting, and request/response transformation so clients don't talk to each microservice directly.
-- `microservices vs monolith`: monolith = one deployable app, simple to build/deploy early, harder to scale specific parts independently. Microservices = independently deployable services per domain, scale/deploy independently, but add network, consistency, and operational complexity.
-- `rate limiting / throttling`: capping how many requests a client can make in a window (e.g. token bucket, leaky bucket algorithms) to protect the system from abuse or overload.
-- `consistent hashing`: a hashing scheme where adding/removing a node only remaps a small fraction of keys (not all of them), used for cache/shard node distribution so scaling out doesn't invalidate everything.
-- `circuit breaker`: stops calling a dependency that's already failing (after N failures, "open" the circuit and fail fast) instead of piling up timeouts, then periodically retries ("half-open") to see if it's recovered.
-- `retry with backoff`: retrying a failed request, but waiting longer between each attempt (often exponential) to avoid hammering a struggling service.
-- `timeout`: a hard limit on how long to wait for a response before giving up — prevents one slow dependency from cascading into total system failure.
-- `health check`: an endpoint/probe a load balancer or orchestrator polls to know if an instance is alive and should keep receiving traffic.
-- `failover`: automatically switching to a backup/replica when the primary fails, to keep the system available.
-- `leader election`: in a cluster of nodes, a protocol (e.g. Raft, Paxos) to agree on which single node is "in charge" of coordinating writes/decisions, so the group doesn't need a human to pick.
-- `quorum`: minimum number of nodes that must agree/respond for a read or write to be considered successful — balances consistency and availability in replicated systems.
-- `back-of-envelope estimation`: quick math (requests/sec, storage/day, bandwidth) used in interviews to size a system before designing it — order-of-magnitude, not precision.
+## 1. Scaling
 
-## When to use
-- Reach for horizontal scaling + a load balancer once a single server can't handle load or you need redundancy — but only after the service is stateless.
-- Use cache-aside as the default caching strategy unless you specifically need cache and DB to never diverge (then write-through) or need very fast writes with tolerance for some loss (write-back).
-- Put a CDN in front of anything static (images, JS bundles, video) — never serve those directly from your app server.
-- Shard a database when a single node can no longer hold the write throughput or storage of one growing table; replicate first for read scaling and durability before reaching for sharding (sharding is harder to undo).
-- Choose SQL when you need relational integrity/transactions (payments, orders); choose NoSQL when you need flexible schema and horizontal write scale (activity feeds, logs, sessions).
-- Use a message queue whenever a task doesn't need an immediate response (sending email, processing an upload, retraining a model) — decouple it instead of making the client wait.
-- Use an API gateway once you have more than one backend service and want a single place to enforce auth/rate limiting instead of repeating it per service.
-- Use a circuit breaker + retry with backoff around any call to an external dependency (another service, a third-party API, an LLM provider) that can be slow or flaky.
-- Use consistent hashing whenever nodes will be added/removed dynamically (autoscaling cache or shard nodes) and you want to avoid a full remap on every scaling event.
-- Favor eventual consistency (and accept it) for things users don't need instantly-fresh (like counts, feeds); require strong consistency for money, inventory, and anything where a stale read causes a real error.
+**Vertical vs Horizontal:**
+- **Vertical** (scale up): Bigger machine. Simple, has a ceiling, creates a single point of failure.
+- **Horizontal** (scale out): More machines. Needs stateless services and a load balancer. Scales further, but adds complexity (distributed state, coordination).
 
-## Interview review
-- If asked "how would you scale this," the expected shape of answer is: identify the bottleneck first (reads? writes? compute?), then apply the matching pattern — don't jump straight to "add more servers."
-- Be ready to explain CAP theorem with a concrete example: during a network partition, do you serve possibly-stale data (choose A) or refuse to serve until consistency is restored (choose C)? Most real systems pick availability with eventual consistency, and explicitly call out where they need strong consistency instead (e.g. payments).
-- When asked to design a caching layer, mention cache-aside as default, then justify TTL and eviction policy (LRU is the standard first answer) based on access patterns.
-- If asked about database scaling, sequence your answer: indexing → read replicas → caching → sharding — sharding is the last resort because it's the hardest to reverse and complicates queries.
-- Be ready to draw (or describe) request flow end to end: client → CDN/reverse proxy → load balancer → app servers → cache → database (with replicas/shards), including where a message queue sits for async work.
-- If asked about failure handling, mention timeouts + retries + circuit breakers together — timeouts alone without circuit breakers still let failures cascade.
-- Know the tradeoff questions cold: SQL vs NoSQL, strong vs eventual consistency, monolith vs microservices, sharding vs replication, layer 4 vs layer 7 load balancing. Each has a "it depends on X" answer — interviewers are testing whether you know what X is, not that you picked the "right" side.
+**Stateless vs Stateful:**
+- **Stateless:** Any server can handle any request. No session data in local memory. Required for horizontal scaling.
+- **Stateful:** Server remembers client state between requests (e.g., WebSocket connections, in-memory sessions). Harder to scale — needs sticky sessions or external state store (Redis).
 
-## Common pitfalls
-- Adding more servers before making the service stateless — a stateful service can't be horizontally scaled correctly regardless of how many instances you run.
-- Reaching for sharding before trying replication + caching + indexing — sharding adds permanent complexity (cross-shard joins, rebalancing) that's hard to undo.
-- Caching everything with no TTL/eviction policy, leading to stale data serving indefinitely or unbounded memory growth.
-- Treating "eventual consistency" as an excuse to ignore consistency entirely — you still need to reason about which operations truly tolerate staleness.
-- Adding retries without backoff or without a circuit breaker — this can turn one slow dependency into a self-inflicted traffic spike ("retry storm") that makes the outage worse.
-- Designing microservices before there's an actual reason to split (team boundaries, independent scaling needs) — premature microservices mostly just add network calls and deployment overhead.
-- Forgetting health checks, so a load balancer keeps sending traffic to a dead instance until a request actually times out.
-- Skipping back-of-envelope math in an interview and jumping straight to a diagram — interviewers want to see you size the problem first (requests/sec, data volume) so your design choices are justified, not guessed.
+## 2. Load Balancing
 
-## How to use (patterns as diagrams / pseudocode)
+**Layer 4 (Transport):** Routes by IP + TCP port. Fast, no content awareness. Can't make application-level routing decisions.
 
-### Basic request flow
-```
-Client
-  │
-  ▼
-CDN (static assets, cached at edge)
-  │
-  ▼
-Reverse Proxy / Load Balancer  ──►  App Server 1
-  │                              ──►  App Server 2
-  │                              ──►  App Server 3
-  ▼
-Cache (Redis)  ◄──miss──  App Server  ──►  Database (primary)
-                                              │
-                                              ▼
-                                        Read Replicas
-```
+**Layer 7 (Application):** Routes by HTTP content (path, headers, cookies, body). More flexible — can route `/api/v1` to one service and `/api/v2` to another. Slightly slower.
 
-### Cache-aside pattern
-```
-def get_user(user_id):
-    value = cache.get(user_id)
-    if value is None:               # cache miss
-        value = db.query(user_id)
-        cache.set(user_id, value, ttl=300)
-    return value                    # cache hit or freshly loaded
-```
+**Algorithms:**
+- **Round robin:** Cycles evenly across servers. Simple, doesn't account for load.
+- **Least connections:** Sends to the server with fewest active connections. Better for variable-length requests.
+- **Consistent hashing:** Same client/key always goes to the same server. Useful for cache locality — minimizes cache misses on server changes.
 
-### Circuit breaker (state machine)
-```
-CLOSED (calls pass through)
-   │  failures >= threshold
-   ▼
-OPEN (calls fail immediately, no network call made)
-   │  after cooldown timer
-   ▼
-HALF-OPEN (allow one trial call)
-   │success            │failure
-   ▼                   ▼
-CLOSED              OPEN (reset cooldown)
-```
+## 3. Caching
 
-### Consistent hashing (ring)
-```
-        node A
-      /         \
-node D            node B
-      \         /
-        node C
+**Where caches live:** Client (browser cache), CDN (edge cache), app server (in-memory cache like Redis), database (buffer pool). Cache at the level closest to the bottleneck.
 
-key "user:123" -> hash -> lands between node B and node C
-                        -> stored on node C (next node clockwise)
+**Patterns:**
+- **Cache-aside (lazy loading):** App checks cache first. On miss: reads from DB, writes result to cache. Most common pattern. Cache only holds what's actually been requested. Downside: cache miss penalty (DB read + cache write).
+- **Write-through:** App writes to cache AND DB simultaneously. Cache always consistent. Every write pays double latency.
+- **Write-behind (write-back):** App writes to cache only; cache asynchronously flushes to DB. Fast writes. Risk: data loss if cache fails before flush.
 
-Adding node E only remaps keys between E and its counter-clockwise
-neighbor — the rest of the ring is untouched.
-```
+**Eviction policies:**
+- **LRU (Least Recently Used):** Evict items not accessed for the longest time. Most common. Good for most workloads.
+- **LFU (Least Frequently Used):** Evict items accessed least often. Good for workloads with stable popularity patterns (some items accessed far more than others).
+- **TTL (Time To Live):** Items expire after a fixed duration. Simple, predictable. Used when data is known to be stale after a certain time (e.g., weather data).
 
-### Message queue / async processing
-```
-Producer (API request)
-   │  publish "resize_image" event
-   ▼
-Queue (SQS / RabbitMQ / Kafka)
-   │
-   ▼
-Consumer worker(s)  ──►  process image  ──►  write result to DB/S3
+**When to cache:** Data that is read frequently, written infrequently, and can tolerate some staleness. Never cache data that must be instantly consistent (financial transactions, real-time inventory).
 
-Client gets an immediate "202 Accepted" instead of waiting
-for the resize to finish.
-```
+## 4. CDN
 
-### Database read replica routing
-```
-def route_query(query):
-    if query.is_write:
-        return primary_db.execute(query)
-    else:
-        return random.choice(read_replicas).execute(query)
-```
+A geographically distributed set of edge servers that cache static content (images, CSS, JS, video) close to users. Reduces latency and offloads origin servers. Use for any globally-distributed application with static assets.
 
-### Back-of-envelope estimation (template)
-```
-1. Users: total users, daily active users (DAU)
-2. Requests/sec: DAU * avg actions per user / 86400 seconds
-3. Storage/day: requests/day * avg payload size
-4. Storage/year: storage/day * 365 (adjust for retention policy)
-5. Bandwidth: requests/sec * avg payload size
+## 5. Databases
 
-Keep it order-of-magnitude — round aggressively, state assumptions
-out loud, and use the numbers to justify design choices
-(e.g. "10K req/sec means we need a load balancer + caching, not
-just a bigger single server").
-```
+**Replication (Primary-Replica):** Writes go to primary; reads can be spread across replicas. Improves read throughput and durability. Replication lag means replicas may be slightly stale. If primary fails, a replica must be promoted — downtime during failover.
+
+**Sharding (Horizontal Partitioning):** Split data across multiple database nodes by a shard key (e.g., `user_id % N`). Each node holds a subset of rows. Scales write throughput and storage. Makes cross-shard queries and joins expensive or impossible. Choosing a good shard key is critical — a bad key causes hot spots.
+
+**Indexing:** B-tree structure that enables O(log n) lookups instead of O(n) full table scans. Add indexes on columns used in WHERE, JOIN, ORDER BY. Cost: ~20% storage overhead, slower writes (index must be updated). Don't index low-cardinality columns (booleans, status fields with few values) or write-heavy tables.
+
+**SQL vs NoSQL:**
+| Need | Choice |
+|---|---|
+| Complex joins, ACID transactions, structured schema | SQL (PostgreSQL) |
+| Flexible schema, rapid iteration | NoSQL (MongoDB) |
+| High write throughput at scale | NoSQL (Cassandra, DynamoDB) |
+| Document/JSON with queries | PostgreSQL (JSONB) |
+| Vector search | pgvector or specialized (Pinecone, Weaviate) |
+
+**Denormalization:** Storing redundant data (e.g., storing user name in the orders table instead of joining on user_id). Tradeoff: faster reads (no join), but must keep redundant copies in sync. Common in NoSQL and read-heavy systems.
+
+## 6. CAP Theorem
+
+In a distributed system, during a network partition (P), you must choose between:
+- **Consistency (C):** Every read gets the latest write. System may reject requests until partition is resolved (downtime).
+- **Availability (A):** Every request gets a response, even if that response returns stale data.
+
+You cannot have all three simultaneously when a partition occurs. In practice: choose CP (banking, financial data) or AP (social media, content delivery). Most systems are AP with eventual consistency.
+
+**Consistency models:**
+- **Strong:** Every read sees the most recent write. Simplest to reason about. Highest latency. Used in: financial systems, inventory.
+- **Eventual:** Reads may return stale data, but replicas converge over time. Used in: DNS, social media feeds, content delivery.
+- **Read-your-writes:** User sees their own writes immediately, but others may not. Common compromise for user-facing applications.
+
+## 7. Message Queues
+
+Decouple producers (who send events) from consumers (who process them). The queue buffers between them, handling traffic spikes and allowing independent scaling.
+
+**Use cases:**
+- Async processing: "User uploaded a file" → queue → process → notify.
+- Decoupling services: Order service doesn't need to wait for email service.
+- Smoothing traffic spikes: Queue absorbs bursts, consumers process at their own pace.
+- Retry/error handling: Failed messages go to a dead-letter queue for later inspection.
+
+**Kafka vs RabbitMQ vs SQS:**
+- **Kafka:** High throughput, durable, replayable (messages persist). Best for event streaming and data pipelines.
+- **RabbitMQ:** Low latency, flexible routing. Best for task distribution and RPC-style messaging.
+- **SQS:** Fully managed AWS, no ops. Best for simple use cases within AWS.
+
+## 8. Microservices vs Monolith
+
+**Monolith:** Single deployable unit. Simple to develop, test, and deploy in early stages. Becomes a bottleneck as the team and codebase grow.
+
+**Microservices:** Independently deployable services, each owning its data. Pros: independent scaling, team autonomy, technology flexibility. Cons: distributed system complexity (network calls, data consistency, service discovery, testing).
+
+**API Gateway:** A single entry point that routes requests to the appropriate microservice. Handles authentication, rate limiting, logging, and request transformation. Clients talk to the gateway, not to individual services.
+
+**When to start with microservices:** Never. Start monolith, extract services when the monolith's boundaries are well-understood (Conway's Law — architecture mirrors communication structure).
+
+## 9. Proxy vs Reverse Proxy
+
+**Forward proxy:** Sits in front of clients, forwards their requests outward. Used for: content filtering, hiding client IPs, bypassing geo-restrictions.
+
+**Reverse proxy:** Sits in front of servers, forwards client requests to the right backend (Nginx, Caddy, Traefik). Used for: load balancing, TLS termination, caching, hiding backend topology.
+
+## 10. Rate Limiting
+
+Cap requests per client per time window. Essential for public APIs to prevent abuse and control costs.
+
+**Algorithms:**
+- **Token bucket:** Tokens added at a fixed rate. Each request consumes a token. Allows bursts up to bucket size.
+- **Leaky bucket:** Requests processed at a fixed rate. Excess is queued or dropped. Smoother output but less burst-tolerant.
+- **Sliding window log:** Track timestamps of last N requests within a time window. Most accurate, most memory.
+- **Sliding window counter:** Approximate version using counters per bucket. Good balance of accuracy and memory.
+
+**Where to rate limit:** API gateway (global), per-endpoint (inference costs more than health check), per-user (prevent abuse).
+
+## 11. Consistent Hashing
+
+A distribution scheme where adding/removing servers only causes remapping of 1/N of keys (instead of nearly all keys in simple hash modulo). Used in: distributed caches (Redis Cluster), load balancers (for cache affinity), distributed databases.
+
+**How it works:** Servers and keys are placed on a hash ring. Each key is assigned to the nearest server clockwise. When a server is added/removed, only the keys between it and its neighbor are remapped.
+
+## 12. Fault Tolerance
+
+- **Circuit breaker:** After N consecutive failures, stop calling the service and fail fast (or return cached response) for a cooldown period. Prevents cascading failures and gives the downstream service time to recover.
+- **Retry with exponential backoff + jitter:** Retry on transient failures, doubling wait time between retries. Add random jitter to prevent thundering herd (all clients retrying simultaneously).
+- **Timeout:** Set a maximum wait time for every external call. Without this, a slow downstream service consumes resources indefinitely.
+- **Health checks:** Endpoints that tell load balancers whether a service instance is healthy. Kill unhealthy instances.
+- **Graceful degradation:** Feature reduces functionality instead of failing completely. Example: if recommendation service is down, show popular items instead.
+- **Bulkhead:** Isolate resources per service/tenant so a failure in one doesn't exhaust shared resources. Named after ship compartments — if one compartment floods, the ship stays afloat.
+- **Dead letter queue:** Failed messages go here for later analysis instead of being lost. Without this, transient failures cause permanent data loss.
+
+## 13. Observability
+
+**Three pillars:**
+- **Logging:** Structured events (JSON) recording what happened. Use for debugging and auditing. Centralize logs (Elasticsearch, Loki, CloudWatch).
+- **Metrics:** Numerical measurements over time (request rate, error rate, latency P50/P95/P99, CPU/memory usage). Use for alerting and capacity planning. Tools: Prometheus, Grafana, Datadog.
+- **Tracing:** Track a single request across multiple services. Shows where time is spent and where failures occur. Tools: Jaeger, Zipkin, OpenTelemetry.
+
+**Key metrics to track:**
+- **Latency percentiles:** P50 (median), P95 (almost everyone), P99 (worst case). Average latency hides bad outliers. P99 is what users actually experience.
+- **Error rate:** Percentage of requests returning 5xx or application errors. Alert on >1%.
+- **Request rate:** Requests per second. Track trends for capacity planning.
+- **Saturation:** CPU, memory, disk, network, connection pool usage. Know when you're about to hit a limit.
+
+## 14. Back-of-Envelope Estimation
+
+**Reference numbers to memorize:**
+- Memory read: ~100ns
+- SSD read: ~100µs
+- Disk seek: ~10ms
+- Network round trip (same datacenter): ~500µs
+- Network round trip (cross-continent): ~100ms
+- HTTP request (light): ~10ms server time
+- LLM inference (7B, single query): ~100ms-1s on GPU
+- Vector search (1M vectors, brute force): ~10ms
+- Vector search (1M vectors, ANN index): ~1ms
+
+## 15. AI-Specific Patterns
+
+**LLM caching:** Cache LLM responses for exact query matches. Most effective for high-volume simple queries (classification, extraction). Semantic caching (cache on embedding similarity instead of exact match) is the next frontier.
+
+**Embedding cache:** Cache document embeddings so you only compute them once. FAISS index is essentially an embedding cache with search capability.
+
+**Vector DB sharding:** Shard by document collection, tenant, or language. Keeps each shard small and search fast.
+
+**Cost optimization patterns:**
+- Cascade: Try small/cheap model first; escalate to large/expensive model only when confidence is low.
+- Cache frequent queries.
+- Batch inference for non-real-time use.
+- Use local Ollama for dev/test instead of paid API calls.
+
+## Interview Must-Knows
+
+- Vertical vs horizontal scaling.
+- Load balancer layer 4 vs layer 7.
+- Cache-aside vs write-through vs write-behind.
+- SQL vs NoSQL tradeoffs.
+- CAP theorem: can't have all three during partition. CP vs AP choice.
+- When to use message queues.
+- Rate limiting algorithms: token bucket (allows bursts) vs leaky bucket (smooth output).
+- Circuit breaker pattern.
+- Consistent hashing: why it's better than simple modulo for distributed caches.
+- Observability: logging vs metrics vs tracing. What each is good for.
+- Back-of-envelope: know approximate latencies for memory, disk, network, LLM inference.
+- Cascade pattern: start cheap, escalate to expensive only when needed.

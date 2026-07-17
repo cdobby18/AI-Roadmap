@@ -1,187 +1,65 @@
 # Phase 2 — FastAPI
 
-## Goal
-Learn how to build an API backend that can serve AI or ML features in production, not just a demo script — routing, validation, auth, background work, and enough testing/design sense to defend your choices in an interview.
+## What FastAPI Is
 
-## What I need to know
-- FastAPI app structure
-- GET/POST routes and path/query params
-- Pydantic models for input validation
-- Dependency injection with `Depends`
-- Middleware and request lifecycle
-- Basic Auth and JWT auth patterns
-- Background tasks for non-blocking work
-- REST API design basics: status codes, versioning, idempotency
-- Testing endpoints with `TestClient`
-- Rate limiting and CORS
+A Python web framework for building APIs. It's the industry standard for serving ML models because:
+- **Automatic OpenAPI docs** — `/docs` endpoint is free documentation.
+- **Pydantic validation** — payloads validated at the boundary before your handler runs.
+- **Async support** — but sync routes run in a threadpool, so you don't need async for blocking work like model inference.
+- **Dependency injection** — shared logic (auth, DB sessions) without global state or tight coupling.
 
-## Key terms
-- `endpoint`: a route exposed by the API. One URL that performs one job, like returning predictions or saving user input.
-- `Pydantic`: the library that checks the shape of incoming/outgoing JSON. Prevents bad inputs from reaching your logic.
-- `BaseModel`: the Pydantic class used to define input/output schemas — how you declare what data the API expects and returns.
-- `Depends`: FastAPI's dependency injection helper. Use it to reuse logic like authentication, database connections, or configuration across routes.
-- `BackgroundTasks`: lets the server start a response immediately and run follow-up work later. Useful for email sending, logging, or cache refresh.
-- `JWT`: JSON Web Token. A compact, signed string proving a user is authenticated without storing session state on the server. Has three parts: header, payload, signature.
-- `bearer token`: an auth scheme where the client sends `Authorization: Bearer <token>` on every request; FastAPI reads it via a security dependency (e.g. `HTTPBearer`).
-- `HTTPException`: stops the request and returns an error code. Use it for invalid data, unauthorized access, or missing resources.
-- `middleware`: code that runs before or after every request — logging, timing, security headers, CORS.
-- `CORS`: Cross-Origin Resource Sharing. Browser security rule that blocks a frontend on one origin from calling an API on another unless the API explicitly allows it.
-- `rate limiting`: capping how many requests a client can make in a time window, to protect the service from abuse or overload (e.g. `slowapi`).
-- `idempotency`: calling the same request multiple times produces the same result. `GET`, `PUT`, `DELETE` should be idempotent; `POST` typically is not.
-- `status code`: `2xx` success, `4xx` client error (bad input, unauthorized), `5xx` server error. Interviewers expect you to pick the right one, not always `200`.
+## Why FastAPI over Flask or Django
 
-## When to use
-- Use FastAPI when you need a web service for model inference or any AI feature behind an API.
-- Use Pydantic whenever the API accepts or returns JSON — validate at the boundary, trust it inside.
-- Use dependencies for shared logic like authentication, DB sessions, or pagination params.
-- Use JWT for stateless auth across services; use sessions/cookies when you control a single server and want easy revocation.
-- Use background tasks for lightweight I/O/deferred work — not for heavy CPU work (that belongs in a task queue like Celery).
-- Use rate limiting on public or expensive endpoints (e.g. inference calls) to control cost and abuse.
-- Use API versioning (`/v1/...`) when a breaking change is coming but old clients still need to work.
+| Framework | Best for |
+|-----------|----------|
+| FastAPI | ML/AI backends, microservices, async I/O |
+| Flask | Simple APIs, prototyping, small projects |
+| Django | Full-stack apps with ORM, admin, auth built-in |
 
-## Interview review
-- Explain that FastAPI is popular because it generates OpenAPI docs automatically and validates payloads before your endpoint code runs, using type hints.
-- If asked about `Depends`, say it's useful for injecting shared services without tight coupling, and that FastAPI resolves and caches dependencies per request.
-- When talking about auth, describe the difference between cookie sessions (stateful, easy revoke, same-origin friendly) and stateless JWT (scales across services, harder to revoke early).
-- Mention that background tasks are not for heavy CPU work; they run in the same process and can still block the event loop if not careful — heavy work goes in a real queue/worker.
-- If asked how you'd test an API, mention `TestClient` for fast in-process tests without a running server, and mocking external calls/DB in unit tests.
-- If asked about scaling reads, mention caching (Redis), pagination, and rate limiting before "just add more servers."
-- Be ready to explain why you picked a status code: `400` for bad input, `401` for missing/invalid auth, `403` for authenticated but not allowed, `404` for missing resource, `422` for validation errors (FastAPI's default for bad Pydantic input).
+FastAPI wins for AI because: automatic docs (stakeholders can test endpoints immediately), native async (useful for concurrent API calls to LLMs/DBs), and Pydantic (catches bad inputs before they reach your model).
 
-## Common pitfalls
-- Doing CPU-heavy work inside an `async def` route — it blocks the event loop for every other request. Use a regular `def` (FastAPI runs it in a thread pool) or offload to a worker.
-- Returning raw DB models instead of a `response_model` — leaks internal fields and couples your API to your schema.
-- Forgetting CORS config and being confused why the browser blocks a working curl request.
-- Storing secrets (JWT signing keys, API keys) directly in code instead of environment variables.
-- Not setting token expiry on JWTs, or accepting expired/invalid tokens silently instead of raising `401`.
+## Key Concepts
 
-## How to use
+**Endpoints:** One URL, one job. GET for reading, POST for creating, PUT for updating, DELETE for removing. Pick the right HTTP method — it documents intent.
 
-### App and route
-```python
-from fastapi import FastAPI
-app = FastAPI()
+**Path vs query params:** `/items/5` (path, required) vs `/items?category=books` (query, optional/filtering). FastAPI extracts both from type hints.
 
-@app.get("/hello")
-def hello():
-    return {"message": "hello"}
-```
+**Pydantic schemas:** Define `BaseModel` subclasses for request/response shapes. Validation errors (422) are automatic. Use `response_model` on routes to filter/transform output — never return raw DB models.
 
-### Pydantic schema with response model
-```python
-from pydantic import BaseModel, Field
+**Dependency injection (Depends):** Functions that run before the handler. Use for: auth checks, DB sessions, pagination, rate limit checks, config loading. FastAPI caches dependencies per request.
 
-class ItemIn(BaseModel):
-    name: str = Field(..., min_length=1)
-    price: float = Field(..., gt=0)
+**Middleware:** Code that runs on every request/response — logging, timing, CORS headers, security. `BaseHTTPMiddleware` for custom middleware; `CORSMiddleware` is built-in.
 
-class ItemOut(BaseModel):
-    id: int
-    name: str
+**BackgroundTasks:** Lightweight deferred work (logging, email, cache refresh). Runs in the same process — NOT for heavy CPU work. Heavy work belongs in a task queue (Celery, ARQ).
 
-@app.post("/items", response_model=ItemOut)
-def create_item(item: ItemIn):
-    return {"id": 1, "name": item.name}
-```
+**JWT auth pattern:** Client sends `Authorization: Bearer <token>`. Server decodes with a secret key, extracts user identity from the payload. Stateless — no server-side session storage. Downside: hard to revoke early (tokens live until expiry). Use short expiry + refresh tokens.
 
-### Dependency example
-```python
-from fastapi import Depends
+**CORS:** Browser security. If your frontend is on a different origin than your API, you must configure CORS to allow it. Not an issue for server-to-server calls — only browsers enforce it.
 
-def get_token(token: str):
-    return token
+**Rate limiting:** Cap requests per client per time window. Use `slowapi` for FastAPI. Essential for public inference endpoints to control cost and prevent abuse.
 
-@app.get("/secure")
-def secure(token: str = Depends(get_token)):
-    return {"token": token}
-```
+## Production Considerations
 
-### Background task
-```python
-from fastapi import BackgroundTasks
+- **Environment variables** — never hardcode secrets. Use `pydantic-settings` or `python-decouple`.
+- **Logging** — use `structlog` or at minimum `logging` with structured output. Log request IDs, latency, errors.
+- **Health checks** — `/health` endpoint for load balancers / Docker healthchecks.
+- **Graceful shutdown** — close DB connections, flush metrics on SIGTERM.
+- **CPU-bound work in sync `def`** — FastAPI runs sync routes in a threadpool automatically. Async routes (`async def`) block the event loop if they do CPU work.
 
-def save_log(message: str):
-    with open("log.txt", "a") as f:
-        f.write(message + "\n")
+## Interview Must-Knows
 
-@app.post("/submit")
-def submit(background_tasks: BackgroundTasks):
-    background_tasks.add_task(save_log, "submitted")
-    return {"status": "queued"}
-```
+- Why FastAPI over Flask: automatic docs, Pydantic validation at the boundary, dependency injection, native async.
+- How dependency injection works: FastAPI inspects type hints, builds the dependency tree, and caches per request.
+- JWT vs sessions: JWT is stateless (scales across servers, hard to revoke). Sessions are stateful (stored server-side, easy to revoke, need sticky sessions or shared store).
+- BackgroundTasks vs Celery: BackgroundTasks for light I/O in the same process; Celery for heavy work across multiple workers/processes.
+- Status codes: 200 (success), 201 (created), 400 (client error), 401 (not authenticated), 403 (not authorized), 404 (not found), 422 (validation), 429 (rate limited), 500 (server error).
+- Testing: `TestClient` for in-process tests without a running server. Mock external calls and DB.
 
-### JWT auth pattern (handler + bearer dependency)
-```python
-import jwt
-from datetime import datetime, timedelta, timezone
-from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+## Common Pitfalls
 
-SECRET = "change-me"
-
-def create_token(user_id: str) -> str:
-    payload = {"sub": user_id, "exp": datetime.now(timezone.utc) + timedelta(hours=1)}
-    return jwt.encode(payload, SECRET, algorithm="HS256")
-
-security = HTTPBearer()
-
-def get_current_user(creds: HTTPAuthorizationCredentials = Depends(security)):
-    try:
-        payload = jwt.decode(creds.credentials, SECRET, algorithms=["HS256"])
-        return payload["sub"]
-    except jwt.PyJWTError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token")
-```
-
-### Middleware (request timing)
-```python
-import time
-from starlette.middleware.base import BaseHTTPMiddleware
-
-class TimingMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request, call_next):
-        start = time.perf_counter()
-        response = await call_next(request)
-        response.headers["X-Process-Time"] = str(time.perf_counter() - start)
-        return response
-
-app.add_middleware(TimingMiddleware)
-```
-
-### CORS
-```python
-from fastapi.middleware.cors import CORSMiddleware
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://myfrontend.com"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-```
-
-### Rate limiting (slowapi)
-```python
-from slowapi import Limiter
-from slowapi.util import get_remote_address
-
-limiter = Limiter(key_func=get_remote_address)
-app.state.limiter = limiter
-
-@app.get("/predict")
-@limiter.limit("5/minute")
-def predict(request: Request):
-    return {"result": "..."}
-```
-
-### Testing with TestClient
-```python
-from fastapi.testclient import TestClient
-
-client = TestClient(app)
-
-def test_hello():
-    response = client.get("/hello")
-    assert response.status_code == 200
-    assert response.json() == {"message": "hello"}
-```
+- CPU work in `async def` — blocks the event loop. Use `def` for CPU/GPU-bound work.
+- Returning raw DB models — leaks internal fields. Use `response_model` with a Pydantic schema.
+- Forgetting CORS — works in curl/Postman, fails in browser. Always configure CORS for web frontends.
+- Hardcoded secrets — store API keys, JWT secrets in environment variables.
+- No rate limiting on public endpoints — unlimited inference calls can cost thousands.
+- Not validating input beyond Pydantic — add business logic validation (e.g., "this user can only query their own data").

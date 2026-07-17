@@ -1,225 +1,130 @@
 # Phase 3 — Machine Learning
 
-## Goal
-Understand how to turn data into predictions, choose the right model, evaluate it honestly, and track experiments the way a real ML team does.
+## The ML Workflow
 
-## What I need to know
-- NumPy arrays and vectorized operations
-- Pandas DataFrames and EDA
-- Train/test split and feature scaling
-- Classical supervised models: linear regression, logistic regression, decision trees, random forest, XGBoost
-- Unsupervised learning: k-means clustering, PCA
-- Cross-validation and hyperparameter tuning
-- Neural networks and PyTorch basics, plus CNNs for images
-- Training loop: forward, loss, backward, optimize
-- Evaluation metrics: accuracy, precision, recall, F1
-- Overfitting, regularization, and the bias-variance tradeoff
-- Experiment tracking (Weights & Biases) and quick demos (Gradio)
-- Inference helpers like Hugging Face `pipeline`
+1. Define the problem (classification, regression, clustering)
+2. Collect and explore data (EDA)
+3. Clean, transform, and split data
+4. Train a baseline model
+5. Iterate: feature engineering → model selection → hyperparameter tuning
+6. Evaluate honestly (never on training data)
+7. Deploy or document
 
-## Key terms
+**The most important step is #4 — always baseline first.** A simple model tells you whether your data has signal before you invest in complex architectures.
 
-### Data and features
-- `feature`: input variable used by the model — the things you measure about each example (age, text length, pixel values).
-- `label`: the true value the model tries to predict, e.g. `spam` or `not spam`.
-- `feature scaling`: transforming features to a similar range (e.g. `StandardScaler`) so models like logistic regression, SVMs, or neural nets converge properly and no feature dominates due to scale alone. Tree-based models generally don't need it.
-- `train/test split`: separating data into training and validation sets so you evaluate on unseen data rather than memorized answers.
+## Key Concepts
+
+### Data
+
+**Features:** Inputs to the model. Garbage in, garbage out — feature quality matters more than model choice.
+
+**Labels:** The ground truth the model tries to predict. For classification, labels are categories (spam/not spam). For regression, labels are continuous values (price, temperature).
+
+**Train/test split:** Train set teaches the model; test set measures generalization. NEVER let the test set influence training decisions (feature selection, hyperparameter tuning) — that's data leakage.
+
+**Cross-validation (k-fold):** Split data into k folds, train on k-1, validate on the remaining fold, repeat k times. Gives a more reliable performance estimate than a single split, especially on small data.
+
+**Feature scaling:** Transform features to similar ranges (standardization: mean=0, std=1). Needed for linear models, SVMs, neural networks — gradient descent converges faster when features are on similar scales. Tree-based models don't need it (they split on thresholds, not distances).
+
+**Data leakage:** When information from outside the training set influences the model. Common causes:
+- Scaling before splitting (fit on test data)
+- Using future data to predict the past (time series)
+- Target leakage (a feature that wouldn't be available at prediction time)
 
 ### Classical ML
-- `linear regression`: predicts a continuous value as a weighted sum of features. Baseline for regression problems.
-- `logistic regression`: predicts a probability for classification using a sigmoid on top of a linear combination. Simple, fast, interpretable baseline for classification.
-- `decision tree`: splits data on feature thresholds to reach a prediction. Easy to interpret but prone to overfitting alone.
-- `random forest`: an ensemble of many decision trees trained on random subsets of data/features, averaging their votes. Reduces overfitting vs a single tree (bagging).
-- `XGBoost / gradient boosting`: builds trees sequentially, each one correcting the errors of the previous ones (boosting). Usually the strongest classical baseline for tabular data.
-- `cross-validation (k-fold)`: splitting data into k folds, training on k-1 and validating on the remaining fold, k times. Gives a more reliable performance estimate than a single train/test split, especially on small data.
-- `hyperparameter tuning`: searching over model settings (learning rate, tree depth, number of estimators) via grid search or random search to find the best-performing configuration, validated with cross-validation.
 
-### Unsupervised learning
-- `k-means clustering`: groups data into k clusters by repeatedly assigning points to the nearest centroid and recomputing centroids. Requires choosing k in advance.
-- `elbow method`: plotting inertia (within-cluster variance) against different k values and picking the k where the improvement sharply levels off — a heuristic for choosing k in k-means.
-- `PCA (Principal Component Analysis)`: reduces the number of features by projecting data onto the directions (principal components) that capture the most variance. Used for visualization, noise reduction, and speeding up downstream models.
+**Linear regression:** Predicts continuous value as weighted sum of features. Baseline for regression. Interpretable coefficients — you can say "a 1-unit increase in X increases prediction by beta."
 
-### Deep learning
-- `loss`: a score measuring model error; the model tries to lower loss during training, and lowering loss is what guides learning.
-- `optimizer`: algorithm that updates weights to reduce loss (SGD, Adam) — controls how fast and how stably the model learns.
-- `epoch`: one full pass through the training dataset. More epochs mean more learning, but too many can overfit.
-- `tensor`: multi-dimensional array in PyTorch — the fundamental structure for inputs, weights, and gradients.
-- `CNN (convolutional neural network)`: a network using convolution layers that slide small filters over an image to detect local patterns (edges, textures), followed by pooling to downsample. Standard architecture for image tasks.
-- `pooling`: downsampling a feature map (e.g. max pooling takes the largest value in each region) to reduce size and add translation invariance.
-- `dropout`: randomly zeroing out a fraction of neurons during training to prevent co-adaptation and reduce overfitting.
-- `regularization (L1/L2)`: adding a penalty on large weights to the loss function to discourage overfitting; L1 can zero out weights entirely (feature selection), L2 shrinks them smoothly.
-- `overfitting`: when a model learns noise in the training data and performs worse on new data. Combat it with more data, regularization, dropout, early stopping, or a simpler model.
-- `bias-variance tradeoff`: a high-bias model is too simple (underfits); a high-variance model is too sensitive to training data (overfits). Good models balance the two.
+**Logistic regression:** Predicts probability for classification. Sigmoid on top of linear combination. Simple, fast, interpretable baseline. Linear decision boundary — can't capture complex patterns without feature engineering.
+
+**Decision trees:** Split data on feature thresholds. Easy to visualize and explain. Prone to overfitting alone — depth and min_samples_split control this.
+
+**Random forest (bagging):** Many trees trained on random subsets of data and features, averaging their votes. Reduces overfitting vs single tree. Parallel training (each tree is independent). Strong default choice for tabular data.
+
+**XGBoost / Gradient boosting (boosting):** Trees built sequentially, each correcting the previous one's errors. Usually strongest classical model for tabular data. More sensitive to hyperparameters than random forest. Sequential training can't parallelize across trees.
+
+**Bagging vs Boosting:** Bagging trains in parallel, reduces variance (overfitting). Boosting trains sequentially, reduces bias (underfitting). Bagging is safer with default params; boosting needs tuning but achieves higher accuracy.
+
+### Unsupervised Learning
+
+**K-means clustering:** Groups data into k clusters by iteratively: (1) assign each point to nearest centroid, (2) recompute centroids. Requires choosing k in advance. Use elbow method (inertia vs k) or silhouette score to pick k.
+
+**PCA:** Reduces feature dimensions by projecting onto directions of maximum variance. Used for visualization (2D/3D plots), noise reduction, speeding up downstream models, and as a preprocessing step. The components are linear combinations of original features — not interpretable as individual features.
+
+### Deep Learning
+
+**Neural network:** Layers of neurons, each doing a linear transformation + nonlinear activation. Universal function approximator — given enough parameters, can learn any function. Requires more data and tuning than classical models.
+
+**Loss function:** Measures prediction error. The model trains to minimize this. Regression: MSE (mean squared error). Classification: cross-entropy. The choice of loss function encodes what kind of error matters.
+
+**Optimizer:** Algorithm that updates weights to reduce loss. SGD (simple, needs learning rate tuning), Adam (adaptive learning rates per parameter, less tuning needed, default choice).
+
+**Backpropagation:** Chain rule applied across the computational graph. Computes gradient of loss with respect to every parameter. Then the optimizer takes a step in the negative gradient direction.
+
+**Epoch:** One full pass through the training data. More epochs = more learning, but too many = overfitting.
+
+**Overfitting:** Model learns noise in training data, performs worse on new data. Signs: training loss keeps decreasing, validation loss starts increasing. Fixes: more data, regularization, dropout, early stopping, simpler model.
+
+**Underfitting:** Model is too simple to capture the pattern. Training loss is high. Fixes: more complex model, more features, train longer.
+
+**Bias-variance tradeoff:** High bias = underfitting (too simple). High variance = overfitting (too sensitive to training data). Goal: balance both.
+
+**CNN:** Uses convolution filters that slide over the input, detecting local patterns (edges, textures). Pooling downsamples to add translation invariance. Standard architecture for images.
+
+**Dropout:** Randomly zeros out neurons during training. Forces the network to not rely on any single neuron — acts as regularization.
+
+**Regularization (L1/L2):** Penalty on large weights added to the loss. L1 (lasso) can zero out weights — feature selection. L2 (ridge) shrinks weights smoothly — prevents any one feature from dominating.
 
 ### Evaluation
-- `accuracy`: fraction of correct predictions — misleading on imbalanced data (e.g. 95% accuracy predicting "not fraud" when fraud is 5% of cases).
-- `precision`: of everything predicted positive, how much was actually positive. Matters when false positives are costly.
-- `recall`: of everything actually positive, how much was caught. Matters when false negatives are costly (e.g. missing a disease diagnosis).
-- `F1 score`: harmonic mean of precision and recall — a single number when you need to balance both.
+
+**Accuracy:** Fraction correct. Misleading on imbalanced data — 95% accuracy detecting fraud is worthless if fraud is 5% of cases (predicting "not fraud" every time gives 95%).
+
+**Precision:** Of things predicted positive, how many were actually positive. High precision = few false positives. Matters when false positives are costly (spam filtering — flagging legitimate email as spam).
+
+**Recall:** Of actual positives, how many were caught. High recall = few false negatives. Matters when false negatives are costly (disease screening — missing a patient).
+
+**F1 score:** Harmonic mean of precision and recall. Single number when you need to balance both.
+
+**ROC-AUC:** Area under the ROC curve (TPR vs FPR at various thresholds). Measures ranking quality — how well the model separates positives from negatives. 0.5 = random, 1.0 = perfect. Use when you care about ranking, not just thresholded predictions.
 
 ### Tooling
-- `pipeline`: a Hugging Face helper for inference that wraps tokenizer, model, and post-processing into one call.
-- `Weights & Biases (wandb)`: experiment tracking tool that logs metrics, hyperparameters, and artifacts across training runs so you can compare experiments instead of guessing which config worked.
-- `Gradio`: a library for quickly wrapping a model in a shareable web demo/UI without building a full frontend.
 
-## When to use
-- Use this phase when building a model from data.
-- Use classical ML for tabular data and quick, interpretable baselines — try logistic regression or random forest before reaching for deep learning.
-- Use XGBoost/gradient boosting when you need the strongest tabular performance and can afford tuning.
-- Use k-means/PCA when you need to explore structure in unlabeled data or reduce dimensionality before modeling.
-- Use cross-validation whenever your dataset is small enough that a single split gives a noisy estimate.
-- Use PyTorch when you need a neural network, custom training loop, or the task is images/text/audio (CNNs, transformers).
-- Use `wandb` once you're running more than a couple of experiments and need to compare them reliably.
-- Use `Gradio` to demo a model to a non-technical stakeholder without building an app.
+**HuggingFace pipeline:** Wraps tokenizer + model + post-processing into one call. Use for quick inference with any transformer model. Not for fine-tuning or custom training.
 
-## Interview review
-- Explain why you split data: training to learn, testing to check generalization, cross-validation to reduce variance in that estimate on small data.
-- If asked about metrics, describe how precision and recall trade off, and why you'd pick one over accuracy for imbalanced classes (fraud, disease detection, spam).
-- Talk about why `model.eval()` and `torch.no_grad()` matter at inference time — they disable dropout/batchnorm training behavior and stop tracking gradients, saving memory.
-- Describe a simple model selection process: start with a baseline (logistic regression / mean predictor), compare metrics via cross-validation, then improve with feature engineering or a stronger model (random forest → XGBoost → neural net) only if justified.
-- If asked "how do you know your model isn't overfitting," mention comparing train vs validation loss/metrics, and techniques to fix it: more data, regularization, dropout, early stopping, simpler model.
-- If asked when to use k-means vs a supervised model, clarify k-means is for when you don't have labels and want to discover structure.
-- If asked how you track experiments, mention logging hyperparameters, metrics, and artifacts (e.g. with `wandb`) so results are reproducible and comparable — not just print statements.
-- Be ready to explain bagging (random forest, trains in parallel, reduces variance) vs boosting (XGBoost, trains sequentially, reduces bias) — a very common interview question.
+**Weights & Biases (wandb):** Experiment tracking. Logs hyperparameters, metrics, and artifacts per run. Essential once you run more than a few experiments — without it, you can't compare results reliably.
 
-## Common pitfalls
-- Scaling features after the train/test split using stats from the full dataset — this leaks test data into training. Fit the scaler on train only, then transform test.
-- Using accuracy as the only metric on an imbalanced dataset.
-- Tuning hyperparameters against the test set instead of a separate validation set or cross-validation — this quietly overfits to the test set.
-- Forgetting `model.eval()` / `torch.no_grad()` at inference, wasting memory and getting inconsistent outputs from dropout.
-- Picking k in k-means arbitrarily instead of using the elbow method or a domain-driven choice.
-- Jumping straight to deep learning on small tabular data where a tuned XGBoost model would perform as well or better with far less compute.
+**Gradio:** Quick web demo for any model. Wrap any predict function in a UI in 3 lines. Use for stakeholder demos, not production.
 
-## How to use
+## When to Use What
 
-### Data loading
-```python
-import pandas as pd
+| Scenario | Start with |
+|---|---|
+| Tabular data, need quick baseline | Logistic regression or random forest |
+| Tabular data, want best accuracy | XGBoost (after tuning) |
+| Images | CNN / ResNet / ViT |
+| Text | Transformer (BERT for understanding, GPT for generation) |
+| Small data, need interpretability | Decision tree or logistic regression |
+| No labels, want to find structure | K-means or PCA |
+| Very large dataset | Start with a sample, iterate, then scale |
 
-df = pd.read_csv("data.csv")
-print(df.head())
-```
+**Rule of thumb:** Always beat a simple baseline (mean predictor, most-frequent-class) before trying complex models. Most of your performance gains come from data quality and feature engineering, not model choice.
 
-### Train/test split and scaling
-```python
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+## Interview Must-Knows
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+- Why split data: train to learn, test to measure generalization. Cross-validation for more reliable estimates on small data.
+- Why scale features: gradient descent converges faster. Tree models don't need it.
+- Overfitting vs underfitting: signs, causes, fixes for each.
+- Bagging vs boosting: bagging reduces variance (parallel trees, random forest), boosting reduces bias (sequential trees, XGBoost).
+- Precision vs recall: which matters depends on cost of false positives vs false negatives.
+- When deep learning is overkill: small tabular data where XGBoost matches or outperforms.
+- Data leakage examples and how to avoid them.
+- `model.eval()` + `torch.no_grad()` at inference: disables dropout/batchnorm training behavior, stops gradient tracking (saves memory).
 
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)  # transform only, never fit on test
-```
+## Common Pitfalls
 
-### Classical model
-```python
-from sklearn.linear_model import LogisticRegression
-model = LogisticRegression()
-model.fit(X_train, y_train)
-preds = model.predict(X_test)
-```
-
-### Random forest and XGBoost
-```python
-from sklearn.ensemble import RandomForestClassifier
-from xgboost import XGBClassifier
-
-rf = RandomForestClassifier(n_estimators=200, random_state=42).fit(X_train, y_train)
-xgb = XGBClassifier(n_estimators=200, learning_rate=0.1).fit(X_train, y_train)
-```
-
-### Cross-validation and hyperparameter tuning
-```python
-from sklearn.model_selection import GridSearchCV
-
-params = {"max_depth": [3, 5, 7], "n_estimators": [100, 200]}
-grid = GridSearchCV(RandomForestClassifier(), params, cv=5, scoring="f1")
-grid.fit(X_train, y_train)
-print(grid.best_params_)
-```
-
-### K-means and PCA
-```python
-from sklearn.cluster import KMeans
-from sklearn.decomposition import PCA
-
-kmeans = KMeans(n_clusters=3, random_state=42).fit(X)
-clusters = kmeans.labels_
-
-pca = PCA(n_components=2)
-X_reduced = pca.fit_transform(X)
-```
-
-### PyTorch training loop
-```python
-import torch
-from torch import nn
-
-model = nn.Linear(input_dim, 1)
-criterion = nn.BCEWithLogitsLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
-
-for epoch in range(10):
-    optimizer.zero_grad()
-    outputs = model(X_train)
-    loss = criterion(outputs.squeeze(), y_train)
-    loss.backward()
-    optimizer.step()
-
-model.eval()
-with torch.no_grad():
-    test_outputs = model(X_test)
-```
-
-### Simple CNN
-```python
-import torch.nn as nn
-
-class SimpleCNN(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.conv1 = nn.Conv2d(1, 16, kernel_size=3, padding=1)
-        self.pool = nn.MaxPool2d(2)
-        self.fc = nn.Linear(16 * 14 * 14, 10)
-
-    def forward(self, x):
-        x = self.pool(torch.relu(self.conv1(x)))
-        x = x.view(x.size(0), -1)
-        return self.fc(x)
-```
-
-### Evaluation
-```python
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-print(accuracy_score(y_test, preds))
-print(precision_score(y_test, preds))
-print(recall_score(y_test, preds))
-print(f1_score(y_test, preds))
-```
-
-### Hugging Face pipeline
-```python
-from transformers import pipeline
-sentiment = pipeline("sentiment-analysis")
-print(sentiment("AI engineering notes are useful."))
-```
-
-### Experiment tracking with wandb
-```python
-import wandb
-
-wandb.init(project="ai-roadmap", config={"lr": 1e-3, "epochs": 10})
-for epoch in range(10):
-    wandb.log({"epoch": epoch, "loss": loss.item()})
-```
-
-### Quick demo with Gradio
-```python
-import gradio as gr
-
-def predict(text):
-    return sentiment(text)[0]["label"]
-
-gr.Interface(fn=predict, inputs="text", outputs="text").launch()
-```
+- Scaling before train/test split (leaks test data into training)
+- Using accuracy on imbalanced data
+- Tuning hyperparameters on the test set (overfits to test)
+- Forgetting model.eval() / torch.no_grad() at inference
+- Jumping to deep learning on small tabular data where XGBoost works better
+- Not baselining — can't know if your complex model is actually better than simple
