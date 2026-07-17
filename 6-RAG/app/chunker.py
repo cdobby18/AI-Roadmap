@@ -1,17 +1,25 @@
-"""Simple chunking utilities for RAG."""
+"""Chunking with sentence-aware splitting."""
 
+import re
 from typing import List
 
 
 def chunk_text(text: str, chunk_size: int = 80, overlap: int = 20) -> List[str]:
-    words = text.split()
+    sentences = re.split(r"(?<=[.!?])\s+", text.strip())
     chunks = []
-    start = 0
+    current = []
+    word_count = 0
 
-    while start < len(words):
-        end = min(start + chunk_size, len(words))
-        chunk = " ".join(words[start:end])
-        chunks.append(chunk)
-        start += chunk_size - overlap
+    for sentence in sentences:
+        sentence_words = sentence.split()
+        if word_count + len(sentence_words) > chunk_size and current:
+            chunks.append(" ".join(current))
+            overlap_words = current[-overlap:] if overlap > 0 else []
+            current = list(overlap_words)
+            word_count = len(overlap_words)
+        current.extend(sentence_words)
+        word_count += len(sentence_words)
 
+    if current:
+        chunks.append(" ".join(current))
     return chunks

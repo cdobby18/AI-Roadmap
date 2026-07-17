@@ -1,25 +1,27 @@
-"""Phase 6 - Reranking.
+"""Phase 6 — Cross-encoder reranking for RAG.
 
-Reranking is used after initial retrieval to improve the final ranking.
-This example demonstrates a simple reranking step based on a bonus for exact phrase matches.
+A cross-encoder scores query-document pairs jointly, giving
+more accurate relevance judgments than cosine similarity alone.
 """
 
-from typing import List, Tuple
+from sentence_transformers import CrossEncoder
 
 
-def rerank_results(query: str, results: List[Tuple[str, float]], top_k: int = 3) -> List[Tuple[str, float]]:
-    reranked = []
-    for text, score in results:
-        phrase_bonus = 0.2 if query.lower() in text.lower() else 0.0
-        reranked.append((text, score + phrase_bonus))
-    reranked.sort(key=lambda item: item[1], reverse=True)
-    return reranked[:top_k]
+def rerank_documents(query: str, documents: list[str], top_k: int = 3):
+    model = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+    pairs = [(query, doc) for doc in documents]
+    scores = model.predict(pairs)
+    ranked = sorted(zip(documents, scores), key=lambda x: x[1], reverse=True)
+    return ranked[:top_k]
 
 
 if __name__ == "__main__":
-    initial = [
-        ("RAG uses retrieval to improve answers", 0.7),
-        ("A summary of retrieval systems", 0.6),
-        ("This text mentions RAG explicitly", 0.5),
+    docs = [
+        "RAG uses retrieval to provide context before generation.",
+        "Python is a general-purpose programming language.",
+        "Cross-encoders score query-document pairs more accurately.",
+        "FastAPI is a modern web framework for building APIs.",
     ]
-    print(rerank_results("RAG", initial))
+    results = rerank_documents("How does RAG work?", docs)
+    for doc, score in results:
+        print(f"{score:.3f}  {doc}")

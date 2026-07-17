@@ -1,29 +1,47 @@
-"""Phase 6 - RAG evaluation metrics and debugging.
+"""Phase 6 — RAG debugging toolkit.
 
-This file introduces common evaluation ideas used in RAG systems:
-- faithfulness
-- answer relevance
-- context precision
-- retrieval debugging
+Custom metrics for diagnosing where a RAG pipeline breaks.
+Use these alongside ragas for deeper introspection.
 """
 
 
-def evaluate_rag(question: str, answer: str, retrieved_context: str):
-    faithfulness = "faithful" if answer.lower() in retrieved_context.lower() or retrieved_context.lower() in answer.lower() else "needs review"
-    relevance = "relevant" if question.lower() in answer.lower() or len(answer.split()) > 5 else "needs review"
-    context_precision = "good" if len(retrieved_context.split()) > 10 else "thin"
-
+def diagnose_retrieval(question: str, chunks: list[str], scores: list[float]) -> dict:
     return {
-        "faithfulness": faithfulness,
-        "answer_relevance": relevance,
-        "context_precision": context_precision,
+        "question": question,
+        "num_chunks_retrieved": len(chunks),
+        "max_score": max(scores) if scores else 0.0,
+        "min_score": min(scores) if scores else 0.0,
+        "score_spread": max(scores) - min(scores) if len(scores) > 1 else 0.0,
+        "low_confidence": any(s < 0.3 for s in scores),
+    }
+
+
+def diagnose_generation(answer: str, context_chunks: list[str]) -> dict:
+    context = " ".join(context_chunks)
+    answer_lower = answer.lower()
+    context_lower = context.lower()
+    supported_terms = sum(1 for term in answer_lower.split() if len(term) > 3 and term in context_lower)
+    total_terms = sum(1 for t in answer_lower.split() if len(t) > 3)
+    faithfulness_ratio = supported_terms / total_terms if total_terms > 0 else 0.0
+    return {
+        "answer_length": len(answer.split()),
+        "faithfulness_ratio": round(faithfulness_ratio, 3),
+        "hallucination_risk": faithfulness_ratio < 0.5,
+    }
+
+
+def full_diagnosis(question, answer, chunks, scores):
+    return {
+        "retrieval": diagnose_retrieval(question, chunks, scores),
+        "generation": diagnose_generation(answer, chunks),
     }
 
 
 if __name__ == "__main__":
-    result = evaluate_rag(
+    result = full_diagnosis(
         "What is RAG?",
         "RAG is retrieval-augmented generation.",
-        "RAG uses retrieved context before generating an answer."
+        ["RAG uses retrieval to provide context before generation."],
+        [0.92],
     )
     print(result)

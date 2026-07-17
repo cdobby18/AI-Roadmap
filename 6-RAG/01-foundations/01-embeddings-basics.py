@@ -1,32 +1,34 @@
-"""Phase 6 - RAG Foundations: embeddings and similarity.
+"""Phase 6 — RAG Foundations: real semantic embeddings.
 
-This file introduces the core idea behind RAG: turning text into vectors
-and measuring how close different pieces of text are.
+Uses sentence-transformers to create dense vector embeddings
+and measures cosine similarity between queries and documents.
 """
 
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
 def basic_embedding_demo():
     documents = [
         "The cat sat on the mat.",
         "A dog slept beside the window.",
-        "The cat is sleeping on the rug."
+        "The cat is sleeping on the rug.",
+        "Some dogs love to play fetch in the park.",
     ]
 
-    vectorizer = TfidfVectorizer()
-    vectors = vectorizer.fit_transform(documents)
+    doc_vectors = model.encode(documents)
 
     query = "cat sleeping"
-    query_vec = vectorizer.transform([query])
+    query_vec = model.encode([query])
 
-    scores = cosine_similarity(query_vec, vectors).flatten()
+    scores = cosine_similarity(query_vec, doc_vectors).flatten()
 
     print("Query:", query)
     print("Similarity scores:")
     for text, score in zip(documents, scores):
-        print(f"- {text} -> {score:.3f}")
+        print(f"  {score:.3f}  {text}")
 
 
 if __name__ == "__main__":

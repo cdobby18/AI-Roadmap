@@ -1,12 +1,39 @@
-"""Simple sanity checks for the RAG project structure."""
+"""Sanity checks for the RAG project."""
 
 from pathlib import Path
 
 
 def test_sample_data_exists():
-    assert Path("data/raw/sample_docs/sample.txt").exists()
+    data_dir = Path("data/raw/sample_docs")
+    assert data_dir.exists()
+    txt_files = list(data_dir.glob("*.txt"))
+    assert len(txt_files) >= 3
 
 
 def test_config_module_imports():
-    from app.rag_config import DATA_DIR
+    from app.rag_config import DATA_DIR, EMBEDDING_MODEL
     assert DATA_DIR == "data/raw/sample_docs"
+    assert "sentence-transformers" in EMBEDDING_MODEL
+
+
+def test_chunker_splits():
+    from app.chunker import chunk_text
+    text = "First sentence about RAG. Second sentence about chunking. Third sentence about embeddings."
+    chunks = chunk_text(text, chunk_size=10, overlap=2)
+    assert len(chunks) >= 1
+    assert all(isinstance(c, str) for c in chunks)
+
+
+def test_retriever_imports():
+    from app.retriever import retrieve_relevant_chunks
+    import faiss
+    from sentence_transformers import SentenceTransformer
+    assert callable(retrieve_relevant_chunks)
+
+
+def test_pipeline_builds_prompt():
+    from app.rag_pipeline import ask
+    result = ask("What is RAG?", top_k=1)
+    assert "question" in result
+    assert "answer" in result
+    assert "context" in result

@@ -1,26 +1,29 @@
-"""Phase 6 - Evaluation basics for RAG.
+"""Phase 6 — RAG evaluation with the ragas library.
 
-This file introduces the idea of evaluating retrieved results and generated answers.
-Real RAG evaluation often uses metrics like faithfulness, relevance, and precision.
+Measures faithfulness, answer relevancy, and context precision
+using ragas metrics. Run against a small set of test queries.
 """
 
+from datasets import Dataset
+from ragas import evaluate
+from ragas.metrics import faithfulness, answer_relevancy, context_precision
 
-def evaluate_answer(question: str, answer: str, context: str):
-    faithfulness = "supported" if answer.lower() in context.lower() or context.lower() in answer.lower() else "not clearly supported"
-    relevance = "relevant" if question.lower() in answer.lower() or len(answer.split()) > 3 else "needs review"
 
-    return {
-        "question": question,
-        "answer": answer,
-        "faithfulness": faithfulness,
-        "relevance": relevance,
-    }
+def run_ragas_evaluation(questions, answers, contexts):
+    data = Dataset.from_dict({
+        "question": questions,
+        "answer": answers,
+        "contexts": contexts,
+    })
+    result = evaluate(data, metrics=[faithfulness, answer_relevancy, context_precision])
+    print(result)
+    return result
 
 
 if __name__ == "__main__":
-    result = evaluate_answer(
-        "What is RAG?",
-        "RAG is retrieval-augmented generation.",
-        "RAG uses retrieval to provide context before generation."
+    demo = run_ragas_evaluation(
+        questions=["What is RAG?"],
+        answers=["RAG is retrieval-augmented generation."],
+        contexts=[["RAG uses retrieval to provide context before generation."]],
     )
-    print(result)
+    print(demo)
