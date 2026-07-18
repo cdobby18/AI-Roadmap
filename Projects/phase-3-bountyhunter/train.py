@@ -65,7 +65,11 @@ def load_tensors():
 def train():
     torch.manual_seed(CONFIG["seed"])
 
-    wandb.init(project="bountyhunter", config=CONFIG)
+    try:
+        wandb.init(project="bountyhunter", config=CONFIG)
+        use_wandb = True
+    except Exception:
+        use_wandb = False
 
     X_train, y_train, X_test, y_test, scaler = load_tensors()
 
@@ -104,12 +108,13 @@ def train():
             val_rmse = val_loss ** 0.5
             val_mae = (val_preds - y_test).abs().mean().item()
 
-        wandb.log({
-            "epoch": epoch,
-            "train_rmse": train_rmse,
-            "val_rmse": val_rmse,
-            "val_mae": val_mae,
-        })
+        if use_wandb:
+            wandb.log({
+                "epoch": epoch,
+                "train_rmse": train_rmse,
+                "val_rmse": val_rmse,
+                "val_mae": val_mae,
+            })
 
         if epoch % 10 == 0:
             print(f"Epoch {epoch:3d} | train RMSE {train_rmse:.2f} | val RMSE {val_rmse:.2f} | val MAE {val_mae:.2f}")
@@ -118,7 +123,8 @@ def train():
     print("\nModel saved → bounty_model.pt")
     print(f"Final val MAE: {val_mae:.2f}M berries")
 
-    wandb.finish()
+    if use_wandb:
+        wandb.finish()
 
 
 if __name__ == "__main__":
