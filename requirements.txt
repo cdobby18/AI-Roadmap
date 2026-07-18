@@ -29,4 +29,5 @@ gradio
 # --- Phase 6: RAG ---
 sentence-transformers
 faiss-cpu
+chromadb
 ragas
