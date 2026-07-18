@@ -1,37 +1,48 @@
-"""Phase 6 - Vector DB introduction.
+"""Phase 6 - Vector databases with ChromaDB.
 
-This file explains the role of vector databases in RAG systems.
-It uses a simple in-memory example instead of a real database.
+What makes a vector DB different from FAISS:
+- Data persists to disk (survives restarts)
+- Can add/remove documents without rebuilding the whole index
+- Built-in metadata filtering
+- Client-server or in-process (ChromaDB does both)
 """
 
-from typing import List, Tuple
+import chromadb
+from sentence_transformers import SentenceTransformer
 
+MODEL = SentenceTransformer("all-MiniLM-L6-v2")
 
-class SimpleVectorStore:
-    def __init__(self):
-        self.docs: List[str] = []
-        self.vectors: List[List[float]] = []
+def embed(texts: list[str]) -> list[list[float]]:
+    return MODEL.encode(texts, convert_to_numpy=True).tolist()
 
-    def add(self, text: str, vector: List[float]):
-        self.docs.append(text)
-        self.vectors.append(vector)
-
-    def search(self, query_vector: List[float], top_k: int = 3) -> List[Tuple[str, float]]:
-        scores = []
-        for stored_vector in self.vectors:
-            dot = sum(a * b for a, b in zip(stored_vector, query_vector))
-            scores.append(dot)
-
-        ranked = sorted(enumerate(scores), key=lambda x: x[1], reverse=True)
-        return [(self.docs[i], scores[i]) for i, _ in ranked[:top_k]]
-
+DOCUMENTS = [
+    "RAG stands for Retrieval-Augmented Generation. It retrieves relevant documents before generating an answer.",
+    "Chunking splits documents into smaller pieces so retrieval can find the exact relevant section.",
+    "Embeddings convert text into numerical vectors. Similar texts have similar vectors.",
+    "Vector databases store embeddings and support fast similarity search at scale.",
+    "FAISS is a vector index library. It is fast but does not persist to disk by default.",
+    "ChromaDB is a vector database. It persists data, supports metadata filtering, and has a simple API.",
+]
 
 if __name__ == "__main__":
-    store = SimpleVectorStore()
-    store.add("RAG uses external context", [0.9, 0.1])
-    store.add("FastAPI builds APIs", [0.2, 0.8])
-    store.add("Embeddings convert text to vectors", [0.7, 0.3])
+    client = chromadb.PersistentClient(path="./chroma_data")
+    collection = client.get_or_create_collection("rag_demo")
 
-    results = store.search([0.8, 0.2], top_k=2)
-    for text, score in results:
-        print(text, score)
+    collection.add(
+        documents=DOCUMENTS,
+        embeddings=embed(DOCUMENTS),
+        ids=[f"doc_{i}" for i in range(len(DOCUMENTS))],
+    )
+
+    query = "What is a vector database?"
+    results = collection.query(
+        query_embeddings=embed([query]),
+        n_results=2,
+    )
+
+    print(f"Query: {query}\n")
+    for i, (doc, dist) in enumerate(zip(results["documents"][0], results["distances"][0])):
+        print(f"{i+1}. (distance: {dist:.3f}) {doc}")
+
+    print("\n--- Data persists across runs ---")
+    print(f"Collection has {collection.count()} documents")

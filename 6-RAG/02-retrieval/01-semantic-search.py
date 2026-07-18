@@ -1,33 +1,40 @@
-"""Phase 6 - Retrieval: semantic search basics.
+"""Phase 6 - Semantic search with sentence embeddings + FAISS.
 
-This example demonstrates a simple retrieval flow using TF-IDF vectors.
+Semantic search means finding documents by meaning, not keywords.
+This uses sentence-transformers (dense embeddings) + FAISS (fast search).
 """
 
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+import faiss
+import numpy as np
+from sentence_transformers import SentenceTransformer
 
+MODEL = SentenceTransformer("all-MiniLM-L6-v2")
 
-def retrieve_relevant_docs(query: str, documents: list[str], top_k: int = 3):
-    vectorizer = TfidfVectorizer()
-    matrix = vectorizer.fit_transform(documents + [query])
+DOCUMENTS = [
+    "Python is a popular programming language used for data science and web development.",
+    "RAG uses retrieval to give LLMs relevant context before generating an answer.",
+    "FastAPI is a modern Python web framework with automatic OpenAPI documentation.",
+    "Embeddings represent text as dense vectors where similar meanings are close together.",
+    "FAISS is a library for fast similarity search and clustering of dense vectors.",
+    "Chunking splits long documents into smaller pieces for better retrieval accuracy.",
+]
 
-    doc_vectors = matrix[:-1]
-    query_vector = matrix[-1]
-
-    scores = cosine_similarity(query_vector, doc_vectors).flatten()
-    ranked = sorted(enumerate(scores), key=lambda x: x[1], reverse=True)
-
-    return [(documents[i], score) for i, score in ranked[:top_k]]
-
+def embed(texts: list[str]) -> np.ndarray:
+    return MODEL.encode(texts, convert_to_numpy=True)
 
 if __name__ == "__main__":
-    docs = [
-        "Python is a popular programming language.",
-        "RAG uses retrieval to improve language model answers.",
-        "FastAPI helps build APIs quickly.",
-        "Embeddings represent text as vectors."
-    ]
+    doc_vecs = embed(DOCUMENTS)
 
-    results = retrieve_relevant_docs("How does retrieval improve answers?", docs)
-    for doc, score in results:
-        print(f"{doc} -> {score:.3f}")
+    index = faiss.IndexFlatIP(doc_vecs.shape[1])
+    faiss.normalize_L2(doc_vecs)
+    index.add(doc_vecs)
+
+    query = "How do you find relevant documents?"
+    q_vec = embed([query])
+    faiss.normalize_L2(q_vec)
+
+    scores, indices = index.search(q_vec, 3)
+
+    print(f"Query: {query}\n")
+    for i, idx in enumerate(indices[0]):
+        print(f"{i+1}. (score: {scores[0][i]:.3f}) {DOCUMENTS[idx]}")
