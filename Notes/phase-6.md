@@ -109,3 +109,17 @@ Every RAG system follows this same sequence. The differences are in how each ste
 - RAGAS metrics: faithfulness, answer relevancy, context precision.
 - Common failure modes and how to debug them.
 - Vector DB decision: FAISS for prototype, Chroma/pgvector for persistence, Pinecone for scale.
+
+## Hands-On Files Reference
+
+| File | What It Teaches |
+|------|-----------------|
+| `01-foundations/01-embeddings-basics.py` | sentence-transformers, creating and comparing embeddings |
+| `01-foundations/02-document-chunking.py` | Sentence-aware chunking with overlap |
+| `02-retrieval/01-semantic-search.py` | FAISS `IndexFlatIP` + semantic search end-to-end |
+| `02-retrieval/02-vector-databases.py` | ChromaDB: persistent vector storage, add/query |
+| `02-retrieval/03-hybrid-search.py` | Combining dense vectors + BM25 keyword search |
+| `02-retrieval/04-reranking.py` | Cross-encoder reranker for precision boost |
+| `02-retrieval/05-faiss-basics.py` | FAISS internals: FlatIP vs IVFFlat, save/load |
+| `app/retriever.py` | Production retriever (FAISS singleton pattern) |
+| `app/chroma_store.py` | Production retriever (ChromaDB alternative) |
