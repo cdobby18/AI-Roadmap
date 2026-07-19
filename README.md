@@ -13,56 +13,22 @@ RAG systems and AI agents.
 ```
 AI-Roadmap/
 │
-├── 1-Foundations/
-│     ├── 1-python-basics       # Variables, loops, functions, data structures
-│     ├── 2-oop                 # Classes, inheritance, magic methods
-│     ├── 3-dsa                 # Basic structures, sorting, algorithms
-│     ├── 4-database            # SQLite, CRUD, joins, aggregations, Python integration
-│     ├── 5-http-apis           # requests library, handling HTTP responses
-│     └── 6-advanced-python     # asyncio, modules and packages
-│
-├── 2-FastAPI/
-│     ├── 1-basics              # First endpoints, JSON responses
-│     ├── 2-routing-and-validation  # Pydantic models, path/query params
-│     ├── 3-advanced-routing    # Middleware, APIRouter, schemas
-│     ├── 4-authentication      # Basic auth + JWT auth
-│     └── 5-background-tasks    # Async background jobs
-│
-├── 3-ML/
-│     ├── 1-data-analysis       # NumPy, Pandas, EDA
-│     ├── 2-classical-ml        # Supervised + unsupervised, scikit-learn
-│     ├── 3-deep-learning       # Neural networks, CNNs from scratch
-│     ├── 4-pytorch             # Tensors, nn.Module, training loop
-│     ├── 5-model-evaluation    # Metrics, confusion matrix, cross-validation
-│     └── 6-ml-tools            # HuggingFace pipeline, W&B, Gradio
-│
-├── 4-NLP/
-│     ├── text-preprocessing    # Tokenization, text pipelines
-│     ├── text-representation   # Word2Vec, TF-IDF, word embeddings
-│     ├── nlp-applications      # Sentiment, NER, summarization, chatbot
-│     ├── pre-trained-models    # BERT classification, GPT text gen, HF Hub
-│     └── transformers          # Attention mechanism, BERT embeddings, architecture
-│
-├── 5-LLMs/                     # Prompt engineering, tool calling, observability
-│
-├── 6-RAG/                      # Chunking, embeddings, retrieval, prompts, RAG pipelines
-│     ├── 01-foundations        # Embeddings, chunking fundamentals
-│     ├── 02-retrieval          # Semantic search, vector DBs
-│     ├── 03-pipelines          # Basic RAG flow, prompt design
-│     └── 04-evaluation         # Retrieval + answer quality basics
-│
-├── 7-Advanced-Frameworks/      # LangChain, LangGraph, LangSmith, MCP, Guardrails
-│
-├── 8-Deploy/                   # Docker, CI/CD, HuggingFace Spaces
-│
-├── Notes/                      # Phase summary notes and quick reference
-│
+├── 1-Foundations/         # Python, DSA, SQL, HTTP, async
+├── 2-FastAPI/             # Endpoints, auth, background tasks
+├── 3-ML/                  # sklearn, PyTorch, W&B, Gradio
+├── 4-NLP/                 # Tokenization, transformers, BERT, fine-tuning
+├── 5-LLMs/                # Prompt engineering, tool calling, observability
+├── 6-RAG/                 # Chunking, retrieval, reranking, query rewriting
+├── 7-Advanced-Frameworks/ # LangChain, LangGraph, LangSmith, MCP, Guardrails
+├── 8-Deploy/              # Docker, CI/CD, HuggingFace Spaces
+├── Notes/                 # Phase summary notes and quick reference
 └── Projects/
-      ├── phase-1-devilfruit    # OOP + SQLite project (One Piece theme)
-      ├── phase-2-grandlineAPI  # FastAPI REST API project
-      ├── phase-3-bountyhunter  # ML pipeline — sklearn + PyTorch + W&B
-      ├── phase-4-vivre-card    # BERT semantic character search
-      └── phase-5-den-den-mushi # LLM communications hub
+      ├── phase-1-devilfruit     # OOP + SQLite
+      ├── phase-2-grandlineAPI   # FastAPI REST API
+      ├── phase-3-bountyhunter   # ML pipeline
+      ├── phase-4-vivre-card     # BERT semantic search
+      ├── phase-5-den-den-mushi  # LLM communications hub
+      └── personal-project/      # Prompt context, One Piece Wiki RAG, AI Mentor
 ```
 
 ---
@@ -76,141 +42,22 @@ AI-Roadmap/
 | 3 | Machine Learning + PyTorch + W&B | ✅ Complete |
 | 4 | NLP + Transformers + Pre-trained Models | ✅ Complete |
 | 5 | LLMs + Prompt Engineering + Observability | ✅ Complete |
-| 6 | RAG (Retrieval-Augmented Generation) | 🟡 In Progress |
-| 7 | Advanced Frameworks (LangChain, LangGraph, LangSmith) | ⬜ Upcoming |
+| 6 | RAG (Retrieval-Augmented Generation) | ✅ Complete |
+| 7 | Advanced Frameworks (LangChain, LangGraph, LangSmith, MCP) | 🟡 In Progress |
 | 8 | Deploy + CI/CD + Portfolio | ⬜ Upcoming |
 
 ---
 
-## Phase Breakdown
+## Projects
 
-### Phase 1 — Python Foundations + DSA + SQL
-**Status: ✅ Complete**
-
-- Python basics: variables, operators, conditionals, loops, functions
-- Data structures: lists, tuples, sets, dictionaries
-- OOP: classes, `__init__`, `self`, inheritance, magic methods
-- DSA: basic data structures, sorting algorithms, algorithmic thinking
-- SQL: `SELECT`, `WHERE`, `JOIN`, `GROUP BY`, aggregations, indexing using SQLite
-- HTTP APIs: `requests` library, handling responses, real API calls
-- Advanced Python: `asyncio`, modules, packages, `__init__.py`
-
----
-
-### Phase 2 — FastAPI + Auth + Background Tasks
-**Status: ✅ Complete**
-
-> FastAPI chosen for its async support, automatic Swagger docs, and native Pydantic integration — critical for production AI backends.
-
-- GET and POST endpoints returning JSON
-- Pydantic models for request/response validation
-- Async endpoints: `async/await` and why it matters for AI workloads
-- Path params, query params, request bodies
-- Middleware and APIRouter for clean project structure
-- Basic auth and **JWT authentication** — protect endpoints with `python-jose` + `passlib`
-- Background tasks: fire-and-forget async jobs
-
----
-
-### Phase 3 — Machine Learning + PyTorch + Experiment Tracking
-**Status: ✅ Complete**
-
-- NumPy + Pandas: vectorized operations, DataFrames, EDA
-- Classical ML: supervised (linear, tree-based) and unsupervised models with scikit-learn
-- Deep learning: build neural networks and CNNs from scratch — understand every layer
-- PyTorch: tensors, autograd, `nn.Module`, full training loop (forward, loss, backward, optimizer)
-- Model evaluation: confusion matrix, precision/recall, cross-validation — never evaluate on training data
-- HuggingFace `pipeline()` for inference in 5 lines
-- **W&B experiment tracking** — log accuracy, loss, hyperparameters from day 1
-- Gradio: wrap any model in a demo UI, publish to HuggingFace Spaces
-
----
-
-### Phase 4 — NLP + Transformers + Pre-trained Models
-**Status: ✅ Complete**
-
-- Tokenization: LLMs read tokens, not words — inspect tokenizer output directly
-- Word embeddings: Word2Vec — a word as a list of numbers encoding meaning
-- TF-IDF: implement from scratch, understand when to use vs dense embeddings
-- NLP tasks: sentiment analysis, NER, summarization via HuggingFace
-- Transformer architecture: attention mechanism, self-attention (Q/K/V), multi-head attention
-- Positional encoding: how transformers encode order without recurrence
-- BERT (encoder-only) vs GPT (decoder-only) — hands-on with both
-- Fine-tuning: HuggingFace `Trainer` on a custom dataset, push to Hub
-
----
-
-### Phase 5 — LLMs + Prompt Engineering + Observability
-**Status: ⬜ Upcoming**
-
-- Tokens, context window, temperature — know these cold
-- Zero-shot, few-shot, chain-of-thought prompting — implement and compare all three
-- System prompts: shape model behavior across all turns
-- Function/tool calling: the LLM decides when to call your Python function
-- Structured outputs: force valid JSON using native API support
-- **LangSmith / Langfuse** — trace every LLM call: latency, token usage, errors
-- **Prompt injection** — understand the attack, implement input sanitization
-- Ollama: run models locally (llama3, mistral) — reduce API costs while learning
-- Serve chatbot as a proper async FastAPI endpoint with JWT auth
-
----
-
-### Phase 6 — RAG + LangChain + LangGraph + Agents
-**Status: ⬜ Upcoming**
-
-> Most employable AI engineering skill right now
-
-- Vector DBs: ChromaDB locally, embed sentences, query nearest neighbor
-- Chunking: ~500 token chunks with overlap before embedding
-- RAG pipeline: ingest → chunk → embed → store → retrieve → generate
-- LangChain chains: loaders, splitters, embeddings, retriever, LLM
-- Conversational RAG: add memory for multi-turn history
-- **LangGraph agents**: stateful agents with nodes, edges, conditional routing
-- **Model Context Protocol (MCP)**: connect agents to external tools
-- **LangSmith tracing**: trace full RAG pipeline, see exactly where retrieval fails
-- **Redis cache**: cache embeddings to reduce API calls and latency
-- **RAGAS evaluation**: measure faithfulness, answer relevancy, context precision
-
----
-
-### Phase 7 — Deploy + CI/CD + Portfolio
-**Status: ⬜ Upcoming**
-
-- Docker: write a Dockerfile for FastAPI — understand every line
-- Deploy to Render.com or Railway.app — free tier
-- **GitHub Actions**: run tests on push, deploy on merge to main
-- Environment variables: `.env` files, never hardcode API keys
-- 3 pinned GitHub projects with real READMEs + demo links
-- HuggingFace Spaces: publish live AI demos
-- Kaggle: at least one public competition submission
-
----
-
-### Phase 8 — Projects
-**Status: 🔄 In Progress**
-
-| Project | Phase | Description |
-|---------|-------|-------------|
-| [Devil Fruit Database](Projects/phase-1-devilfruit/) | 1 | OOP + MySQL CLI — One Piece themed |
-| [Grand Line API](Projects/phase-2-grandlineAPI/) | 2 | FastAPI REST API project |
-| [BountyHunter](Projects/phase-3-bountyhunter/) | 3 | ML pipeline — sklearn + PyTorch + W&B |
-| [Vivre Card](Projects/phase-4-vivre-card/) | 4 | BERT semantic character search |
-
-Each project folder contains `CONTEXT.md` (what it is, how to run it) and `LESSONS.md` (skills learned and how it connects to the rest of the roadmap).
-
----
-
-## Notes
-
-Interview-oriented summary notes, one per completed phase, plus cross-cutting references:
-
-- [Phase 1 — Python, DSA, SQL](Notes/phase-1.md)
-- [Phase 2 — FastAPI](Notes/phase-2.md)
-- [Phase 3 — Machine Learning](Notes/phase-3.md)
-- [Phase 4 — NLP](Notes/phase-4.md)
-- [Phase 5 — LLMs](Notes/phase-5.md)
-
-Each follows the same structure: goal, key terms, when to use, interview review, common pitfalls.
+| Project | Phase | Skills |
+|---------|-------|--------|
+| [Devil Fruit Database](Projects/phase-1-devilfruit/) | 1 | OOP, SQLite |
+| [Grand Line API](Projects/phase-2-grandlineAPI/) | 2 | FastAPI, JWT |
+| [BountyHunter](Projects/phase-3-bountyhunter/) | 3 | sklearn, PyTorch, W&B |
+| [Vivre Card](Projects/phase-4-vivre-card/) | 4 | BERT, semantic search |
+| [Den Den Mushi](Projects/phase-5-den-den-mushi/) | 5 | Multi-provider LLM, tool calling, structured outputs |
+| Poneglyph Reader *(coming after Phase 7)* | 6 | RAG, query rewriting, metadata filtering |
 
 ---
 

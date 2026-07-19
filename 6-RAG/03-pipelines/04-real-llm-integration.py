@@ -21,7 +21,7 @@ import requests
 from app.chunker import chunk_text
 from app.document_loader import load_text_files
 from app.retriever import retrieve_relevant_chunks
-from app.rag_config import DATA_DIR
+from app.rag_config import DATA_DIR, CHUNK_SIZE, CHUNK_OVERLAP
 
 
 def build_prompt(question: str, context_chunks: List[str]) -> str:
@@ -58,11 +58,11 @@ def call_llm(prompt: str, model: str = "llama2") -> str:
 def run_rag_with_llm(question: str, model: str = "llama2") -> str:
     documents = load_text_files(DATA_DIR)
     chunks = []
-    for doc in documents:
-        chunks.extend(chunk_text(doc))
+    for source, content in documents:
+        chunks.extend(chunk_text(content, source=source, chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP))
 
     retrieved = retrieve_relevant_chunks(question, chunks, top_k=3)
-    context_chunks = [chunk for chunk, _ in retrieved]
+    context_chunks = [c.text for c, _ in retrieved]
     prompt = build_prompt(question, context_chunks)
     return call_llm(prompt, model=model)
 

@@ -7,12 +7,15 @@ through Ollama on localhost:11434.
 import requests
 
 
-def generate_with_ollama(prompt: str, model: str = "llama2") -> str:
+def generate_with_ollama(prompt: str, model: str = "llama2", temperature: float = 0.0) -> str:
     url = "http://localhost:11434/api/generate"
     payload = {
         "model": model,
         "prompt": prompt,
         "stream": False,
+        "options": {
+            "temperature": temperature,
+        },
     }
 
     try:

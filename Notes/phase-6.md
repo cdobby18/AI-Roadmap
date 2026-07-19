@@ -22,7 +22,7 @@ Every RAG system follows this same sequence. The differences are in how each ste
 **Best practices:**
 - Overlap (10-15% of chunk size) to avoid losing context at boundaries.
 - Chunk size depends on use case: 100-200 tokens for Q&A (precision), 500-1000 for summarization (breadth).
-- Chunk metadata: tag with source document, section heading, page number, date. Filter on metadata before vector search to halve retrieval noise.
+- Tag chunks with metadata (source document, section heading) — enables metadata filtering before vector search, halving retrieval noise.
 
 ## Embeddings
 
@@ -30,12 +30,13 @@ Every RAG system follows this same sequence. The differences are in how each ste
 
 **Sentence-transformers vs BERT:** sentence-transformers are fine-tuned specifically for producing semantically meaningful sentence embeddings (via contrastive learning on NLI/STS datasets). Raw BERT requires mean pooling of token embeddings and produces worse similarity scores. Always prefer sentence-transformers for RAG retrieval.
 
-**Popular models:**
-- `all-MiniLM-L6-v2` — 384 dimensions, fast, CPU-friendly. Default choice for prototyping.
-- `BAAI/bge-large-en-v1.5` — 1024 dimensions, better quality, more compute. Good for production.
-- `intfloat/e5-mistral-7b-instruct` — highest quality, 7B parameters, GPU needed. For retrieval-heavy applications.
+**Model profiles (swappable via config):**
+- `fast` — `all-MiniLM-L6-v2` (384d, CPU-friendly). Default for prototyping.
+- `balanced` — `BAAI/bge-small-en-v1.5` (384d, better quality than MiniLM).
+- `quality` — `BAAI/bge-large-en-v1.5` (1024d, more compute). Good for production.
+- `best` — `intfloat/e5-mistral-7b-instruct` (4096d, GPU required). For retrieval-heavy apps.
 
-**Tradeoff:** Higher dimension = more accurate retrieval (better separation in vector space) + more compute/memory for storage and search.
+**Tradeoff:** Higher dimension = more accurate retrieval + more compute/memory. Swapping the model is a single config change: `EMBEDDING_MODEL_PROFILE = "quality"`.
 
 ## Vector Search
 
@@ -50,7 +51,7 @@ Every RAG system follows this same sequence. The differences are in how each ste
 | System | Best for |
 |--------|----------|
 | FAISS | Prototypes, small-medium scale, embedded in Python |
-| Chroma | Quick prototypes, simple API, built-in embedding |
+| Chroma | Quick prototypes, simple API, built-in embedding, metadata filtering |
 | Pinecone | Production cloud, fully managed, scales automatically |
 | Weaviate / Qdrant | Self-hosted production, hybrid search, multi-tenancy |
 | pgvector | Already using PostgreSQL, don't want a separate DB |
@@ -69,11 +70,25 @@ Every RAG system follows this same sequence. The differences are in how each ste
 
 **When to rerank:** If you have >10 candidates and need the best 3-5 for the LLM. The LLM's answer quality is limited by the quality of its input context — reranking directly improves that.
 
+## Query Rewriting
+
+**What it is:** Transforming the user's raw query before retrieval to improve result quality. Raw queries are often ambiguous, conversational, or poorly aligned with the embedding space.
+
+**Standalone rewriting:** Converts context-dependent questions into self-contained search queries. "How does it compare to a bi-encoder?" → "How does a cross-encoder compare to a bi-encoder for relevance scoring?"
+
+**HyDE (Hypothetical Document Embeddings):** Instead of embedding the query, ask an LLM to generate a hypothetical document that would answer the question, then embed THAT for retrieval. The hypothetical doc lives in "document embedding space" rather than "query embedding space" — it's more similar to real relevant documents. Improves recall for complex/abstract queries.
+
+**Why it matters:** This is the #1 difference between demo RAG and production RAG. Without it, follow-up questions and ambiguous queries retrieve irrelevant chunks, producing bad answers.
+
+## Metadata Filtering
+
+**What it is:** Attaching metadata (source document, section, date, author) to each chunk, then filtering by metadata before or after vector search.
+
+**How it works:** Chunks carry a `source` field (filename) and a `metadata` dict. The retriever accepts an optional `metadata_filter` dict. When provided, results that don't match the filter are skipped. In FAISS this is done post-search (with a search multiplier). In ChromaDB it uses the native `where` clause for pre-filtering.
+
+**When to use:** Always in production. "Only search documents from 2025" or "only search the 'architecture' section." Halves retrieval noise by eliminating irrelevant chunks before they even reach the reranker.
+
 ## Advanced RAG Patterns
-
-**Query rewriting:** Users ask ambiguous or context-dependent questions ("tell me about that thing from last week"). A small LLM rewrites the query into a standalone, searchable form before retrieval. This is the #1 difference between demo RAG and production RAG.
-
-**Metadata filtering:** Tag chunks with source, date, section, author. Filter before vector search. "Only search documents from 2025" or "only search the 'architecture' section." Halves retrieval noise.
 
 **Self-RAG:** The LLM generates an answer, then retrieves evidence to verify each claim, then revises. More grounded but slower.
 
@@ -102,10 +117,11 @@ Every RAG system follows this same sequence. The differences are in how each ste
 - RAG pipeline: load → chunk → embed → store → retrieve → augment → generate.
 - Why chunking matters more than model choice.
 - Chunking strategies: fixed-size (simplest), sentence-aware (better), semantic (best quality).
-- Embedding models: sentence-transformers (MiniLM for speed, BGE for quality).
+- Embedding models: model profiles (fast, balanced, quality, best) — swappable via config.
 - FAISS: IndexFlatIP (exact, O(n)) vs IndexIVFFlat (approximate, O(log n)).
 - Why reranking is not optional in production: cross-encoder is much more accurate than cosine similarity.
-- Query rewriting: the #1 production RAG improvement.
+- Query rewriting: the #1 production RAG improvement. Standalone + HyDE strategies.
+- Metadata filtering: tag chunks with source/date/section, filter before search.
 - RAGAS metrics: faithfulness, answer relevancy, context precision.
 - Common failure modes and how to debug them.
 - Vector DB decision: FAISS for prototype, Chroma/pgvector for persistence, Pinecone for scale.
@@ -121,5 +137,9 @@ Every RAG system follows this same sequence. The differences are in how each ste
 | `02-retrieval/03-hybrid-search.py` | Combining dense vectors + BM25 keyword search |
 | `02-retrieval/04-reranking.py` | Cross-encoder reranker for precision boost |
 | `02-retrieval/05-faiss-basics.py` | FAISS internals: FlatIP vs IVFFlat, save/load |
-| `app/retriever.py` | Production retriever (FAISS singleton pattern) |
-| `app/chroma_store.py` | Production retriever (ChromaDB alternative) |
+| `03-pipelines/05-query-rewriting.py` | Standalone rewriting + HyDE with comparison demo |
+| `app/retriever.py` | Production retriever (FAISS singleton, config-driven model, metadata filter) |
+| `app/chroma_store.py` | Production retriever (ChromaDB alternative with metadata filter) |
+| `app/chunker.py` | Production chunker with `Chunk` dataclass, source metadata |
+| `app/query_rewriter.py` | Production query rewriter (standalone + HyDE strategies) |
+| `app/rag_config.py` | Central config: model profiles, chunk params, rewrite strategy |
