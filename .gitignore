@@ -32,6 +32,7 @@ dist/
 build/
 *.manifest
 *.spec
+generate_report.py
 
 # =====================
 # Generated Outputs
