@@ -28,7 +28,6 @@ AI-Roadmap/
       ├── phase-3-bountyhunter   # ML pipeline
       ├── phase-4-vivre-card     # BERT semantic search
       ├── phase-5-den-den-mushi  # LLM communications hub
-      └── personal-project/      # Prompt context, One Piece Wiki RAG, AI Mentor
 ```
 
 ---
@@ -57,7 +56,6 @@ AI-Roadmap/
 | [BountyHunter](Projects/phase-3-bountyhunter/) | 3 | sklearn, PyTorch, W&B |
 | [Vivre Card](Projects/phase-4-vivre-card/) | 4 | BERT, semantic search |
 | [Den Den Mushi](Projects/phase-5-den-den-mushi/) | 5 | Multi-provider LLM, tool calling, structured outputs |
-| Poneglyph Reader *(coming after Phase 7)* | 6 | RAG, query rewriting, metadata filtering |
 
 ---
 
