@@ -29,7 +29,10 @@ from sentence_transformers import CrossEncoder
 from config import (
     CHROMA_DIR,
     EMBEDDING_MODEL,
+    HF_MODEL,
+    HF_TOKEN,
     LLM_MODEL,
+    LLM_PROVIDER,
     LLM_TEMPERATURE,
     OLLAMA_BASE_URL,
     RERANKER_MODEL,
@@ -37,6 +40,12 @@ from config import (
     TOP_K_RETRIEVAL,
 )
 from ingestion import embed, get_collection
+
+try:
+    from huggingface_hub import InferenceClient
+    HF_CLIENT = InferenceClient(token=HF_TOKEN) if HF_TOKEN else InferenceClient()
+except ImportError:
+    HF_CLIENT = None
 
 
 # -------------------------------------------------------------------
@@ -174,7 +183,7 @@ def rerank(
 # 4. LLM call
 # -------------------------------------------------------------------
 
-def _call_llm(prompt: str) -> str:
+def _call_llm_ollama(prompt: str) -> str:
     """Call Ollama's generate endpoint."""
     try:
         resp = requests.post(
@@ -191,6 +200,29 @@ def _call_llm(prompt: str) -> str:
         return resp.json().get("response", "")
     except requests.RequestException as e:
         return f"[Ollama unavailable: {e}]"
+
+
+def _call_llm_hf(prompt: str) -> str:
+    """Call HuggingFace Inference API."""
+    if HF_CLIENT is None:
+        return "[HF Inference API unavailable: install huggingface_hub]"
+    try:
+        result = HF_CLIENT.text_generation(
+            prompt,
+            model=HF_MODEL,
+            max_new_tokens=512,
+            temperature=LLM_TEMPERATURE,
+        )
+        return result
+    except Exception as e:
+        return f"[HF Inference API error: {e}]"
+
+
+def _call_llm(prompt: str) -> str:
+    """Route to the configured LLM backend."""
+    if LLM_PROVIDER == "hf_inference":
+        return _call_llm_hf(prompt)
+    return _call_llm_ollama(prompt)
 
 
 # -------------------------------------------------------------------
