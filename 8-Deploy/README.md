@@ -1,19 +1,42 @@
 # Phase 8 — Deploy + CI/CD + Portfolio
 
-**Status: ⬜ Upcoming**
+**Status: ✅ In Progress**
 
-Shipping — turning roadmap projects into deployed, demonstrable systems.
+Shipping roadmap projects to production-like environments.
 
-## What this phase will cover
+## What's Here
 
-- Docker: write a Dockerfile for FastAPI — understand every line
-- Deploy to Render.com or Railway.app — free tier
-- **GitHub Actions**: run tests on push, deploy on merge to main
-- Environment variables: `.env` files, never hardcode API keys
-- 3 pinned GitHub projects with real READMEs + demo links
-- HuggingFace Spaces: publish live AI demos
-- Kaggle: at least one public competition submission
+| File | Purpose |
+|------|---------|
+| `Dockerfile` | Containerize the Poneglyph Reader (multi-stage, slim) |
+| `.dockerignore` | Exclude caches, git, env from build context |
+| `huggingface-spaces/README.md` | Deploy guide — HF Spaces setup, secrets, push |
+| `huggingface-spaces/.gitattributes` | Language detection for HF Spaces |
 
-## Builds on
+## Projects Deployed
 
-- Everything — this phase deploys the projects built in Phases 1–7
+| Project | Platform | URL | Status |
+|---------|----------|-----|--------|
+| Poneglyph Reader (Phase 6) | HuggingFace Spaces | TBD | 🟡 Ready to deploy |
+
+## CI/CD
+
+| Workflow | Trigger | Action |
+|----------|---------|--------|
+| `deploy-poneglyph.yml` | Push to `main` (Poneglyph files) | Tests → Deploy to HF Spaces |
+
+## Running Locally with Docker
+
+```bash
+cd Projects/phase-6-poneglyph
+docker build -t poneglyph-reader -f ../../8-Deploy/Dockerfile .
+docker run -p 7860:7860 poneglyph-reader
+```
+
+## Phase Contents
+
+- **Docker**: Multi-stage Dockerfile for Streamlit + NLP models
+- **HuggingFace Spaces**: One-click deploy of AI demos
+- **GitHub Actions**: Automated tests + deploy pipeline
+- **Environment management**: Secrets, env vars, `.env` patterns
+- **Portfolio**: Live demo links, polished READMEs
