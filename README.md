@@ -20,14 +20,16 @@ AI-Roadmap/
 ├── 5-LLMs/                # Prompt engineering, tool calling, observability
 ├── 6-RAG/                 # Chunking, retrieval, reranking, query rewriting
 ├── 7-Advanced-Frameworks/ # LangChain, LangGraph, LangSmith, MCP, Guardrails
-├── 8-Deploy/              # Docker, CI/CD, HuggingFace Spaces
+├── 8-Deploy/              # Docker, CI/CD, HuggingFace Spaces (In Progress)
 ├── Notes/                 # Phase summary notes and quick reference
 └── Projects/
-      ├── phase-1-devilfruit     # OOP + SQLite
-      ├── phase-2-grandlineAPI   # FastAPI REST API
-      ├── phase-3-bountyhunter   # ML pipeline
-      ├── phase-4-vivre-card     # BERT semantic search
-      ├── phase-5-den-den-mushi  # LLM communications hub
+      ├── phase-1-devilfruit        # OOP + SQLite
+      ├── phase-2-grandlineAPI      # FastAPI REST API
+      ├── phase-3-bountyhunter      # ML pipeline
+      ├── phase-4-vivre-card        # BERT semantic search
+      ├── phase-5-den-den-mushi     # LLM communications hub
+      ├── phase-6-poneglyph         # RAG chat app (ChromaDB + Streamlit)
+      ├── phase-7-research-agent    # LangGraph multi-agent research system
 ```
 
 ---
@@ -42,8 +44,8 @@ AI-Roadmap/
 | 4 | NLP + Transformers + Pre-trained Models | ✅ Complete |
 | 5 | LLMs + Prompt Engineering + Observability | ✅ Complete |
 | 6 | RAG (Retrieval-Augmented Generation) | ✅ Complete |
-| 7 | Advanced Frameworks (LangChain, LangGraph, LangSmith, MCP) | 🟡 In Progress |
-| 8 | Deploy + CI/CD + Portfolio | ⬜ Upcoming |
+| 7 | Advanced Frameworks (LangChain, LangGraph, LangSmith, MCP) | ✅ Complete |
+| 8 | Deploy + CI/CD + Portfolio | 🟡 In Progress |
 
 ---
 
@@ -56,6 +58,8 @@ AI-Roadmap/
 | [BountyHunter](Projects/phase-3-bountyhunter/) | 3 | sklearn, PyTorch, W&B |
 | [Vivre Card](Projects/phase-4-vivre-card/) | 4 | BERT, semantic search |
 | [Den Den Mushi](Projects/phase-5-den-den-mushi/) | 5 | Multi-provider LLM, tool calling, structured outputs |
+| [Poneglyph Reader](Projects/phase-6-poneglyph/) | 6 | RAG, ChromaDB, sentence-transformers, Streamlit |
+| [Research Agent](Projects/phase-7-research-agent/) | 7 | LangGraph, agentic RAG, reflection loop, multi-source search |
 
 ---
 
@@ -70,3 +74,11 @@ AI Engineering Track
 ---
 
 *Last updated: July 2026*
+
+---
+
+## Portfolio (Deployed Projects)
+
+| Project | Demo | Stack |
+|---------|------|-------|
+| Poneglyph Reader | *(deploying)* | Streamlit, ChromaDB, sentence-transformers, HF Spaces |
