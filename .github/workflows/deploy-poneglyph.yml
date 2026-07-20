@@ -1,0 +1,61 @@
+name: Deploy Poneglyph Reader to HF Spaces
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Projects/phase-6-poneglyph/**"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r Projects/phase-6-poneglyph/requirements.txt
+          pip install pytest
+      - name: Smoke test imports
+        run: |
+          python -c "
+import sys
+sys.path.insert(0, 'Projects/phase-6-poneglyph')
+from config import PROJECT_DIR, CHROMA_DIR, CACHE_DIR
+from scraper import list_cached_pages
+from ingestion import chunk_text
+chunks = chunk_text('Hello world. This is a test.', source='test.txt')
+assert len(chunks) == 1, f'Expected 1 chunk, got {len(chunks)}'
+print(f'Chunking OK: {len(chunks)} chunk(s)')
+from rag import rewrite_query
+result = rewrite_query('Hello')
+assert result == 'Hello', f'Expected Hello, got {result}'
+print('Rewrite OK (no-op without history)')
+print('All smoke tests passed')
+          "
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to HuggingFace Spaces
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+        run: |
+          if [ -z "$HF_TOKEN" ]; then
+            echo "No HF_TOKEN set — skipping deploy"
+            exit 0
+          fi
+          git remote add hf "https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/poneglyph-reader"
+          git subtree push --prefix Projects/phase-6-poneglyph hf main 2>&1 || \
+          echo "Deploy skipped (maybe first push or no changes)"
